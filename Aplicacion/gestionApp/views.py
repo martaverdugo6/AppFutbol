@@ -13,8 +13,12 @@ def registroUser(request):
 	if request.method =='POST':	#si se envia el formulario
 		form = form_user(request.POST)
 		if form.is_valid():
-			form.save()
-		return HttpResponseRedirect('/perfil')
+			my_form = form.save(commit=False)
+			my_form.puntuacion = 0
+			my_form.presupuesto = 200000
+			my_form.save()
+
+		#return HttpResponseRedirect('/perfil')
 	else:
 		form = form_user()
 	return render(request, "form_alta_usuario.html", {'form':form,})

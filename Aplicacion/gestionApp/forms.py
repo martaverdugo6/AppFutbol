@@ -7,14 +7,14 @@ class form_user(forms.ModelForm):
 	class Meta:
 		model = usuario
 
+		#Campos que quiero que aparezcan en el formulario
 		fields =[
 			'nombre',
 			'apellidos',
 			'email',
 			'nick',
 			'password',
-			'puntuacion',
-			'presupuesto',
+			
 		]
 		labels = {
 			'nombre': 'Nombre',
@@ -22,8 +22,6 @@ class form_user(forms.ModelForm):
 			'email': 'Email',
 			'nick': 'Nick',
 			'password': 'Contraseña',
-			'puntuacion': 'Puntuacion',
-			'presupuesto':'Presupuesto',
 		}
 		widgets = {
 			'nombre': forms.TextInput(attrs={'class':'form-control'}),
@@ -31,6 +29,4 @@ class form_user(forms.ModelForm):
 			'email': forms.TextInput(attrs={'class':'form-control'}),
 			'nick': forms.TextInput(attrs={'class':'form-control'}),
 			'password': forms.TextInput(attrs={'class':'form-control'}),
-			'puntuacion': forms.TextInput(attrs={'class':'form-control'}),
-			'presupuesto':forms.TextInput(attrs={'class':'form-control'}),
 		}
