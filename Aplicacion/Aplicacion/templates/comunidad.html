@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Comunidad</title>
+</head>
+
+<style>
+	
+	#menu_comunidad{
+		list-style: none;	/*Quita los punto de la lista*/
+		background: red;
+		width: 10%;
+	}
+	#menu_comunidad li{
+		padding: 5px;
+		font-size: 20px;
+	}
+
+
+</style>
+
+<body style="margin: 0">
+	{% include "cabecera.html" %}
+
+	{% include "menu.html" %}
+
+	<h1 style="text-align: center">COMUNIDAD</h1>
+
+	<ul id="menu_comunidad">
+		
+		<li>Clasificación</li>
+		<li>Mercado</li>
+
+
+	</ul>
+	
+	{% include "pie.html" %}
+
+</body>
+</html>

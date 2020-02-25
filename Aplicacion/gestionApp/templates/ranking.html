@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ranking</title>
+</head>
+
+<style>
+	#tabla_ranking{
+		font-size: 18px;
+		margin-left: 25%;
+		width: 50%;
+
+	}
+	#titulos_tabla td{ 
+		padding: 10px;
+		font-size: 25px; 
+		text-align: center; 
+		background: #CCCCCC;
+	}
+	#contenido_tabla td{
+		padding: 10px;
+		text-align: center;
+	}
+
+</style>
+
+
+<body style="margin: 0">
+	{% include "cabecera.html" %}
+
+	{% include "menu.html" %}
+
+	<h1>RANKING GLOBAL DE JUGADORES</h1>
+	
+	<table id="tabla_ranking">
+			<tr id="titulos_tabla">
+				<td><b>Jugador</b></td>
+				<td><b>Puntuación</b></td>
+			</tr>
+		{% for user in lista_usuarios %}
+			<tr id="contenido_tabla">
+				<td>{{user.nick}}</td>
+				<td>{{user.puntuacion}} ptos</td>
+			</tr>
+
+		{% endfor %}
+
+	</table>
+	
+	{% include "pie.html" %}
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Inicio</title>
+</head>
+
+<style>
+	
+	#jornada{
+		width: 25%;
+		margin: 40px;
+		background: #DDDDDD;
+	}
+	#jornada p{
+		/*text-align: center;*/
+	}
+
+
+</style>
+
+<body style="margin: 0">
+	
+	{% include "cabecera.html" %}
+
+	{% include "menu.html" %}
+
+		<fieldset id="jornada">
+			<legend style="font-size: 20px">Próxima jornada</legend>
+			<p>Betis <i>vs</i> Leganés</p>
+			<p>Villareal <i>vs</i> Celta de Vigo</p>
+			<p>FC Barcelona <i>vs</i> Osasuna</p>
+			<p>Sevilla <i>vs</i> Atlético de Madrid</p>
+			<p>Valladolid <i>vs</i> Mallorca</p>
+			<p>Getafe <i>vs</i> Alavés</p>
+			<p>Athletic <i>vs</i> Espanyol</p>
+			<p>Valencia <i>vs</i> Levante</p>
+			<p>Eibar <i>vs</i> Granada</p>
+			<p>Real Sociedad <i>vs</i> Real Madrid</p>
+		</fieldset>
+	
+	{% include "pie.html" %}
+
+</body>
+</html>

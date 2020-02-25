@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+
+<style>
+	
+	#menu{
+		list-style: none;	/*Quita los punto de la lista*/
+		background: #B7950B;
+		margin-top: 0;
+		padding: 5px;
+
+	}
+	#menu li{
+		display: inline;			/*Enlaces en fila y no en columna*/
+		margin: 20px 10px;
+		text-transform: uppercase;	/*Transformar el texto a mayúsculas*/
+		font-size: 18px;
+	}
+	#menu li a{
+		text-decoration: none;
+		color: white;
+	}
+
+
+</style>
+
+
+<body>
+
+	<ul id="menu">
+		<li><a href="{% url 'inicio' %}">Inicio</a></li>
+		<li><a href="{% url 'comunidad' %}">Comunidad</a></li>
+		<li><a href="{% url 'ranking' %}">Ranking</a></li>
+		<li><a href="{% url 'perfil' %}">Mi perfil</a></li>
+		<li><a href="{% url 'about' %}">Sobre nosotros</a></li>
+
+	</ul>
+
+</body>
+</html>

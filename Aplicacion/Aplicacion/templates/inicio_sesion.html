@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Inicio Sesión</title>
+</head>
+
+<style>
+	#datos_usuario_login{
+		width: 40%;
+		margin-left: 30%;
+		margin-top: 30px;
+	}
+	
+	#boton_entrar{
+		/*text-align: center;*/
+		margin: 15px;
+		margin-left: 0;
+	}
+
+	#boton_registrarse{
+		text-align: center;
+		margin: 15px;
+	}
+	
+
+
+</style>
+
+<body style="margin: 0">
+	{% include "cabecera.html" %}
+
+	<fieldset id="datos_usuario_login">
+		<legend style="font-size: 20px">Inicio de sesión</legend>
+
+		<p>Nick:</p>
+		<input type="text" name="nick">
+		<p>Contraseña:</p>
+		<input type="password" name="password">
+
+		<div id="boton_entrar">
+			<input type="submit" value="Entrar" />
+		</div>
+		<div id="boton_registrarse">
+			<input  type="submit" value="Registrarse" />
+		</div>
+
+	</fieldset>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Registrarse</title>
+</head>
+
+<style>
+	#datos_usuario{
+		width: 40%;
+		margin-left: 30%;
+		margin-top: 30px;
+	}
+
+	#boton_enviar{
+		margin: 15px;
+	}
+	
+
+
+</style>
+
+<body style="margin: 0">
+	
+	{% include "cabecera.html" %}
+
+
+	{% block content %}
+	<form method="post"> {% csrf_token %}
+
+		<!--<fieldset id="datos_usuario">
+			<legend style="font-size: 20px">Registro</legend>
+
+			<p>Nombre:</p>
+			<input type="text" name="nombre">
+			<p>Apellidos:</p>
+			<input type="text" name="apellidos">
+			<p>Nick:</p>
+			<input type="text" name="nick">
+			<p>Email:</p>
+			<input type="email" name="email">
+			<p>Contraseña:</p>
+			<input type="password" name="password">
+		-->
+			{{ form.as_p}}
+			<div id="boton_enviar">
+				<button type="submit">Enviar</button>  
+			</div>
+
+		</fieldset>
+	</form>
+	{% endblock %}
+
+
+</body>
+</html>
