@@ -125,3 +125,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = ["C:/Users/marta/Desktop/TFG/App_Django/Aplicacion/Aplicacion/static/"]
