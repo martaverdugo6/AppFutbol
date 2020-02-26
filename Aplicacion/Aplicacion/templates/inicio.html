@@ -1,34 +1,9 @@
-{% load static %}
-
-<!DOCTYPE html>
-<html>
-<head>
-	<link rel="stylesheet" type="text/css" href = "{% static 'css/archivo.css' %}" />
-	<title>Inicio</title>
+{% extends "base.html" %}
 
 
-</head>
-
-<style>
-	
-	#jornada{
-		width: 25%;
-		margin: 40px;
-		background: #DDDDDD;
-	}
-	#jornada p{
-		/*text-align: center;*/
-	}
-
-
-</style>
-
+{% block content %}
 <body>
 	
-	{% include "cabecera.html" %}
-
-	{% include "menu.html" %}
-
 		<fieldset id="jornada">
 			<legend style="font-size: 20px">Próxima jornada</legend>
 			<p>Betis <i>vs</i> Leganés</p>
@@ -46,4 +21,5 @@
 	{% include "pie.html" %}
 
 </body>
-</html>
+
+{% endblock %}
