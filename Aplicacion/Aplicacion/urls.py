@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from Aplicacion.views import inicio, sobre_nosotros,comunidad, perfil, inicioSesion
+from Aplicacion.views import inicio, sobre_nosotros,liga, perfil, inicioSesion
 from gestionApp.views import ranking, registroUser
 
 urlpatterns = [
@@ -23,7 +23,7 @@ urlpatterns = [
  	path('inicio/', inicio, name='inicio'),
  	path('sobreNosotros/', sobre_nosotros, name='about'),
  	path('ranking/', ranking, name='ranking'),
- 	path('comunidad/', comunidad, name='comunidad'),
+ 	path('liga/', liga, name='liga'),
  	path('perfil/', perfil, name='perfil'),
  	path('inicioSesion/', inicioSesion, name='inicioSesion'),
  	path('registro/', registroUser, name='registro'),

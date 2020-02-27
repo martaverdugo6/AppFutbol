@@ -1,34 +1,13 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Ranking QUE NO VAMOS A USAR</title>
+	<link href="{% static 'css/archivo.css' %}" rel="stylesheet" />
 </head>
 
-<style>
-	#tabla_ranking{
-		font-size: 18px;
-		margin-left: 25%;
-		width: 50%;
-
-	}
-	#titulos_tabla td{ 
-		padding: 10px;
-		font-size: 25px; 
-		text-align: center; 
-		background: #CCCCCC;
-	}
-	#contenido_tabla td{
-		padding: 10px;
-		text-align: center;
-	}
-
-</style>
-
-
-<body style="margin: 0">
-	{% include "cabecera.html" %}
-
-	{% include "menu.html" %}
+<body>
 
 	<h1>RANKING GLOBAL DE JUGADORES</h1>
 	

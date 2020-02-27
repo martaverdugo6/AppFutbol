@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block jumbotron %}
+<div class="jumbotron">
+	<h1>BIENVENIDOS</h1>
+	<p class="lead">This example is a quick exercise to illustrate how the top-aligned navbar works. As you scroll, this navbar remains in its original position and moves with the rest of the page.</p>
+	<a class="btn btn-lg btn-primary" href="/docs/4.4/components/navbar/" role="button">View navbar docs &raquo;</a>
+</div>
+{% endblock %}
+{% block head_title %}Login{% endblock %}
+
+
+{% block content %}
+	<fieldset id="datos_usuario_login">
+		<legend style="font-size: 20px">Inicio de sesión</legend>
+
+		<p>Nick:</p>
+		<input type="text" name="nick">
+		<p>Contraseña:</p>
+		<input type="password" name="password">
+
+		<div id="boton_entrar">
+			<input type="submit" value="Entrar" />
+		</div>
+		<div id="boton_registrarse">
+			<input  type="submit" value="Registrarse" />
+		</div>
+
+	</fieldset>
+{% endblock %}
