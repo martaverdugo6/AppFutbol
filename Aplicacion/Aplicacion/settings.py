@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'gestionApp',
 ]
 
@@ -127,3 +128,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = ["C:/Users/marta/Desktop/TFG/App_Django/Aplicacion/Aplicacion/static/"]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
