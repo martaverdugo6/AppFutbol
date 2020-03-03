@@ -6,9 +6,7 @@
 	{% block content %}
 	<form method="post"> {% csrf_token %}
 			{{ form|crispy }}
-			<div id="boton_enviar">
-				<button type="submit">Enviar</button>  
-			</div>
+			<input type="submit" value="Registrarme"/>
 
 	</form>
 	{% endblock %}

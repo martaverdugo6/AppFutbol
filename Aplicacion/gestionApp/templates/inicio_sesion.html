@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block jumbotron %}
 <div class="jumbotron">
@@ -11,20 +12,9 @@
 
 
 {% block content %}
-	<fieldset id="datos_usuario_login">
-		<legend style="font-size: 20px">Inicio de sesión</legend>
+	<form method="post">{% csrf_token %}
+		{{ form|crispy }}
+		<input type="submit" value="Entrar"/>
 
-		<p>Nick:</p>
-		<input type="text" name="nick">
-		<p>Contraseña:</p>
-		<input type="password" name="password">
-
-		<div id="boton_entrar">
-			<input type="submit" value="Entrar" />
-		</div>
-		<div id="boton_registrarse">
-			<input  type="submit" value="Registrarse" />
-		</div>
-
-	</fieldset>
+	</form>
 {% endblock %}

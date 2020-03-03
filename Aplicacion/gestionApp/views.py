@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from gestionApp.models import usuario
-from gestionApp.forms import form_user
+from gestionApp.forms import form_alta_usuario, form_login_usuario
 
 # Create your views here.
 
@@ -11,7 +11,7 @@ def ranking(request):
 
 def registroUser(request):
 	if request.method =='POST':	#si se envia el formulario
-		form = form_user(request.POST)
+		form = form_alta_usuario(request.POST)
 		if form.is_valid():
 			my_form = form.save(commit=False)
 			my_form.puntuacion = 0
@@ -20,5 +20,17 @@ def registroUser(request):
 
 		#return HttpResponseRedirect('/perfil')
 	else:
-		form = form_user()
+		form = form_alta_usuario()
 	return render(request, "form_alta_usuario.html", {'form':form,})
+
+def inicioSesion(request):
+	if request.method =='POST':	#si se envia el formulario
+		form = form_login_usuario(request.POST)
+		if form.is_valid():
+			my_form = form.save(commit=False)
+			my_form.save()
+
+		#return HttpResponseRedirect('/perfil')
+	else:
+		form = form_login_usuario()
+	return render(request, "inicio_sesion.html", {'form':form,})

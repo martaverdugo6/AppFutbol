@@ -2,7 +2,7 @@ from django import forms
 
 from gestionApp.models import usuario
 
-class form_user(forms.ModelForm):
+class form_alta_usuario(forms.ModelForm):
 
 	class Meta:
 		model = usuario
@@ -13,8 +13,7 @@ class form_user(forms.ModelForm):
 			'apellidos',
 			'email',
 			'nick',
-			'password',
-			
+			'password',	
 		]
 		labels = {
 			'nombre': 'Nombre',
@@ -23,10 +22,21 @@ class form_user(forms.ModelForm):
 			'nick': 'Nick',
 			'password': 'Contraseña',
 		}
-		widgets = {
-			'nombre': forms.TextInput(attrs={'class':'form-control'}),
-			'apellidos': forms.TextInput(attrs={'class':'form-control'}),
-			'email': forms.TextInput(attrs={'class':'form-control'}),
-			'nick': forms.TextInput(attrs={'class':'form-control'}),
-			'password': forms.TextInput(attrs={'class':'form-control'}),
+
+
+
+class form_login_usuario(forms.ModelForm):
+
+	class Meta:
+		model = usuario
+
+		#Campos que quiero que aparezcan en el formulario
+		fields =[
+			'nick',
+			'password',	
+		]
+		
+		labels = {
+			'nick': 'Nick',
+			'password': 'Contraseña',
 		}

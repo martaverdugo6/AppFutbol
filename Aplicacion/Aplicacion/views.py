@@ -19,6 +19,3 @@ def perfil(request):
 
 	return render(request, "perfil_user.html")
 
-def inicioSesion(request):
-
-	return render(request, "inicio_sesion.html")

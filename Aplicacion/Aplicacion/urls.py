@@ -15,8 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from Aplicacion.views import inicio, sobre_nosotros,liga, perfil, inicioSesion
-from gestionApp.views import ranking, registroUser
+from Aplicacion.views import inicio, sobre_nosotros,liga, perfil
+from gestionApp.views import ranking, registroUser, inicioSesion
 
 urlpatterns = [
     path('admin/', admin.site.urls),   #La url no tiene porque llamarse igual que la función, ni igual que el name
