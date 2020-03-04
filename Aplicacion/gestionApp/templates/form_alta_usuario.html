@@ -3,10 +3,13 @@
 
 {% block head_title %}Registrarse{% endblock %}
 
+
+
 	{% block content %}
+	<h1 class="center-align">Registrarse</h1>
 	<form method="post"> {% csrf_token %}
 			{{ form|crispy }}
-			<input type="submit" value="Registrarme"/>
+			<input class="btn btn-success" type="submit" value="Registrarme"/>
 
 	</form>
 	{% endblock %}
