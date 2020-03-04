@@ -18,18 +18,19 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path
 
-from Aplicacion.views import inicio, sobre_nosotros,liga, perfil
-from gestionApp.views import ranking, registroUser, inicioSesion
+from Aplicacion import views
+from gestionApp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),   #La url no tiene porque llamarse igual que la función, ni igual que el name
- 	path('inicio/', inicio, name='inicio'),
- 	path('sobreNosotros/', sobre_nosotros, name='about'),
- 	path('ranking/', ranking, name='ranking'),
- 	path('liga/', liga, name='liga'),
- 	path('perfil/', perfil, name='perfil'),
- 	path('inicioSesion/', inicioSesion, name='inicioSesion'),
- 	path('registro/', registroUser, name='registro'),
-    #url(r'^accounts/', include('registration.backends.default.urls')),
-    path('accounts/',include('registration.backends.default.urls'))
+ 	path('inicio/', views.inicio, name='inicio'),
+ 	path('sobreNosotros/', views.sobre_nosotros, name='about'),
+ 	path('ranking/', views.ranking, name='ranking'),
+ 	path('liga/', views.liga, name='liga'),
+ 	path('perfil/', views.perfil, name='perfil'),
+ 	path('inicioSesion/', views.inicioSesion, name='inicioSesion'),
+ 	path('registro/', views.registroUser, name='registro'),
+    url(r'^accounts/', include('registration.backends.default.urls')),
+    #path('accounts/',views.include('registration.backends.default.urls')),
 ]
+#url(r'^contact/$', views.contact, name='contact'),

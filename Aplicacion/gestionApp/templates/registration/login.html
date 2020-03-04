@@ -1,29 +1,24 @@
-  
 {% extends "base.html" %}
-{% load i18n %}
 {% load crispy_forms_tags %}
 
+{% block jumbotron %}
+<div class="jumbotron">
+	<h1>BIENVENID@</h1>
+	<p class="lead">Somos la mejor aplicación de futbol. ¿Aun no tienes cuenta? Puedes registrarte aquí</p>
+	<a class="btn btn-lg btn-primary" href="/docs/4.4/components/navbar/" role="button">Regístrate &raquo;</a>
+</div>
+{% endblock %}
+{% block head_title %}Login{% endblock %}
+
+
 {% block content %}
-<div class='row'>
-<div class='col-sm-6 col-sm-offset-3'>
-<h2 class='text-align-center'><strong>Iniciar Sesión</strong></h2>
-<form method="post" action=".">
-  {% csrf_token %} 
-  {{ form|crispy }}
-
-  <input class='btn btn-block btn-primary' type="submit" value="{% trans 'Iniciar sesion' %}" />
-  <input type="hidden" name="next" value="{{ next }}" />
-
-</form>
-</div>
-</div>
-</hr>
-
-<div class='row'>
-<div class='col-sm-6 col-sm-offset-3'>
-	<br/>
-<p>{% trans "Has olvidado tu contraseña" %}? <a href="{% url 'auth_password_reset' %}">{% trans "Restablecer" %}</a>!</p>
-<p>{% trans "No tienes cuenta" %}? <a href="{% url 'registration_register' %}">{% trans "Registrarte" %}</a>!</p>
-</div>
+<h1 class="center-align">Iniciar sesión</h1>
+<div class="row">
+	<div class="col-md-6 offset-md-3">
+		<form method="post">{% csrf_token %}
+			{{ form|crispy }}
+			<input class="btn btn-primary" type="submit" value="Entrar"/>
+		</form>
+	</div>
 </div>
 {% endblock %}

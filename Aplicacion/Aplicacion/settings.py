@@ -60,7 +60,7 @@ ROOT_URLCONF = 'Aplicacion.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["C:/Users/marta/Desktop/TFG/App_Django/Aplicacion/Aplicacion/templates"],
+        'DIRS': ["C:/Users/marta/Desktop/TFG/App_Django/Aplicacion/gestionApp/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -135,4 +135,6 @@ STATICFILES_DIRS = ["C:/Users/marta/Desktop/TFG/App_Django/Aplicacion/Aplicacion
 
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
 REGISTRATION_AUTO_LOGIN = True # Automatically log the user in.
+SITE_ID = 1
+
 CRISPY_TEMPLATE_PACK = 'bootstrap3'

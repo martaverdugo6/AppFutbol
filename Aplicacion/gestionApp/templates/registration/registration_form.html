@@ -1,24 +1,17 @@
-{% extends "base.html" %}
-{% load i18n %}
+{% extends "base.html" %}			<!--extends debe ser la primera tag de la plantilla-->
 {% load crispy_forms_tags %}
 
-{% block content %}
-<div class='row'>
-<div class='col-sm-6 col-sm-offset-3'>
-	<h2 class='text-align-center'><strong>Registrarte Gratis!</strong></h2><br/>
-<form method="post" action=".">
-  {% csrf_token %}
-  {{ form|crispy }}
+{% block head_title %}Registrarse{% endblock %}
 
-  <input class='btn btn-block btn-primary' type="submit" value="{% trans 'Registrarme' %}" />
-</form>
-</div>
-</div>
 
-<hr/>
-<div class='row'>
-<div class='col-sm-6 col-sm-offset-3 text-align-center'>
-<p>Ya tienes cuenta? <a href="{% url 'auth_login' %}"> Iniciar Sesión.</a></p>
-</div>
-</div>
-{% endblock %}
+
+	{% block content %}
+	<h1 class="center-align">Registrarse</h1>
+		<div class="col-lg-6 offset-lg-3">
+			<form method="post"> {% csrf_token %}
+					{{ form|crispy }}
+					<input class="btn btn-success" type="submit" value="Registrarme"/>
+
+			</form>
+		</div>
+	{% endblock %}
