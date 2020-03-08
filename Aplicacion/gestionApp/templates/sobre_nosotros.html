@@ -1,29 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Sobre nosotros</title>
-</head>
+{% extends "base.html" %}
 
-<style>
+{% block head_title %}Sobre nosotros{% endblock %}
+
+
+{% block content %}
+
+<h1 class="center-align">SOBRE NOSOTROS</h1>
+	<div>
+		<p>Bienvenid@ a la aplicación web del Trabajo Fin de Grado de Marta Verdugo Martínez</p>
+	</div>
 	
-
-</style>
-
-
-<body style="margin: 0">
-
-	{% include "cabecera.html" %}
-
-	{% include "menu.html" %}
-
-
-	<h1>SOBRE NOSOTROS</h1>
-
-	<p>Bienvenid@ a la aplicación web del Trabajo Fin de Grado de Marta Verdugo Martínez</p>
-
-	{% include "pie.html" %}
-
-
-
-</body>
-</html>
+{% endblock %}

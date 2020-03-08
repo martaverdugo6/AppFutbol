@@ -3,5 +3,10 @@ body{
 }
 
 .center-align{
-    text-align: center;
+    text-align: center;             /*Centrar el text*/
+}
+
+.navbar-nav li a{
+    margin-left: 15px;					/*separación entre los enlaces*/ 
+   
 }
