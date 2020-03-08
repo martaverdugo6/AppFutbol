@@ -37,18 +37,25 @@ def inicioSesion(request):
 	return render(request, "inicio_sesion.html", {'form':form,})
 
 def inicio(request):
-
-	return render(request, "inicio.html")
+	if request.user.is_authenticated:
+		return render(request, "inicio.html")
+	else:
+		return HttpResponseRedirect('/accounts/login')
 
 def sobre_nosotros(request):
-
-	return render(request, "sobre_nosotros.html")
-
+	if request.user.is_authenticated:
+		return render(request, "sobre_nosotros.html")
+	else:
+		return HttpResponseRedirect('/accounts/login')
 
 def liga(request):
-
-	return render(request, "liga.html")
+	if request.user.is_authenticated:
+		return render(request, "liga.html")
+	else:
+		return HttpResponseRedirect('/accounts/login')
 
 def perfil(request):
-
-	return render(request, "perfil_user.html")
+	if request.user.is_authenticated:
+		return render(request, "perfil_user.html")
+	else:
+		return HttpResponseRedirect('/accounts/login')
