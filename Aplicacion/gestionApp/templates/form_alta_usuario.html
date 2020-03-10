@@ -5,14 +5,14 @@
 
 
 
-	{% block content %}
-	<h1 class="center-align">Registrarse</h1>
-		<div class="col-lg-6 offset-lg-3">
-			<form method="post"> {% csrf_token %}
-					{{ form|crispy }}
-					<input class="btn btn-success" type="submit" value="Registrarme"/>
+{% block content %}
+<h1 class="center-align">Registrarse</h1>
+	<div class="col-lg-6 offset-lg-3">
+		<form method="post"> {% csrf_token %}
+				{{ form|crispy }}
+				<input class="btn btn-success" type="submit" value="Registrarme"/>
 
-			</form>
-		</div>
-	{% endblock %}
-	
+		</form>
+		<a class="btn btn-danger mt-1" href="{% url 'auth_login' %}" role="button">&laquo; Volver atrás</a>
+	</div>
+{% endblock %}

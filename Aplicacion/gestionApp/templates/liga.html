@@ -1,39 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Comunidad</title>
-</head>
+{% extends "base.html" %}
 
-<style>
-	
-	#menu_comunidad{
-		list-style: none;	/*Quita los punto de la lista*/
-		background: red;
-		width: 10%;
-	}
-	#menu_comunidad li{
-		padding: 5px;
-		font-size: 20px;
-	}
+{% block head_title %}Liga{% endblock %}
 
-
-</style>
-
-<body style="margin: 0">
-	{% include "cabecera.html" %}
-
-
-	<h1 style="text-align: center">COMUNIDAD</h1>
+{% block content %}
+	<h1 style="text-align: center">LIGA</h1>
 
 	<ul id="menu_comunidad">
 		
 		<li>Clasificación</li>
 		<li>Mercado</li>
 
-
 	</ul>
-	
-	{% include "pie.html" %}
-
-</body>
-</html>
+{% endblock %}
