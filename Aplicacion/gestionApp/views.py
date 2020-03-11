@@ -76,7 +76,7 @@ def ranking(request):
 	return render(request, "ranking.html", locals())
 
 def registroUser(request):
-	if request.method =='POST':	#si se envia el formulario
+	if request.method =='POST':									#si se envia el formulario
 		form = form_alta_usuario(request.POST)
 		if form.is_valid():
 			my_form = form.save(commit=False)
@@ -84,10 +84,10 @@ def registroUser(request):
 			my_form.presupuesto = 200000
 			my_form.save()
 
-		#return HttpResponseRedirect('/perfil')
+		return render(request, "inicio.html", {'form':form,})	#si se ha rellenado el formulario, cargamos la pag de inicio
 	else:
 		form = form_alta_usuario()
-	return render(request, "form_alta_usuario.html", {'form':form,})
+		return render(request, "form_alta_usuario.html", {'form':form,})	#si no se ha rellenado el formulario (primera vez que entramos), cargamos la pag de formulario
 
 def inicioSesion(request):
 	if request.method =='POST':	#si se envia el formulario

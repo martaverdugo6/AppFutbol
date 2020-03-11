@@ -34,4 +34,3 @@ urlpatterns = [
     url(r'^accounts/', include('registration.backends.default.urls')),
     #path('accounts/',views.include('registration.backends.default.urls')),
 ]
-#url(r'^contact/$', views.contact, name='contact'),
