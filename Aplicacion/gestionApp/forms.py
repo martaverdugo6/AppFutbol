@@ -7,19 +7,19 @@ class form_alta_usuario(forms.ModelForm):
 	class Meta:
 		model = usuario
 
-		#Campos que quiero que aparezcan en el formulario
+		#Campos que quiero que aparezcan en el formulario, mismo nombre que en models
 		fields =[
 			'nombre',
 			'apellidos',
 			'email',
-			'nick',
+			'mi_equipo',
 			'password',	
 		]
 		labels = {
 			'nombre': 'Nombre',
 			'apellidos': 'Apellidos',
 			'email': 'Email',
-			'nick': 'Nick',
+			'mi_equipo': 'Nombre de equipo',
 			'password': 'Contraseña',
 		}
 
@@ -32,11 +32,11 @@ class form_login_usuario(forms.ModelForm):
 
 		#Campos que quiero que aparezcan en el formulario
 		fields =[
-			'nick',
+			'mi_equipo',
 			'password',	
 		]
 		
 		labels = {
-			'nick': 'Nick',
+			'mi_equipo': 'Nombre de equipo',
 			'password': 'Contraseña',
 		}
