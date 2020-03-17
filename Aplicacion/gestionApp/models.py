@@ -37,3 +37,10 @@ class jugador(models.Model):
 
 	def __str__(self):
 		return '%s %s %s' % (self.nombre, self.apellidos, self.equipo) 	
+
+class liga(models.Model):
+	nombre=models.CharField(max_length=40)
+	usuarios = models.ForeignKey(usuario, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.nombre
