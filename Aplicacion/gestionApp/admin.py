@@ -1,5 +1,5 @@
 from django.contrib import admin
-from gestionApp.models import usuario, jugador, liga
+from gestionApp.models import usuario, jugador, liga, plantilla, mercado
 
 # Register your models here.
 
@@ -15,7 +15,16 @@ class LigaAdmin(admin.ModelAdmin):
 	list_display=("nombre",)
 	search_fields=("nombre",)
 
+class PlantillaAdmin(admin.ModelAdmin):
+	list_display=("usuario",)
+	search_fields=("usuario",)
+
+class MercadoAdmin(admin.ModelAdmin):
+	list_display=("liga",)
+	search_fields=("liga",)
 
 admin.site.register(usuario, UsuarioAdmin)
 admin.site.register(jugador, JugadorAdmin)
 admin.site.register(liga, LigaAdmin)
+admin.site.register(plantilla, PlantillaAdmin)
+admin.site.register(mercado, MercadoAdmin)

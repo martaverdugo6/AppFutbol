@@ -40,7 +40,31 @@ class jugador(models.Model):
 
 class liga(models.Model):
 	nombre=models.CharField(max_length=40)
-	usuarios = models.ForeignKey(usuario, on_delete=models.CASCADE)
+	usuario = models.ForeignKey(usuario, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.nombre
+
+class plantilla(models.Model):
+	SELECCIONADO='SELECCIONADO'
+	NO_SELECCIONADO='NO_SELECCIONADO'
+	SELECCION_JUGADOR=(
+		
+		(SELECCIONADO, u'Seleccionado'),
+		(NO_SELECCIONADO, u'No seleccionado'),
+
+	)
+
+	seleccion=models.CharField(max_length=30, choices=SELECCION_JUGADOR)
+	usuario = models.ForeignKey(usuario, on_delete=models.CASCADE)
+	jugador = models.ForeignKey(jugador, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.usuario
+
+class mercado(models.Model):
+	liga = models.ForeignKey(liga, on_delete=models.CASCADE)
+	jugador = models.ForeignKey(jugador, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.liga
