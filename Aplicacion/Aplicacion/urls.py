@@ -31,6 +31,7 @@ urlpatterns = [
  	path('perfil/', views.perfil, name='perfil'),
  	path('inicioSesion/', views.inicioSesion, name='inicioSesion'),
  	path('registro/', views.registroUser, name='registro'),
+    path('contacto/', views.contacto, name='contacto'),
     url(r'^accounts/', include('registration.backends.default.urls')),
     #path('accounts/',views.include('registration.backends.default.urls')),
 ]

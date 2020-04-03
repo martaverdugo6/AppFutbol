@@ -68,6 +68,8 @@ from django.http import HttpResponseRedirect
 from gestionApp.models import usuario
 from gestionApp.forms import form_alta_usuario, form_login_usuario
 from django.template import loader
+from django.core.mail import send_mail
+from django.conf import settings
 
 # Create your views here.
 
@@ -117,3 +119,16 @@ def liga(request):
 def perfil(request):
 
 	return render(request, "perfil_user.html")
+
+def contacto(request):
+
+	if request.method=="POST":
+		subject=request.POST["asunto"]
+		message=request.POST["mensaje"] + ". De: " + request.POST["email"]
+		email_from=settings.EMAIL_HOST_USER
+		recipient_list=["aplicacionDeporte@gmail.com"]
+		send_mail(subject, message, email_from, recipient_list)
+
+		return render(request, "mensaje_enviado.html")
+
+	return render(request, "contacto.html")
