@@ -1,0 +1,27 @@
+{% extends "base.html" %}			<!--extends debe ser la primera tag de la plantilla-->
+{% load crispy_forms_tags %}
+
+{% block head_title %}Elegir liga{% endblock %}
+
+<html>
+    {% block content %}
+        <div>
+            
+            <h2>Liga existente</h2>
+            <form method="post" action="."> {% csrf_token %}
+               {{form|crispy}}
+               <input class="btn btn-success" type="submit" value="Seleccionar"/>
+            </form>
+        
+        </div>
+        
+        <div>
+        
+            <h2>Crear Liga</h2>
+            <input class="btn btn-info"  href="{% url 'inicio' %}" type="submit" value="Crear"/>
+        
+        </div>
+    {% endblock %}
+
+
+</html>

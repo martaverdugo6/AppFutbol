@@ -8,10 +8,10 @@
 		{% if request.user.is_authenticated %}
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item active">
-				<a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
+				<a class="nav-link" href="{% url 'inicio' %}">Inicio <span class="sr-only">(current)</span></a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="{% url 'liga' %}">Mi Liga</a>
+				<a class="nav-link" href="{% url 'liga' %}">Liga</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="#">Mi equipo</a>
@@ -24,6 +24,9 @@
 			</li>			
 		</ul>
 		<ul class="navbar-nav mr-right">
+			<li class="nav-item active">
+				<a class="nav-link">{{user}}</a>
+			</li>
 			<li class="nav-item active">
 				<a class="nav-link" href="{% url 'auth_logout' %}">Salir</a>
 			</li>

@@ -19,7 +19,6 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from Aplicacion import views
 from gestionApp import views
 
 urlpatterns = [
@@ -32,6 +31,7 @@ urlpatterns = [
  	path('inicioSesion/', views.inicioSesion, name='inicioSesion'),
  	path('registro/', views.registroUser, name='registro'),
     path('contacto/', views.contacto, name='contacto'),
+    path('eleccionLiga/', views.eleccionLiga, name='eleccionLiga'),
     url(r'^accounts/', include('registration.backends.default.urls')),
     #path('accounts/',views.include('registration.backends.default.urls')),
 ]

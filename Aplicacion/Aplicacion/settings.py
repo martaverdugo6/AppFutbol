@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -60,7 +61,7 @@ ROOT_URLCONF = 'Aplicacion.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["C:/Users/marta/Desktop/TFG/App_Django/Aplicacion/gestionApp/templates"],
+        'DIRS': ["C:/Users/marta/Desktop/TFG/Proyecto_Django/Aplicacion/gestionApp/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -131,8 +132,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = ["C:/Users/marta/Desktop/TFG/App_Django/Aplicacion/Aplicacion/static/"]
+STATICFILES_DIRS = ["C:/Users/marta/Desktop/TFG/Proyecto_Django/Aplicacion/Aplicacion/static"]
 
+LOGIN_REDIRECT_URL = reverse_lazy('eleccionLiga')
 
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
 REGISTRATION_AUTO_LOGIN = True # Automatically log the user in.
