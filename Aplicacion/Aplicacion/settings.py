@@ -134,7 +134,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = ["C:/Users/marta/Desktop/TFG/Proyecto_Django/Aplicacion/Aplicacion/static"]
 
-LOGIN_REDIRECT_URL = reverse_lazy('eleccionLiga')
+LOGIN_REDIRECT_URL = reverse_lazy('inicio') #hecho el login te manda al inicio de la app 
 
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
 REGISTRATION_AUTO_LOGIN = True # Automatically log the user in.

@@ -6,7 +6,8 @@ from django.template import loader
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate 
+from django.contrib.auth import login as do_login
 
 # Create your views here.
 
@@ -35,15 +36,19 @@ def inicioSesion(request):
 		form = form_login_usuario(request.POST)
 		username = request.POST.get('username')
 		password = request.POST.get('password')
-		user = authenticate(username=username, password=password)
-
-		if user is not None:
-			do_login(request, user)
-			return HttpResponse('eleccionLiga')
-		
+		my_user = usuario.objects.filter(username=username,password=password)
+		#print(my_user)
+		if my_user:
+			request.session["nombre_user"] = username
+			request.session["contrasenya"] = password
+			#print(request.session["nombre_user"])
+			nombre_usuario = request.session["nombre_user"]
+			return HttpResponseRedirect('/inicio', {'nombre_usuario':nombre_usuario})
+			
+			
 		else:
 			aviso = "Los campos no son correctos. Inténtelo de nuevo"
-			return HttpResponseRedirect('/inicioSesion', {'aviso':aviso,})
+			return render(request, "inicio_sesion.html", {'form':form,'aviso':aviso})
 
 	else:
 		form = form_login_usuario()
@@ -60,11 +65,11 @@ def sobre_nosotros(request):
 
 
 def liga(request):
-
+	
 	return render(request, "liga.html")
 
 def perfil(request):
-
+	
 	return render(request, "perfil_user.html")
 
 def contacto(request):
