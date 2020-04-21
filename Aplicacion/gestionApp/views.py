@@ -33,14 +33,22 @@ def registroUser(request):
 def inicioSesion(request):
 	if request.method =='POST':					#si se envia el formulario
 		form = form_login_usuario(request.POST)
-		if form.is_valid():
-			equipo = request.POST['equipo']
-			contraseña = request.POST['contraseña']
+		username = request.POST.get('username')
+		password = request.POST.get('password')
+		user = authenticate(username=username, password=password)
+
+		if user is not None:
+			do_login(request, user)
+			return HttpResponse('eleccionLiga')
+		
+		else:
+			aviso = "Los campos no son correctos. Inténtelo de nuevo"
+			return HttpResponseRedirect('/inicioSesion', {'aviso':aviso,})
 
 	else:
 		form = form_login_usuario()
+		return render(request, "inicio_sesion.html", {'form':form,})
 	
-	return render(request, "inicio_sesion.html", {'form':form,})
 
 def inicio(request):
 

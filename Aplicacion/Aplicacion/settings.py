@@ -61,7 +61,7 @@ ROOT_URLCONF = 'Aplicacion.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["C:/Users/marta/Desktop/TFG/Proyecto_Django/Aplicacion/gestionApp/templates"],
+        'DIRS': ["C:/Users/marta/Desktop/TFG/Proyecto_Django/Aplicacion/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

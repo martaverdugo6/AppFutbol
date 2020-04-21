@@ -3,9 +3,9 @@
 
 {% block jumbotron %}
 <div class="jumbotron">
-	<h1>BIENVENIDOS</h1>
-	<p class="lead">This example is a quick exercise to illustrate how the top-aligned navbar works. As you scroll, this navbar remains in its original position and moves with the rest of the page.</p>
-	<a class="btn btn-lg btn-primary" href="/docs/4.4/components/navbar/" role="button">View navbar docs &raquo;</a>
+	<h1>BIENVENID@</h1>
+	<p class="lead">Somos la mejor aplicación de futbol. ¿Aun no tienes cuenta? Puedes registrarte aquí</p>
+	<a class="btn btn-lg btn-primary" href="{% url 'registro' %}" role="button">Regístrate &raquo;</a>
 </div>
 {% endblock %}
 {% block head_title %}Login{% endblock %}
@@ -13,8 +13,9 @@
 
 {% block content %}
 <h1 class="center-align">Inicia sesión</h1>
+<p>{{aviso}}</p>
 <div class="row">
-	<div class="col-md-6 offset-md-3">
+	<div class="col-md-4 offset-md-4">
 		<form method="post">{% csrf_token %}
 			{{ form|crispy }}
 			<input class="btn btn-primary" type="submit" value="Entrar"/>

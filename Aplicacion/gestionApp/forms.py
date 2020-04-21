@@ -9,13 +9,13 @@ class form_alta_usuario(forms.ModelForm):
 
 		#Campos que quiero que aparezcan en el formulario, mismo nombre que en models
 		fields =[
-			'nombre',
+			'username',
 			'email',
 			'mi_equipo',
 			'password',	
 		]
 		labels = {
-			'nombre': 'Nombre de usuario',
+			'username': 'Nombre de usuario',
 			'email': 'Email',
 			'mi_equipo': 'Nombre de equipo',
 			'password': 'Contraseña',
@@ -23,10 +23,20 @@ class form_alta_usuario(forms.ModelForm):
 
 
 
-class form_login_usuario(forms.Form):
+class form_login_usuario(forms.ModelForm):
 
-	nombre_de_usuario = forms.CharField()
-	contraseña = forms.CharField(widget=forms.PasswordInput())
+	class Meta:
+		model = usuario
+
+		#Campos que quiero que aparezcan en el formulario, mismo nombre que en models
+		fields =[
+			'username',
+			'password',	
+		]
+		labels = {
+			'username': 'Nombre de usuario',
+			'password': 'Contraseña',
+		}
 
 class form_contact(forms.Form):
 

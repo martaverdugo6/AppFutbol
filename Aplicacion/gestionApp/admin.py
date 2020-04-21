@@ -4,8 +4,8 @@ from gestionApp.models import usuario, jugador, liga, plantilla, mercado
 # Register your models here.
 
 class UsuarioAdmin(admin.ModelAdmin):
-	list_display=("nombre","email","mi_equipo")
-	search_fields=("nombre", "email","mi_equipo")
+	list_display=("username","email","mi_equipo")
+	search_fields=("username", "email","mi_equipo")
 		
 class JugadorAdmin(admin.ModelAdmin):
 	list_display=("nombre", "apellidos","equipo","posicion")

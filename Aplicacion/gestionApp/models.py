@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class usuario(models.Model):
-	nombre=models.CharField(max_length=50, unique=True, blank=False, null=False)
+	username=models.CharField(max_length=50, unique=True, blank=False, null=False)
 	email=models.EmailField()
 	mi_equipo=models.CharField(max_length=30)
 	password=models.CharField(max_length=50)
@@ -11,7 +11,7 @@ class usuario(models.Model):
 	presupuesto=models.IntegerField()
 
 	def __str__(self):
-		return self.nombre 
+		return self.username 
 
 class jugador(models.Model):
 	PORTERO='PORTERO'
@@ -39,7 +39,7 @@ class jugador(models.Model):
 
 class liga(models.Model):
 	nombre=models.CharField(max_length=40)
-	usuario = models.ForeignKey(usuario, on_delete=models.CASCADE, unique=True)
+	usuario = models.ForeignKey(usuario, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.nombre

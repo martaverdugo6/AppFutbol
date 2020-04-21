@@ -8,7 +8,7 @@
 	{% block content %}
 	<h1 class="center-align">Registrarse</h1>
 		<div class="col-lg-6 offset-lg-3">
-			<form method="post"> {% csrf_token %}
+			<form method="post">{% csrf_token %}
 					{{ form|crispy }}
 					<input class="btn btn-success" type="submit" value="Registrarme"/>
 
