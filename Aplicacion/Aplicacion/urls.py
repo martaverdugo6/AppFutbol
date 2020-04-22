@@ -19,11 +19,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from gestionApp import views
+from gestionAplicacion import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),   #La url no tiene porque llamarse igual que la función, ni igual que el name
- 	path('inicio/', views.inicio, name='inicio'),
+     	path('inicio/', views.inicio, name='inicio'),
  	path('sobreNosotros/', views.sobre_nosotros, name='about'),
  	path('ranking/', views.ranking, name='ranking'),
  	path('liga/', views.liga, name='liga'),
@@ -32,6 +32,8 @@ urlpatterns = [
  	path('registro/', views.registroUser, name='registro'),
     path('contacto/', views.contacto, name='contacto'),
     path('eleccionLiga/', views.eleccionLiga, name='eleccionLiga'),
+    path('creacionLiga/', views.creacionLiga, name='creacionLiga'),
+
     url(r'^accounts/', include('registration.backends.default.urls')),
     #path('accounts/',views.include('registration.backends.default.urls')),
 ]

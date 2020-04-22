@@ -1,6 +1,6 @@
 from django import forms
 
-from gestionApp.models import usuario ,liga
+from gestionAplicacion.models import usuario ,liga
 
 class form_alta_usuario(forms.ModelForm):
 

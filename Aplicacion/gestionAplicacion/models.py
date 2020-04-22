@@ -1,9 +1,8 @@
 from django.db import models
 
 # Create your models here.
-
 class usuario(models.Model):
-	username=models.CharField(max_length=50, unique=True, blank=False, null=False, primary_key=True)
+	username=models.CharField(max_length=50, primary_key=True) 
 	email=models.EmailField()
 	mi_equipo=models.CharField(max_length=30)
 	password=models.CharField(max_length=50)
@@ -30,7 +29,6 @@ class jugador(models.Model):
 	nombre=models.CharField(max_length=30)
 	apellidos=models.CharField(max_length=80)
 	equipo=models.CharField(max_length=80)
-	valor_mercado=models.IntegerField()
 	posicion=models.CharField(max_length=30, choices=ELECCION_POSICION)
 	puntuacion=models.IntegerField()
 

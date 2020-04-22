@@ -1,5 +1,6 @@
 from django.contrib import admin
-from gestionApp.models import usuario, jugador, liga, plantilla, mercado
+from django.contrib import admin
+from gestionAplicacion.models import usuario, jugador, liga, plantilla, mercado
 
 # Register your models here.
 

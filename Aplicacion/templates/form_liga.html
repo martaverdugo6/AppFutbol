@@ -5,22 +5,26 @@
 
 <html>
     {% block content %}
-        <div>
-            
+    <h1 style="text-align: center;">¡ENHORABUENA {{username}}! Ya has sido registrado.</h1>
+    <p style="text-align: center;">Ahora debes elegir una liga. Puedes unirte a una existente o crear una.</p><br>
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
             <h2>Liga existente</h2>
             <form method="post" action="."> {% csrf_token %}
                {{form|crispy}}
                <input class="btn btn-success" type="submit" value="Seleccionar"/>
             </form>
-        
+        <br>
         </div>
-        
-        <div>
+    </div> 
+    <div class="row">
+        <div class="col-md-4 offset-md-4">  
         
             <h2>Crear Liga</h2>
-            <input class="btn btn-info"  href="{% url 'inicio' %}" type="submit" value="Crear"/>
+            <input class="btn btn-info"  href="{% url 'creacionLiga' %}" type="submit" value="Crear"/>
         
         </div>
+    </div>
     {% endblock %}
 
 
