@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from gestionAplicacion.models import usuario, jugador, liga, plantilla, mercado
-from gestionAplicacion.forms import form_alta_usuario, form_login_usuario, form_contact, form_liga
+from gestionApp.models import usuario, jugador, plantilla,liga, mercado
+from gestionApp.forms import form_alta_usuario, form_login_usuario, form_contact, form_liga
 from django.template import loader
 from django.core.mail import send_mail
 from django.conf import settings

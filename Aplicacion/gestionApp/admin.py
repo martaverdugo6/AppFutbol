@@ -1,6 +1,8 @@
 from django.contrib import admin
+
+# Register your models here.
 from django.contrib import admin
-from gestionAplicacion.models import usuario, jugador, liga, plantilla, mercado
+from gestionApp.models import usuario, jugador, plantilla, liga, mercado
 
 # Register your models here.
 
@@ -26,6 +28,6 @@ class MercadoAdmin(admin.ModelAdmin):
 
 admin.site.register(usuario, UsuarioAdmin)
 admin.site.register(jugador, JugadorAdmin)
-admin.site.register(liga, LigaAdmin)
 admin.site.register(plantilla, PlantillaAdmin)
+admin.site.register(liga, LigaAdmin)
 admin.site.register(mercado, MercadoAdmin)

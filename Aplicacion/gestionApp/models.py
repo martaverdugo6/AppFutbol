@@ -1,6 +1,9 @@
 from django.db import models
 
 # Create your models here.
+from django.db import models
+
+# Create your models here.
 class usuario(models.Model):
 	username=models.CharField(max_length=50, primary_key=True) 
 	email=models.EmailField()
@@ -36,7 +39,7 @@ class jugador(models.Model):
 		return '%s %s %s' % (self.nombre, self.apellidos, self.equipo) 	
 
 class liga(models.Model):
-	nombre=models.CharField(max_length=40)
+	nombre=models.CharField(max_length=40, primary_key=True)
 	usuario = models.ForeignKey(usuario, on_delete=models.CASCADE)
 
 	def __str__(self):
