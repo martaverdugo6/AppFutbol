@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from gestionApp.models import usuario, jugador, plantilla,liga, mercado
+from gestionApp.models import usuario, jugador, plantilla, liga, mercado
 from gestionApp.forms import form_alta_usuario, form_login_usuario, form_contact, form_liga
 from django.template import loader
 from django.core.mail import send_mail
@@ -39,11 +39,9 @@ def inicioSesion(request):
 		my_user = usuario.objects.filter(username=username,password=password)
 		#print(my_user)
 		if my_user:
-			request.session["nombre_user"] = username
-			request.session["contrasenya"] = password
-			#print(request.session["nombre_user"])
-			nombre_usuario = request.session["nombre_user"]
-			return HttpResponseRedirect('/inicio', {'nombre_usuario':nombre_usuario})
+			request.session["user_logeado"] = username
+			
+			return HttpResponseRedirect('/inicio', {'username':username})
 			
 			
 		else:
@@ -93,26 +91,45 @@ def contacto(request):
 def eleccionLiga(request):
 	username = request.session["user_logeado"]		#nombre del user registrado
 	#print(username)
-	my_user = usuario.objects.filter(username=username)
 	if request.method=="POST":
 		form=form_liga(request.POST)
 		if form.is_valid():
-			nombre_liga = request.POST.get('nombre')
-			#print(nombre_liga)
-			liga_bd = liga.objects.filter(nombre=nombre_liga)
-			#print(liga_bd)
-			if liga_bd:
-				my_form = form.save(commit=False)
-				my_form.usuario = my_user
-				my_form.save()
+			nombreLiga = request.POST.get('nombre')
+			#print(nombreLiga)
+			liga_bd = liga.objects.all()
+			print(liga_bd)
+			#if liga_bd:
+			#	my_form = form.save(commit=False)
+			#	my_form.usuario = my_user
+			#	my_form.save()
 
-				return HttpResponseRedirect('/inicio',{'nombre':username,})
-		return render(request, "form_liga.html", {'form':form,'username':username})
+			#	return HttpResponseRedirect('/inicio',{'nombre':username,})
+		return render(request, "eleccion_liga.html", {'form':form,'username':username})
 	else:
 		form=form_liga()
-		return render(request, "form_liga.html", {'form':form,'username':username})
+		return render(request, "eleccion_liga.html", {'form':form,'username':username})
 
 
 def creacionLiga(request):
+	username = request.session["user_logeado"]		#nombre del user registrado
+	my_user = usuario.objects.filter(username=username)
 
-	return render(request, "creacion_liga.html")
+	if request.method=="POST":
+		form=form_liga(request.POST)
+		if form.is_valid():
+			nombreLiga = request.POST.get('nombre')
+			#print(nombreLiga)
+			my_form = form.save(commit=False)
+			my_form.usuario = my_user.first()
+			my_form.save()
+
+			return HttpResponseRedirect('/inicio',{'username':username})
+		return render(request, "creacion_liga.html", {'form':form})	
+	else:
+		form=form_liga()
+		return render(request, "creacion_liga.html", {'form':form})	
+	
+
+def finSesion(request):
+	del request.session["user_logeado"]
+	return render(request, "fin_sesion.html")
