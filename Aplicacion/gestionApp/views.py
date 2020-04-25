@@ -54,21 +54,34 @@ def inicioSesion(request):
 	
 
 def inicio(request):
-
-	return render(request, "inicio.html")
+	username = request.session.get("user_logeado")
+	if username:
+		return render(request, "inicio.html")
+	else:
+		return HttpResponseRedirect('/inicioSesion')
 
 def sobre_nosotros(request):
-
-	return render(request, "sobre_nosotros.html")
-
+	username = request.session.get("user_logeado")
+	if username:
+		return render(request, "sobre_nosotros.html")
+	else:
+		return HttpResponseRedirect('/inicioSesion')
+	
 
 def liga(request):
-	
-	return render(request, "liga.html")
+	username = request.session.get("user_logeado")
+	if username:
+		return render(request, "liga.html")
+	else:
+		return HttpResponseRedirect('/inicioSesion')
 
 def perfil(request):
-	
-	return render(request, "perfil_user.html")
+	username = request.session.get("user_logeado")
+	if username:
+		return render(request, "perfil_user.html")
+	else:
+		return HttpResponseRedirect('/inicioSesion')
+
 
 def contacto(request):
 
@@ -89,25 +102,25 @@ def contacto(request):
 
 
 def eleccionLiga(request):
-	username = request.session["user_logeado"]		#nombre del user registrado
-	#print(username)
-	if request.method=="POST":
-		form=form_liga(request.POST)
-		if form.is_valid():
-			nombreLiga = request.POST.get('nombre')
-			#print(nombreLiga)
-			liga_bd = liga.objects.all()
-			print(liga_bd)
-			#if liga_bd:
-			#	my_form = form.save(commit=False)
-			#	my_form.usuario = my_user
-			#	my_form.save()
+		username = request.session.get("user_logeado")		#nombre del user registrado
+		#print(username)
+		if request.method=="POST":
+			form=form_liga(request.POST)
+			if form.is_valid():
+				nombreLiga = request.POST.get('nombre')
+				#print(nombreLiga)
+				liga_bd = liga.objects.all()
+				print(liga_bd)
+				#if liga_bd:
+				#	my_form = form.save(commit=False)
+				#	my_form.usuario = my_user
+				#	my_form.save()
 
-			#	return HttpResponseRedirect('/inicio',{'nombre':username,})
-		return render(request, "eleccion_liga.html", {'form':form,'username':username})
-	else:
-		form=form_liga()
-		return render(request, "eleccion_liga.html", {'form':form,'username':username})
+				#	return HttpResponseRedirect('/inicio',{'nombre':username,})
+			return render(request, "eleccion_liga.html", {'form':form,'username':username})
+		else:
+			form=form_liga()
+			return render(request, "eleccion_liga.html", {'form':form,'username':username})
 
 
 def creacionLiga(request):
@@ -130,6 +143,12 @@ def creacionLiga(request):
 		return render(request, "creacion_liga.html", {'form':form})	
 	
 
-def finSesion(request):
-	del request.session["user_logeado"]
-	return render(request, "fin_sesion.html")
+def finSesion(request):	
+	username = request.session.get("user_logeado")
+	if username:
+		del request.session["user_logeado"]
+		return render(request, "fin_sesion.html")
+	else:
+		return HttpResponseRedirect('/inicioSesion')
+	
+	

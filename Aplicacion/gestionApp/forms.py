@@ -3,7 +3,7 @@ from django import forms
 from gestionApp.models import usuario,liga
 
 class form_alta_usuario(forms.ModelForm):
-
+	password = forms.CharField(widget=forms.PasswordInput)
 	class Meta:
 		model = usuario
 
@@ -24,7 +24,7 @@ class form_alta_usuario(forms.ModelForm):
 
 
 class form_login_usuario(forms.ModelForm):
-
+	password = forms.CharField(widget=forms.PasswordInput)
 	class Meta:
 		model = usuario
 
