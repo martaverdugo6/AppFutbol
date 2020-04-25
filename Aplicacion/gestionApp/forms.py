@@ -1,11 +1,11 @@
 from django import forms
 
-from gestionApp.models import usuario,liga
+from gestionApp.models import Usuario,Liga
 
 class form_alta_usuario(forms.ModelForm):
 	password = forms.CharField(widget=forms.PasswordInput)
 	class Meta:
-		model = usuario
+		model = Usuario
 
 		#Campos que quiero que aparezcan en el formulario, mismo nombre que en models
 		fields =[
@@ -26,7 +26,7 @@ class form_alta_usuario(forms.ModelForm):
 class form_login_usuario(forms.ModelForm):
 	password = forms.CharField(widget=forms.PasswordInput)
 	class Meta:
-		model = usuario
+		model = Usuario
 
 		#Campos que quiero que aparezcan en el formulario, mismo nombre que en models
 		fields =[
@@ -48,7 +48,7 @@ class form_contact(forms.Form):
 class form_liga(forms.ModelForm):
 
 	class Meta:
-		model = liga
+		model = Liga
 
 		fields=[
 			'nombre',

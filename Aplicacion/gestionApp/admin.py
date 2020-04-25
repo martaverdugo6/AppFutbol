@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib import admin
-from gestionApp.models import usuario, jugador, plantilla, liga, mercado
+from gestionApp.models import Usuario, Jugador, Plantilla, Liga, Mercado
 
 # Register your models here.
 
@@ -26,8 +26,8 @@ class MercadoAdmin(admin.ModelAdmin):
 	list_display=("liga",)
 	search_fields=("liga",)
 
-admin.site.register(usuario, UsuarioAdmin)
-admin.site.register(jugador, JugadorAdmin)
-admin.site.register(plantilla, PlantillaAdmin)
-admin.site.register(liga, LigaAdmin)
-admin.site.register(mercado, MercadoAdmin)
+admin.site.register(Usuario, UsuarioAdmin)
+admin.site.register(Jugador, JugadorAdmin)
+admin.site.register(Plantilla, PlantillaAdmin)
+admin.site.register(Liga, LigaAdmin)
+admin.site.register(Mercado, MercadoAdmin)

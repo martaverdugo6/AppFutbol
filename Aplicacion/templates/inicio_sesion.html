@@ -13,13 +13,14 @@
 
 {% block content %}
 <h1 class="center-align">Inicia sesión</h1>
-<p>{{aviso}}</p>
 <div class="row">
 	<div class="col-md-4 offset-md-4">
+		<p id="msgError">{{aviso}}</p>
 		<form method="post">{% csrf_token %}
 			{{ form|crispy }}
 			<input class="btn btn-primary" type="submit" value="Entrar"/>
 		</form>
+		<br>
 	</div>
 </div>
 {% endblock %}

@@ -7,6 +7,10 @@ body{
 }
 
 .navbar-nav li a{
-    margin-left: 15px;					/*separación entre los enlaces*/ 
+    margin-left: 15px;				/*separación entre los enlaces*/ 
    
+}
+
+#msgError{
+    color: red;
 }

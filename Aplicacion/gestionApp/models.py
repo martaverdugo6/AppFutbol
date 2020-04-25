@@ -4,7 +4,7 @@ from django.db import models
 from django.db import models
 
 # Create your models here.
-class usuario(models.Model):
+class Usuario(models.Model):
 	username=models.CharField(max_length=50, primary_key=True) 
 	email=models.EmailField()
 	mi_equipo=models.CharField(max_length=30)
@@ -15,7 +15,7 @@ class usuario(models.Model):
 	def __str__(self):
 		return self.username 
 
-class jugador(models.Model):
+class Jugador(models.Model):
 	PORTERO='PORTERO'
 	DEFENSA='DEFENSA'
 	MEDIOCENTRO='MEDIOCENTRO'
@@ -38,14 +38,14 @@ class jugador(models.Model):
 	def __str__(self):
 		return '%s %s %s' % (self.nombre, self.apellidos, self.equipo) 	
 
-class liga(models.Model):
-	nombre=models.CharField(max_length=40, primary_key=True)
-	usuario = models.ForeignKey(usuario, on_delete=models.CASCADE)
+class Liga(models.Model):
+	nombre=models.CharField(max_length=40)
+	usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.nombre
 
-class plantilla(models.Model):
+class Plantilla(models.Model):
 	SELECCIONADO='SELECCIONADO'
 	NO_SELECCIONADO='NO_SELECCIONADO'
 	SELECCION_JUGADOR=(
@@ -56,15 +56,16 @@ class plantilla(models.Model):
 	)
 
 	seleccion=models.CharField(max_length=30, choices=SELECCION_JUGADOR)
-	usuario = models.ForeignKey(usuario, on_delete=models.CASCADE)
-	jugador = models.ForeignKey(jugador, on_delete=models.CASCADE)
+	usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+	jugador = models.ForeignKey(Jugador, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.usuario
 
-class mercado(models.Model):
-	liga = models.ForeignKey(liga, on_delete=models.CASCADE)
-	jugador = models.ForeignKey(jugador, on_delete=models.CASCADE)
+class Mercado(models.Model):
+	liga = models.ForeignKey(Liga, on_delete=models.CASCADE)
+	jugador = models.ForeignKey(Jugador, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.liga
+		

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from gestionApp.models import usuario, jugador, plantilla, liga, mercado
+from gestionApp.models import Usuario, Jugador, Plantilla, Liga, Mercado
 from gestionApp.forms import form_alta_usuario, form_login_usuario, form_contact, form_liga
 from django.template import loader
 from django.core.mail import send_mail
@@ -8,9 +8,6 @@ from django.conf import settings
 
 # Create your views here.
 
-def ranking(request):
-	lista_usuarios=usuario.objects.all().order_by("-puntuacion")[0:5]
-	return render(request, "ranking.html", locals())
 
 def registroUser(request):
 	if request.method =='POST':									#si se envia el formulario
@@ -32,26 +29,30 @@ def registroUser(request):
 
 
 def inicioSesion(request):
-	if request.method =='POST':					#si se envia el formulario
-		form = form_login_usuario(request.POST)
-		username = request.POST.get('username')
-		password = request.POST.get('password')
-		my_user = usuario.objects.filter(username=username,password=password)
-		#print(my_user)
-		if my_user:
-			request.session["user_logeado"] = username
-			
-			return HttpResponseRedirect('/inicio', {'username':username})
-			
-			
-		else:
-			aviso = "Los campos no son correctos. Inténtelo de nuevo"
-			return render(request, "inicio_sesion.html", {'form':form,'aviso':aviso})
-
+	username = request.session.get("user_logeado")
+	if username:
+		return HttpResponseRedirect('/inicio')
 	else:
-		form = form_login_usuario()
-		return render(request, "inicio_sesion.html", {'form':form,})
-	
+		if request.method =='POST':					#si se envia el formulario
+			form = form_login_usuario(request.POST or None)
+			username = request.POST.get('username')
+			password = request.POST.get('password')
+			my_user = Usuario.objects.filter(username=username,password=password)
+			#print(my_user)
+			if my_user:
+				request.session["user_logeado"] = username
+				
+				return HttpResponseRedirect('/inicio')
+				
+				
+			else:
+				aviso = "Los campos no son correctos. Inténtelo de nuevo"
+				return render(request, "inicio_sesion.html", {'form':form,'aviso':aviso})
+
+		else:
+			form = form_login_usuario()
+			return render(request, "inicio_sesion.html", {'form':form,})
+		
 
 def inicio(request):
 	username = request.session.get("user_logeado")
@@ -103,20 +104,20 @@ def contacto(request):
 
 def eleccionLiga(request):
 		username = request.session.get("user_logeado")		#nombre del user registrado
+		my_user = Usuario.objects.filter(username=username)
 		#print(username)
 		if request.method=="POST":
 			form=form_liga(request.POST)
-			if form.is_valid():
-				nombreLiga = request.POST.get('nombre')
-				#print(nombreLiga)
-				liga_bd = liga.objects.all()
-				print(liga_bd)
-				#if liga_bd:
-				#	my_form = form.save(commit=False)
-				#	my_form.usuario = my_user
-				#	my_form.save()
+			nombreLiga = request.POST.get('nombre')
+			#print(nombreLiga)
+			liga_bd = Liga.objects.filter(nombre=nombreLiga)
+			print(liga_bd)
+			if liga_bd:
+				my_form = form.save(commit=False)
+				my_form.usuario = my_user.first()
+				my_form.save()
 
-				#	return HttpResponseRedirect('/inicio',{'nombre':username,})
+				return HttpResponseRedirect('/inicio')
 			return render(request, "eleccion_liga.html", {'form':form,'username':username})
 		else:
 			form=form_liga()
@@ -125,7 +126,7 @@ def eleccionLiga(request):
 
 def creacionLiga(request):
 	username = request.session["user_logeado"]		#nombre del user registrado
-	my_user = usuario.objects.filter(username=username)
+	my_user = Usuario.objects.filter(username=username)
 
 	if request.method=="POST":
 		form=form_liga(request.POST)
@@ -151,4 +152,19 @@ def finSesion(request):
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 	
-	
+def clasificacion(request):
+	username = request.session.get("user_logeado")			#usuario logueado
+	my_liga = Liga.objects.filter(usuario=username)			#objeto liga del usuario logueado
+	nombre_liga = my_liga.first().nombre					#nombre de la liga del usuario logueado 
+	lista = Liga.objects.filter(nombre=nombre_liga)			#todos los objetos con el nombre de liga
+	lista_usuarios = []
+
+	for elementos in lista:
+		lista_usuarios.append(elementos.usuario)			#añado a una lista los usuarios que están en la liga del user logueado
+
+	print(lista_usuarios)
+	return render(request, "clasificacion.html",{'lista':lista_usuarios})
+
+def ranking(request):
+	lista_usuarios=Usuario.objects.all().order_by("-puntuacion")[0:5]
+	return render(request, "ranking.html", locals())
