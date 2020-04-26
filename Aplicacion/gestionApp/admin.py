@@ -19,7 +19,7 @@ class LigaAdmin(admin.ModelAdmin):
 	search_fields=("nombre","usuario")
 
 class PlantillaAdmin(admin.ModelAdmin):
-	list_display=("usuario",)
+	list_display=("usuario","jugador","seleccion")
 	search_fields=("usuario",)
 
 class MercadoAdmin(admin.ModelAdmin):

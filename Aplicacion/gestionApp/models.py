@@ -18,13 +18,13 @@ class Usuario(models.Model):
 class Jugador(models.Model):
 	PORTERO='PORTERO'
 	DEFENSA='DEFENSA'
-	MEDIOCENTRO='MEDIOCENTRO'
+	MEDIOCENTRO='CENTROCAMPISTA'
 	DELANTERO='DELANTERO'
 	ELECCION_POSICION=(
 		
 		(PORTERO, u'Portero'),
 		(DEFENSA, u'Defensa'),
-		(MEDIOCENTRO, u'Mediocentro'),
+		(MEDIOCENTRO, u'Centrocampista'),
 		(DELANTERO, u'Delantero'),
 
 	)
@@ -36,7 +36,7 @@ class Jugador(models.Model):
 	puntuacion=models.IntegerField()
 
 	def __str__(self):
-		return '%s %s %s' % (self.nombre, self.apellidos, self.equipo) 	
+		return '%s %s, %s' % (self.nombre, self.apellidos, self.equipo) 	
 
 class Liga(models.Model):
 	nombre=models.CharField(max_length=40)
@@ -60,7 +60,7 @@ class Plantilla(models.Model):
 	jugador = models.ForeignKey(Jugador, on_delete=models.CASCADE)
 
 	def __str__(self):
-		return self.usuario
+		return '%s tiene a %s, %s' % (self.usuario, self.jugador, self.seleccion)
 
 class Mercado(models.Model):
 	liga = models.ForeignKey(Liga, on_delete=models.CASCADE)

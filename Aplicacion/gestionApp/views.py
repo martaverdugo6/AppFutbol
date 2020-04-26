@@ -1,3 +1,4 @@
+from random import randint
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from gestionApp.models import Usuario, Jugador, Plantilla, Liga, Mercado
@@ -20,6 +21,8 @@ def registroUser(request):
 			my_form.puntuacion = 0
 			my_form.presupuesto = 200000
 			my_form.save()
+
+			asignarJugadores(username)
 
 			return HttpResponseRedirect('/eleccionLiga')	#si se ha rellenado el formulario con exito vamos a form_liga
 		return render(request, "form_alta_usuario.html", {'form':form,})
@@ -57,14 +60,14 @@ def inicioSesion(request):
 def inicio(request):
 	username = request.session.get("user_logeado")
 	if username:
-		return render(request, "inicio.html")
+		return render(request, "inicio.html", {'username':username})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 
 def sobre_nosotros(request):
 	username = request.session.get("user_logeado")
 	if username:
-		return render(request, "sobre_nosotros.html")
+		return render(request, "sobre_nosotros.html", {'username':username})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 	
@@ -72,14 +75,14 @@ def sobre_nosotros(request):
 def liga(request):
 	username = request.session.get("user_logeado")
 	if username:
-		return render(request, "liga.html")
+		return render(request, "liga.html", {'username':username})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 
 def perfil(request):
 	username = request.session.get("user_logeado")
 	if username:
-		return render(request, "perfil_user.html")
+		return render(request, "perfil_user.html", {'username':username})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 
@@ -103,8 +106,8 @@ def contacto(request):
 
 
 def eleccionLiga(request):
-		username = request.session.get("user_logeado")		#nombre del user registrado
-		my_user = Usuario.objects.filter(username=username)
+		username = request.session.get("user_logeado")			#nombre del user registrado
+		my_user = Usuario.objects.filter(username=username)		#objeto Usuario con nombre username
 		#print(username)
 		if request.method=="POST":
 			form=form_liga(request.POST)
@@ -163,8 +166,21 @@ def clasificacion(request):
 		lista_usuarios.append(elementos.usuario)			#añado a una lista los usuarios que están en la liga del user logueado
 
 	print(lista_usuarios)
-	return render(request, "clasificacion.html",{'lista':lista_usuarios})
+	return render(request, "clasificacion.html",{'lista':lista_usuarios, 'username':username})
 
+
+def asignarJugadores(request):
+	my_user = Usuario.objects.filter(username=request)			#Obtenemos el objeto con nombre pasado por param
+	lista_jugadores = Jugador.objects.all()
+
+	for i in [0,1,2,3,4]:
+		my_jug = lista_jugadores[randint(0,len(lista_jugadores)-1)]	#Obtiene un jugador al azar
+		my_plantilla=Plantilla(seleccion='NO_SELECCIONADO', usuario=my_user.first() ,jugador=my_jug)
+		my_plantilla.save()
+
+	
 def ranking(request):
+	#username = request.session.get("user_logeado")
+	
 	lista_usuarios=Usuario.objects.all().order_by("-puntuacion")[0:5]
 	return render(request, "ranking.html", locals())
