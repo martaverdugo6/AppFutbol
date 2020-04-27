@@ -82,10 +82,14 @@ def liga(request):
 def perfil(request):
 	username = request.session.get("user_logeado")
 	if username:
-		return render(request, "perfil_user.html", {'username':username})
+		my_user = Usuario.objects.filter(username=username)
+		return render(request, "perfil_user.html", {'username':username,'my_user':my_user.first()})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 
+def cambiarContrasenya(request):
+
+	return render(request, "cambio_password.html")
 
 def contacto(request):
 
@@ -121,10 +125,10 @@ def eleccionLiga(request):
 				my_form.save()
 
 				return HttpResponseRedirect('/inicio')
-			return render(request, "eleccion_liga.html", {'form':form,'username':username})
+			return render(request, "eleccion_liga.html", {'form':form,'my_username':username})
 		else:
 			form=form_liga()
-			return render(request, "eleccion_liga.html", {'form':form,'username':username})
+			return render(request, "eleccion_liga.html", {'form':form,'my_username':username})
 
 
 def creacionLiga(request):

@@ -1,5 +1,16 @@
-<html>
+{% extends "base.html" %}
 
-	<h1>Perfil del jugador</h1>
+{% block head_title %}Perfil usuario{% endblock %}
 
-</html>
+{% block content %}
+	
+	<br>
+	<h3>Usuario: {{my_user.username}}</h3>
+	<h3>Email: {{my_user.email}}</h3>
+	<h3>Nombre de equipo: {{my_user.mi_equipo}}</h3>
+	<h3>Puntuación: {{my_user.puntuacion}} puntos</h3>
+	<h3>Presupuesto: {{my_user.presupuesto}} euros</h3>	
+
+	<p><a href="{% url 'cambioContrasenya' %}">Cambiar contraseña</a></p>
+
+{% endblock %}
