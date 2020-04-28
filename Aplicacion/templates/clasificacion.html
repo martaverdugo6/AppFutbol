@@ -1,3 +1,21 @@
-<h1>CLASIFICACIÓN</h1>
+{% extends "base.html" %}
 
-{{lista}}
+{% block head_title %}Clasificación de tu liga{% endblock %}
+
+{% block content %}
+
+    <h1 style="text-align: center">LIGA {{nombre_liga}}</h1>
+    <h2 style="text-align: center">CLASIFICACIÓN</h2>
+    
+    <table id="tabla_jugadores">
+        <tr id="contenido_titulo">
+            <td><b>Nombre</b></td>
+            <td><b>Puntuación</b></td>
+        </tr>
+        {% for elem in lista_usuarios %}
+            <tr id="contenido_tabla">
+                <td> {{elem}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

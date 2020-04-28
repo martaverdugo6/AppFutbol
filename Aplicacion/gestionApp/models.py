@@ -47,7 +47,7 @@ class Liga(models.Model):
 
 class Plantilla(models.Model):
 	SELECCIONADO='SELECCIONADO'
-	NO_SELECCIONADO='NO_SELECCIONADO'
+	NO_SELECCIONADO='NO SELECCIONADO'
 	SELECCION_JUGADOR=(
 		
 		(SELECCIONADO, u'Seleccionado'),

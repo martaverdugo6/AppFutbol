@@ -30,7 +30,6 @@ urlpatterns = [
  	path('perfil/', views.perfil, name='perfil'),
  	path('inicioSesion/', views.inicioSesion, name='inicioSesion'),
  	path('registro/', views.registroUser, name='registro'),
-    path('contacto/', views.contacto, name='contacto'),
     path('eleccionLiga/', views.eleccionLiga, name='eleccionLiga'),
     path('creacionLiga/', views.creacionLiga, name='creacionLiga'),
     path('finSesion/', views.finSesion, name='finSesion'),

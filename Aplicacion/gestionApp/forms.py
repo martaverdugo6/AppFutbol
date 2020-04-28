@@ -38,15 +38,10 @@ class form_login_usuario(forms.ModelForm):
 			'password': 'Contraseña',
 		}
 
-class form_contact(forms.Form):
-
-	asunto=forms.CharField()
-	email=forms.CharField()
-	mensaje=forms.CharField()
 
 class form_cambio_password(forms.Form):
-	Contraseña_actual=forms.CharField()
-	Nueva_contraseña=forms.CharField()
+	Contraseña_actual=forms.CharField(widget=forms.PasswordInput)
+	Nueva_contraseña=forms.CharField(widget=forms.PasswordInput)
 
 class form_liga(forms.ModelForm):
 

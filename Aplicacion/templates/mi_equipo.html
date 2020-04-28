@@ -21,7 +21,14 @@
             <td>{{jug.jugador.equipo}}</td>
             <td>{{jug.jugador.posicion}}</td>
             <td>{{jug.jugador.puntuacion}} puntos</td>
-            <td>{{jug.seleccion}}</td>
+            <td>
+                <!--<form method="post" action="." onchange> {% csrf_token %}-->
+                    <select>
+                        <option value="NO SELECCIONADO">NO SELECCIONADO</option>
+                        <option value="SELECCIONADO">SELECCIONADO</option>
+                    </select>    
+                <!--</form>-->
+            </td>
         </tr>
         {% endfor %}
     </table>
