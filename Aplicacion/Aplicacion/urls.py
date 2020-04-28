@@ -36,6 +36,7 @@ urlpatterns = [
     path('finSesion/', views.finSesion, name='finSesion'),
     path('clasificacion/', views.clasificacion, name='clasificacion'),
     path('cambioContrasena', views.cambiarContrasenya, name='cambioContrasenya'),
+    path('miEquipo', views.miEquipo, name='miEquipo'),
 
     url(r'^accounts/', include('registration.backends.default.urls')),
     #path('accounts/',views.include('registration.backends.default.urls')),

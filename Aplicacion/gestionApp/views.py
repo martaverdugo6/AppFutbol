@@ -208,3 +208,12 @@ def ranking(request):
 	
 	lista_usuarios=Usuario.objects.all().order_by("-puntuacion")[0:5]
 	return render(request, "ranking.html", locals())
+
+def miEquipo(request):
+	username = request.session.get("user_logeado")
+	my_user = Usuario.objects.filter(username=username)
+	if username:
+		my_plantilla = Plantilla.objects.filter(usuario__in=my_user).order_by("jugador")
+		return render(request, "mi_equipo.html",{'username':username, 'my_plantilla':my_plantilla})
+	else:
+		return HttpResponseRedirect('/inicioSesion')

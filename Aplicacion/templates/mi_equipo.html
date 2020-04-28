@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block head_title %}Mi equipo{% endblock %}
+
+{% block content %}
+    <h1>Mi equipo</h1>
+    <br>
+    <table id="tabla_jugadores">
+        <tr id="contenido_titulo">
+            <td><b>Nombre</b></td>
+            <td><b>Apellidos</b></td>
+            <td><b>Equipo</b></td>
+            <td><b>Posición</b></td>
+            <td><b>Puntuación</b></td>
+            <td><b>Selección</b></td>
+        </tr>
+        {% for jug in my_plantilla %}
+        <tr id="contenido_tabla">
+            <td>{{jug.jugador.nombre}}</td>
+            <td>{{jug.jugador.apellidos}}</td>
+            <td>{{jug.jugador.equipo}}</td>
+            <td>{{jug.jugador.posicion}}</td>
+            <td>{{jug.jugador.puntuacion}} puntos</td>
+            <td>{{jug.seleccion}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

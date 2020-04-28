@@ -21,3 +21,11 @@ body{
 #msgFracaso{
     color: red;
 }
+#contenido_tabla td{
+    padding: 15px;
+}
+#contenido_titulo td{
+    padding: 10px;
+    font-size: 20px;
+    border-bottom: 1px solid black;
+}
