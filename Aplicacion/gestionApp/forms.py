@@ -44,6 +44,9 @@ class form_contact(forms.Form):
 	email=forms.CharField()
 	mensaje=forms.CharField()
 
+class form_cambio_password(forms.Form):
+	Contraseña_actual=forms.CharField()
+	Nueva_contraseña=forms.CharField()
 
 class form_liga(forms.ModelForm):
 

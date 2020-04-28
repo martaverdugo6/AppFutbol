@@ -2,7 +2,7 @@ from random import randint
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from gestionApp.models import Usuario, Jugador, Plantilla, Liga, Mercado
-from gestionApp.forms import form_alta_usuario, form_login_usuario, form_contact, form_liga
+from gestionApp.forms import form_alta_usuario, form_login_usuario, form_contact, form_liga, form_cambio_password
 from django.template import loader
 from django.core.mail import send_mail
 from django.conf import settings
@@ -88,8 +88,28 @@ def perfil(request):
 		return HttpResponseRedirect('/inicioSesion')
 
 def cambiarContrasenya(request):
-
-	return render(request, "cambio_password.html")
+	username = request.session.get("user_logeado")
+	form=form_cambio_password()
+	if username:
+		if request.method =='POST':	
+			form = form_cambio_password(request.POST)
+			if form.is_valid():
+				password = request.POST.get('Contraseña_actual')
+				new_password = request.POST.get('Nueva_contraseña')
+				my_user = Usuario.objects.filter(username=username,password=password)
+				msgFracaso="La contraseña actual no es correcta"
+				if my_user:
+					usuario = my_user.first()
+					usuario.password=new_password
+					usuario.save()
+					form=form_cambio_password()
+					msgExito="Contraseña cambiada con exito"
+					return render(request, "cambio_password.html",{'username':username,'form':form,'msgExito':msgExito})
+				else:
+					return render(request, "cambio_password.html",{'username':username,'form':form,'msgFracaso':msgFracaso})
+		return render(request, "cambio_password.html",{'username':username,'form':form})
+	else:
+		return HttpResponseRedirect('/inicioSesion')
 
 def contacto(request):
 

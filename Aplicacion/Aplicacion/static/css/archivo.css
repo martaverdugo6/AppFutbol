@@ -11,6 +11,13 @@ body{
    
 }
 
-#msgError{
+#msgError{                          /*En login*/
+    color: red;
+}
+
+#msgExito{                          /*En cambio de contraseña*/
+    color: green;
+}
+#msgFracaso{
     color: red;
 }

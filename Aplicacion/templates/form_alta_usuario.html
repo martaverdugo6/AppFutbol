@@ -6,13 +6,15 @@
 
 
 {% block content %}
-<h1 class="center-align">Registrarse</h1>
+<br>
+<h1 class="center-align">Registrarse</h1><br>
 	<div class="col-lg-6 offset-lg-3">
 		<form method="post" action="."> {% csrf_token %}
 				{{ form|crispy }}
-				<input class="btn btn-success" type="submit" value="Registrarme"/>
+				<input class="btn btn-outline-success" type="submit" value="Registrarme"/>
 
 		</form>
-		<a class="btn btn-danger mt-1" href="{% url 'inicioSesion' %}" role="button">&laquo; Volver atrás</a>
-	</div>
+		<br>
+		<a class="btn btn-outline-danger mt-1" href="{% url 'inicioSesion' %}" role="button">&laquo; Volver atrás</a>
+	</div><br><br>
 {% endblock %}
