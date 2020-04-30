@@ -34,8 +34,11 @@ urlpatterns = [
     path('creacionLiga/', views.creacionLiga, name='creacionLiga'),
     path('finSesion/', views.finSesion, name='finSesion'),
     path('clasificacion/', views.clasificacion, name='clasificacion'),
-    path('cambioContrasena', views.cambiarContrasenya, name='cambioContrasenya'),
-    path('miEquipo', views.miEquipo, name='miEquipo'),
+    path('cambioContrasena/', views.cambiarContrasenya, name='cambioContrasenya'),
+    path('miEquipo/', views.miEquipo, name='miEquipo'),
+    path('miEquipo/<id>', views.infoJugador, name='miEquipo'),
+    path('mercado/', views.mercado, name='mercado'),
+    path('mercado/<id>', views.jugadorAlMercado, name='JugadorAlMercado'),
 
     url(r'^accounts/', include('registration.backends.default.urls')),
     #path('accounts/',views.include('registration.backends.default.urls')),

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block head_title %}Mercado de tu liga{% endblock %}
+
+{% block content %}
+
+    <h1 style="text-align: center">Mercado</h1><br>
+    <table id="tabla_jugadores">
+        <tr id="contenido_titulo">
+            <td><b>Nombre</b></td>
+            <td><b>Apellidos</b></td>
+            <td><b>Equipo</b></td>
+            <td><b>Posición</b></td>
+            <td><b>Puntuación</b></td>
+        </tr>
+        {% for i in jugadores_en_el_mercado %}
+            <tr id="contenido_tabla">
+                <td>{{i.jugador_mercado.nombre}}</td>
+                <td>{{i.jugador_mercado.apellidos}}</td>
+                <td>{{i.jugador_mercado.equipo}}</td>
+                <td>{{i.jugador_mercado.posicion}}</td>
+                <td>{{i.jugador_mercado.puntuacion}} puntos</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

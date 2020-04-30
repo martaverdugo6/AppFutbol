@@ -43,7 +43,7 @@ class Liga(models.Model):
 	usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
 
 	def __str__(self):
-		return self.nombre
+		return 'Liga %s' % (self.nombre)
 
 class Plantilla(models.Model):
 	SELECCIONADO='SELECCIONADO'
@@ -63,9 +63,9 @@ class Plantilla(models.Model):
 		return '%s tiene a %s, %s' % (self.usuario, self.jugador, self.seleccion)
 
 class Mercado(models.Model):
-	liga = models.ForeignKey(Liga, on_delete=models.CASCADE)
-	jugador = models.ForeignKey(Jugador, on_delete=models.CASCADE)
+	liga_mercado = models.ForeignKey(Liga, on_delete=models.CASCADE)
+	jugador_mercado = models.ForeignKey(Jugador, on_delete=models.CASCADE)
 
 	def __str__(self):
-		return self.liga
+		return 'Jugador %s de la liga %s' % (self.jugador_mercado, self.liga_mercado)
 		

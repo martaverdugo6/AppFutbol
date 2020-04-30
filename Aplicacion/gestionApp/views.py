@@ -223,9 +223,8 @@ def ranking(request):
 def miEquipo(request):
 	username = request.session.get("user_logeado")
 	my_user = Usuario.objects.filter(username=username)
-	print(request.POST)
 	if username:
-		my_plantilla = Plantilla.objects.filter(usuario__in=my_user).order_by("jugador")
+		my_plantilla = Plantilla.objects.filter(usuario__in=my_user)
 		return render(request, "mi_equipo.html",{'username':username, 'my_plantilla':my_plantilla})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
@@ -243,4 +242,59 @@ def puntuacionUsuario(request):
 	user_update.puntuacion = puntuacion
 	user_update.save()	
 
+	
+def mercado(request):
+	username = request.session.get("user_logeado")
+	if username:
+		my_user = Usuario.objects.filter(username=username)
+		my_liga = Liga.objects.filter(usuario__in=my_user)
+		users = Liga.objects.filter(nombre=my_liga.first().nombre)
+		jugadores_en_el_mercado = []
+		for usuarios in users:
+			nombre_usuario = usuarios.usuario
+			la_liga = Liga.objects.filter(usuario=nombre_usuario)
+			aux = Mercado.objects.filter(liga_mercado__in=la_liga)
+			for i in aux:
+				jugadores_en_el_mercado.append(i)
+				print(jugadores_en_el_mercado)
+			
+
+		my_mercado = Mercado.objects.filter(liga_mercado__in=my_liga)
+		#print(my_mercado)
+		return render(request, "mercado.html", {'username':username,'jugadores_en_el_mercado':jugadores_en_el_mercado})
+	else:
+		return HttpResponseRedirect('/inicioSesion')
+
+def jugadorAlMercado(request,id):
+	username = request.session.get("user_logeado")
+	my_user = Usuario.objects.filter(username=username)
+	my_liga = Liga.objects.filter(usuario__in=my_user)
+	#print(my_liga)
+	if username:
+		jugadorAñadido=False
+		mi_jugador = Jugador.objects.get(id=id)
+		#print(mi_jugador)
+		jugadorRepetido = Mercado.objects.filter(liga_mercado__in=my_liga,jugador_mercado=mi_jugador)
+		print(jugadorRepetido)
+	
+		if request.method=="POST":
+			mensaje_de_error="El jugador ya está añadido, no puede añadirlo de nuevo."
+			if (len(jugadorRepetido) == 0):
+				obj = Mercado(liga_mercado=my_liga.first(),jugador_mercado=mi_jugador)
+				obj.save()
+				jugadorAñadido=True
+			return render(request, "jugador_al_mercado.html",{'username':username,'mi_jugador':mi_jugador,'jugadorAñadido':jugadorAñadido,'mensaje_de_error':mensaje_de_error})
+		return render(request, "jugador_al_mercado.html",{'username':username,'mi_jugador':mi_jugador,'jugadorAñadido':jugadorAñadido})
+	else:
+		return HttpResponseRedirect('/inicioSesion')
+
+	
+def infoJugador(request,id):
+	username = request.session.get("user_logeado")
+	if username:
+		mi_jugador = Jugador.objects.get(id=id)
+		#print(mi_jugador)
+		return render(request, "info_jugador.html", {'username':username,'mi_jugador':mi_jugador})
+	else:
+		return HttpResponseRedirect('/inicioSesion')
 	

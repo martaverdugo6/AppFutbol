@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block head_title %}Ficha del jugador{% endblock %}
+
+{% block content %}
+
+    <h1 style="text-align: center">Información del jugador</h1>
+
+    <table>
+        <tr id="contenido_tabla"><td>Nombre: {{mi_jugador.nombre}}</td></tr>
+        <tr id="contenido_tabla"><td>Apellidos: {{mi_jugador.apellidos}}</td></tr>
+        <tr id="contenido_tabla"><td>Equipo: {{mi_jugador.equipo}}</td></tr>
+        <tr id="contenido_tabla"><td>Posición: {{mi_jugador.posicion}}</td></tr>
+        <tr id="contenido_tabla"><td>Puntos: {{mi_jugador.puntuacion}}</td></tr>
+       
+
+    </table>
+   
+{% endblock %}

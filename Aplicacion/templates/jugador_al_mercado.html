@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block head_title %}Mercado de tu liga{% endblock %}
+
+{% block content %}
+<br>
+    {% if jugadorAñadido %}
+        <h2>JUGADOR AÑADIDO CORRECTAMENTE AL MERCADO</h2>
+
+        <a class="btn btn-outline-danger mt-1" href="{% url 'miEquipo' %}" role="button"> Volver a Mi equipo</a>
+
+    {% else %}
+        <p style="color: red; text-align: center;">{{mensaje_de_error}}</p>
+        <h1 style="text-align: center">Añadir al mercado</h1><br>
+
+        <h3 style="text-align: center;">¿Estás segur@ que quieres poner a {{mi_jugador.nombre}} {{mi_jugador.apellidos}} en el mercado?</h3><br>
+
+        <div style="text-align: center;">
+            <form action="/mercado/{{mi_jugador.id}}" method="POST">{% csrf_token %}
+                <input class="btn btn-outline-success" type="submit" value="Añadir"/>
+            </form><br>
+            <a class="btn btn-outline-danger mt-1" href="{% url 'miEquipo' %}" role="button"> Cancelar</a>
+        </div>
+    {% endif %}
+{% endblock %}
