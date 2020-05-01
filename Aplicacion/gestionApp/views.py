@@ -256,11 +256,12 @@ def mercado(request):
 			aux = Mercado.objects.filter(liga_mercado__in=la_liga)
 			for i in aux:
 				jugadores_en_el_mercado.append(i)
-				print(jugadores_en_el_mercado)
+				#print(jugadores_en_el_mercado)
 			
-
-		my_mercado = Mercado.objects.filter(liga_mercado__in=my_liga)
-		#print(my_mercado)
+		if request.method=="POST":
+			puja = request.POST.get('puja')
+			print(puja)
+		
 		return render(request, "mercado.html", {'username':username,'jugadores_en_el_mercado':jugadores_en_el_mercado})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
@@ -291,10 +292,13 @@ def jugadorAlMercado(request,id):
 	
 def infoJugador(request,id):
 	username = request.session.get("user_logeado")
+	my_user = Usuario.objects.filter(username=username)
 	if username:
 		mi_jugador = Jugador.objects.get(id=id)
 		#print(mi_jugador)
-		return render(request, "info_jugador.html", {'username':username,'mi_jugador':mi_jugador})
+		propietario = Plantilla.objects.filter(jugador=mi_jugador).first().usuario
+		print(propietario)
+		return render(request, "info_jugador.html", {'username':username,'mi_jugador':mi_jugador,'propietario':propietario})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 	

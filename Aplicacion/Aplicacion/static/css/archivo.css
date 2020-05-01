@@ -22,10 +22,24 @@ body{
     color: red;
 }
 #contenido_tabla td{
+    text-align: center;
     padding: 15px;
 }
 #contenido_titulo td{
     padding: 10px;
     font-size: 20px;
     border-bottom: 1px solid black;
+    text-align: center;
+}
+#tabla_mercado{
+    width: 80%;
+    margin-left: 10%;
+}
+#tabla_jugadores{
+    margin-left: 5%;
+}
+
+#infoJugador td{
+    padding: 15px;
+    font-size: large;
 }

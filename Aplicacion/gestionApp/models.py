@@ -69,3 +69,8 @@ class Mercado(models.Model):
 	def __str__(self):
 		return 'Jugador %s de la liga %s' % (self.jugador_mercado, self.liga_mercado)
 		
+class Puja(models.Model):
+	pujador = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+	jugador = models.ForeignKey(Jugador, on_delete=models.CASCADE)
+	cantidad = models.IntegerField()
+	liga = models.ForeignKey(Liga, on_delete=models.CASCADE)

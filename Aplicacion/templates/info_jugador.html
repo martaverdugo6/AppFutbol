@@ -6,14 +6,16 @@
 
     <h1 style="text-align: center">Información del jugador</h1>
 
-    <table>
-        <tr id="contenido_tabla"><td>Nombre: {{mi_jugador.nombre}}</td></tr>
-        <tr id="contenido_tabla"><td>Apellidos: {{mi_jugador.apellidos}}</td></tr>
-        <tr id="contenido_tabla"><td>Equipo: {{mi_jugador.equipo}}</td></tr>
-        <tr id="contenido_tabla"><td>Posición: {{mi_jugador.posicion}}</td></tr>
-        <tr id="contenido_tabla"><td>Puntos: {{mi_jugador.puntuacion}}</td></tr>
+    <table id="tabla_informacion_jug">
+        <tr id="infoJugador"><td><b>Nombre:</b> {{mi_jugador.nombre}}</td></tr>
+        <tr id="infoJugador"><td><b>Apellidos:</b> {{mi_jugador.apellidos}}</td></tr>
+        <tr id="infoJugador"><td><b>Equipo:</b> {{mi_jugador.equipo}}</td></tr>
+        <tr id="infoJugador"><td><b>Posición:</b> {{mi_jugador.posicion}}</td></tr>
+        <tr id="infoJugador"><td><b>Puntos:</b> {{mi_jugador.puntuacion}}</td></tr>
+        <tr id="infoJugador"><td><b>Actual propietario:</b> {{propietario}}</td></tr>
        
 
     </table>
-   
+    <br>
+    <input class="btn btn-outline-danger mt-1" type="button" onclick="history.back()" name="Volver atrás" value="volver atrás">
 {% endblock %}

@@ -3,7 +3,7 @@
 {% block head_title %}Mi equipo{% endblock %}
 
 {% block content %}
-    <h1>Mi equipo</h1>
+    <h1 style="text-align: center;">Mi equipo</h1>
     <br>
     <table id="tabla_jugadores">
         <tr id="contenido_titulo">
@@ -16,7 +16,7 @@
         </tr>
         {% for jug in my_plantilla %}
             <tr id="contenido_tabla">
-                <td><a href="/miEquipo/{{jug.jugador.id}}">{{jug.jugador.nombre}}</a></td>
+                <td><a href="/jugador/{{jug.jugador.id}}">{{jug.jugador.nombre}}</a></td>
                 <td>{{jug.jugador.apellidos}}</td>
                 <td>{{jug.jugador.equipo}}</td>
                 <td>{{jug.jugador.posicion}}</td>
