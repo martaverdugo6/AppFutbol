@@ -4,13 +4,17 @@
 
 {% block content %}
 	
-	<br>
-	<h3>Usuario: {{my_user.username}}</h3>
-	<h3>Email: {{my_user.email}}</h3>
-	<h3>Nombre de equipo: {{my_user.mi_equipo}}</h3>
-	<h3>Puntuación: {{my_user.puntuacion}} puntos</h3>
-	<h3>Presupuesto: {{my_user.presupuesto}} euros</h3>	
-
-	<p><a href="{% url 'cambioContrasenya' %}">Cambiar contraseña</a></p>
-
+	<h1 style="text-align: center;">Perfil</h1>
+	<br>	
+	<div style="float: left;">
+		<h3>Usuario: {{my_user.username}}</h3>
+		<h3>Email: {{my_user.email}}</h3>
+		<h3>Nombre de equipo: {{my_user.mi_equipo}}</h3>
+		<h3>Puntuación: {{my_user.puntuacion}} puntos</h3>
+		<h3>Presupuesto: {{my_user.presupuesto}} euros</h3>	
+	</div>
+	<div style="float: right;">
+		<p><a class="btn btn-outline-secondary mt-1" href="{% url 'cambioContrasenya' %}" role="button">Cambiar contraseña</a></p>
+	</div>
+	
 {% endblock %}

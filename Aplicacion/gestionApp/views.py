@@ -297,8 +297,16 @@ def infoJugador(request,id):
 		mi_jugador = Jugador.objects.get(id=id)
 		#print(mi_jugador)
 		propietario = Plantilla.objects.filter(jugador=mi_jugador).first().usuario
-		print(propietario)
+		#print(propietario)
 		return render(request, "info_jugador.html", {'username':username,'mi_jugador':mi_jugador,'propietario':propietario})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 	
+def otrosUsuarios(request, nombre):
+	username = request.session.get("user_logeado")
+	if username:
+		my_user = Usuario.objects.filter(username=nombre).first()
+		#print(my_user)
+		return render(request, "otros_usuarios.html",{'username':username,'my_user':my_user})
+	else:
+		return HttpResponseRedirect('/inicioSesion')

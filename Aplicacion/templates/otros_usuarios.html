@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}Cambio de contraseña{% endblock %}
+
+{% block content %}
+    
+    <h1 style="text-align: center;">Perfil de {{my_user.username}}</h1>
+    <br>
+    <div>
+        <h3>Usuario: {{my_user.username}}</h3>
+        <h3>Email: {{my_user.email}}</h3>
+        <h3>Nombre de equipo: {{my_user.mi_equipo}}</h3>
+        <h3>Puntuación: {{my_user.puntuacion}} puntos</h3>
+        <h3>Presupuesto: {{my_user.presupuesto}} euros</h3>	
+    </div>
+    <br>
+    <input class="btn btn-outline-danger mt-1" type="button" onclick="history.back()" name="Volver atrás" value="&laquo; Volver atrás">
+{% endblock %}

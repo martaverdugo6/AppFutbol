@@ -12,10 +12,10 @@
         <tr id="infoJugador"><td><b>Equipo:</b> {{mi_jugador.equipo}}</td></tr>
         <tr id="infoJugador"><td><b>Posición:</b> {{mi_jugador.posicion}}</td></tr>
         <tr id="infoJugador"><td><b>Puntos:</b> {{mi_jugador.puntuacion}}</td></tr>
-        <tr id="infoJugador"><td><b>Actual propietario:</b> {{propietario}}</td></tr>
+        <tr id="infoJugador"><td><b>Actual propietario:</b> <a href="/usuario/{{propietario.username}}">{{propietario}}</a></td></tr>
        
 
     </table>
     <br>
-    <input class="btn btn-outline-danger mt-1" type="button" onclick="history.back()" name="Volver atrás" value="volver atrás">
+    <input class="btn btn-outline-danger mt-1" type="button" onclick="history.back()" name="Volver atrás" value="&laquo; Volver atrás">
 {% endblock %}

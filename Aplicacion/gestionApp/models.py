@@ -65,6 +65,7 @@ class Plantilla(models.Model):
 class Mercado(models.Model):
 	liga_mercado = models.ForeignKey(Liga, on_delete=models.CASCADE)
 	jugador_mercado = models.ForeignKey(Jugador, on_delete=models.CASCADE)
+	fecha_increso = models.DateTimeField()
 
 	def __str__(self):
 		return 'Jugador %s de la liga %s' % (self.jugador_mercado, self.liga_mercado)
@@ -74,3 +75,6 @@ class Puja(models.Model):
 	jugador = models.ForeignKey(Jugador, on_delete=models.CASCADE)
 	cantidad = models.IntegerField()
 	liga = models.ForeignKey(Liga, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return '%s ha pujado %s por %s' % (self.pujador, self.cantidad, self.jugador)
