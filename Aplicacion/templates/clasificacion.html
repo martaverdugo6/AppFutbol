@@ -6,16 +6,19 @@
 
     <h1 style="text-align: center">LIGA {{nombre_liga}}</h1>
     <h2 style="text-align: center">CLASIFICACIÓN</h2>
-    
-    <table id="tabla_jugadores">
+    <br>
+    <table id="tabla_clasificacion">
         <tr id="contenido_titulo">
             <td><b>Nombre</b></td>
             <td><b>Puntuación</b></td>
         </tr>
         {% for elem in lista_usuarios %}
             <tr id="contenido_tabla">
-                <td> {{elem}}</td>
+                <td> {{elem.username}}</td>
+                <td> {{elem.puntuacion}}</td>
             </tr>
         {% endfor %}
     </table>
+    <br>
+    <input class="btn btn-outline-danger mt-1" type="button" onclick="history.back()" name="Volver atrás" value="&laquo; Volver atrás">
 {% endblock %}

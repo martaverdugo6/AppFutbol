@@ -4,7 +4,9 @@
 
 {% block content %}
 
-    <h1 style="text-align: center">Mercado</h1><br>
+    <h1 style="text-align: center">LIGA {{nombre_liga}}</h1>
+    <h2 style="text-align: center">MERCADO</h2>
+    <br>
     <table id="tabla_mercado">
         <tr id="contenido_titulo">
             <td><b>Nombre</b></td>
@@ -21,10 +23,13 @@
                 <form method="post" action="."> {% csrf_token %}
                     <td><input type="number" id="puja" name="puja"></td>
                     <td>
+                        <input type="hidden" name="idJugador" value="{{i.jugador_mercado.id}}"/>        <!--enviamos el id del jugador-->
                         <input class="btn btn-outline-danger mt-1" type="submit" value="Pujar"/>
                     </td>
-            </form>
+                </form>
             </tr>
         {% endfor %}
     </table>
+    <br>
+    <input class="btn btn-outline-danger mt-1" type="button" onclick="history.back()" name="Volver atrás" value="&laquo; Volver atrás">
 {% endblock %}

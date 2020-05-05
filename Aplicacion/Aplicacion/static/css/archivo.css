@@ -43,3 +43,12 @@ body{
     padding: 15px;
     font-size: large;
 }
+#tabla_clasificacion{
+    width: 30%;
+    margin-left: 35%;
+}
+
+#menu_liga{
+    font-size: large;
+    margin-top: 5%;
+}

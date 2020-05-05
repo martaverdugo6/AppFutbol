@@ -1,7 +1,7 @@
 from random import randint
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from gestionApp.models import Usuario, Jugador, Plantilla, Liga, Mercado
+from gestionApp.models import Usuario, Jugador, Plantilla, Liga, Mercado, Puja
 from gestionApp.forms import form_alta_usuario, form_login_usuario, form_liga, form_cambio_password
 from django.template import loader
 from django.core.mail import send_mail
@@ -201,18 +201,13 @@ def clasificacion(request):
 	my_liga = Liga.objects.filter(usuario=username)			#objeto liga del usuario logueado
 	nombre_liga = my_liga.first().nombre					#nombre de la liga del usuario logueado 
 	lista = Liga.objects.filter(nombre=nombre_liga)			#todos los objetos con el nombre de liga
+	
 	lista_usuarios = []
-
 	for elementos in lista:
 		lista_usuarios.append(elementos.usuario)			#añado a una lista los usuarios que están en la liga del user logueado
-
-	user_punt = []
-	for i in lista_usuarios:
-		user_punt.append([i.username,i.puntuacion])			#de los usuarios solo me quedo con nombre y puntuacion
+	print(lista_usuarios)
 	
-	user_punt = sorted(user_punt, key=lambda x: x[1])		#ordeno por puntuacion antes de enviarlo al html
-	print(user_punt)
-	return render(request, "clasificacion.html",{'lista_usuarios':user_punt, 'username':username,'nombre_liga':nombre_liga})
+	return render(request, "clasificacion.html",{'username':username,'nombre_liga':nombre_liga,'lista_usuarios':lista_usuarios})
 
 	
 def ranking(request):
@@ -246,10 +241,11 @@ def puntuacionUsuario(request):
 	
 def mercado(request):
 	username = request.session.get("user_logeado")
+	nombre_liga = Liga.objects.filter(usuario=username).first().nombre			#objeto liga del usuario logueado
+									
 	if username:
-		my_user = Usuario.objects.filter(username=username)
-		my_liga = Liga.objects.filter(usuario__in=my_user)
-		users = Liga.objects.filter(nombre=my_liga.first().nombre)
+		my_user = Usuario.objects.get(username=username)						#usuario con nombre username
+		users = Liga.objects.filter(nombre=nombre_liga)							#lista de ligas con nombre de la liga de my_user
 		jugadores_en_el_mercado = []
 		for usuarios in users:
 			nombre_usuario = usuarios.usuario
@@ -261,9 +257,12 @@ def mercado(request):
 			
 		if request.method=="POST":
 			puja = request.POST.get('puja')
-			print(puja)
+			id_jugador = request.POST.get('idJugador')
+			jugador = Jugador.objects.get(id=id_jugador)
+			obj = Puja(pujador=my_user, jugador=jugador,cantidad=puja,liga=la_liga.first())
+			obj.save()
 		
-		return render(request, "mercado.html", {'username':username,'jugadores_en_el_mercado':jugadores_en_el_mercado})
+		return render(request, "mercado.html", {'username':username,'jugadores_en_el_mercado':jugadores_en_el_mercado,'nombre_liga':nombre_liga})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 
