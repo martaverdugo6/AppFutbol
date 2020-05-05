@@ -6,6 +6,7 @@ from gestionApp.forms import form_alta_usuario, form_login_usuario, form_liga, f
 from django.template import loader
 from django.core.mail import send_mail
 from django.conf import settings
+from datetime import datetime						#para añadir la hora actual
 
 # Create your views here.
 
@@ -281,7 +282,7 @@ def jugadorAlMercado(request,id):
 		if request.method=="POST":
 			mensaje_de_error="El jugador ya está añadido, no puede añadirlo de nuevo."
 			if (len(jugadorRepetido) == 0):
-				obj = Mercado(liga_mercado=my_liga.first(),jugador_mercado=mi_jugador)
+				obj = Mercado(liga_mercado=my_liga.first(),jugador_mercado=mi_jugador,fecha_increso=datetime.now())
 				obj.save()
 				jugadorAñadido=True
 			return render(request, "jugador_al_mercado.html",{'username':username,'mi_jugador':mi_jugador,'jugadorAñadido':jugadorAñadido,'mensaje_de_error':mensaje_de_error})
