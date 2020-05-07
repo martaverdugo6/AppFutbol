@@ -209,13 +209,6 @@ def clasificacion(request):
 	
 	return render(request, "clasificacion.html",{'username':username,'nombre_liga':nombre_liga,'lista_usuarios':lista_usuarios})
 
-	
-def ranking(request):
-	username = request.session.get("user_logeado")
-	asignarJugadores(username)
-	lista_usuarios=Usuario.objects.all().order_by("-puntuacion")[0:5]
-	return render(request, "ranking.html", locals())
-
 def miEquipo(request):
 	username = request.session.get("user_logeado")
 	my_user = Usuario.objects.filter(username=username)
@@ -252,17 +245,28 @@ def mercado(request):
 			la_liga = Liga.objects.filter(usuario=nombre_usuario)
 			aux = Mercado.objects.filter(liga_mercado__in=la_liga)
 			for i in aux:
-				jugadores_en_el_mercado.append(i)
+				jugadores_en_el_mercado.append(i)			#filas del model mercado
 				#print(jugadores_en_el_mercado)
 			
 		if request.method=="POST":
-			puja = request.POST.get('puja')
-			id_jugador = request.POST.get('idJugador')
-			jugador = Jugador.objects.get(id=id_jugador)
-			obj = Puja(pujador=my_user, jugador=jugador,cantidad=puja,liga=la_liga.first())
-			obj.save()
+			if request.POST.get('puja'):
+				puja = request.POST.get('puja')
+				id_jugador = request.POST.get('idJugador')
+				jugador = Jugador.objects.get(id=id_jugador)
+				obj = Puja(pujador=my_user, jugador=jugador,cantidad=puja,liga=la_liga.first())
+				obj.save()
+				del puja
+
+		pujas = []
+		for jug in jugadores_en_el_mercado:
+			if Puja.objects.filter(jugador=jug.jugador_mercado):
+				pujas_aux = Puja.objects.filter(jugador=jug.jugador_mercado).order_by("-cantidad")[0]
+				pujas.append(pujas_aux)
 		
-		return render(request, "mercado.html", {'username':username,'jugadores_en_el_mercado':jugadores_en_el_mercado,'nombre_liga':nombre_liga})
+		
+		#print(pujas)
+		
+		return render(request, "mercado.html", {'username':username,'jugadores_en_el_mercado':jugadores_en_el_mercado,'nombre_liga':nombre_liga,'pujas':pujas})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 
@@ -310,3 +314,13 @@ def otrosUsuarios(request, nombre):
 		return render(request, "otros_usuarios.html",{'username':username,'my_user':my_user})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
+
+
+
+
+def ranking(request):
+	username = request.session.get("user_logeado")
+	asignarJugadores(username)
+	lista_usuarios=Usuario.objects.all().order_by("-puntuacion")[0:5]
+	return render(request, "ranking.html", locals())
+	

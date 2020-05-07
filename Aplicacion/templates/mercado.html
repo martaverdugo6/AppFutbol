@@ -19,7 +19,12 @@
                 <td><a href="/jugador/{{i.jugador_mercado.id}}">{{i.jugador_mercado.nombre}}</a></td>
                 <td>{{i.jugador_mercado.apellidos}}</td>
                 <td>{{i.jugador_mercado.equipo}}</td>
-                <td>XXX euros por Pepe</td>
+                {% for j in pujas %}
+                    {% ifequal j.jugador.id i.jugador_mercado.id %}
+                        <td>{{j.cantidad}} por {{j.pujador}}</td>
+                    {% endifequal %}
+                {% endfor %}
+                
                 <form method="post" action="."> {% csrf_token %}
                     <td><input type="number" id="puja" name="puja"></td>
                     <td>
