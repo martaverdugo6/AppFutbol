@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
-{% block head_title %}Mi equipo{% endblock %}
+{% block head_title %}{{my_user.mi_equipo}}{% endblock %}
 
 {% block content %}
-    <h1 style="text-align: center;">Mi equipo</h1>
+    <h1 style="text-align: center;">{{my_user.mi_equipo}}</h1>
     <br>
     <table id="tabla_jugadores">
         <tr id="contenido_titulo">

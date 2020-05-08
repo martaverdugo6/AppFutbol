@@ -121,7 +121,7 @@ def eleccionLiga(request):
 			nombreLiga = request.POST.get('nombre')
 			#print(nombreLiga)
 			liga_bd = Liga.objects.filter(nombre=nombreLiga)
-			if len(liga_bd) >= 7:
+			if len(liga_bd) >= 10:
 				msgLigaCompleta = "Lo sentimos. Esta liga ya está completa."
 			elif liga_bd:
 				
@@ -176,7 +176,7 @@ def asignarJugadores(request):
 		for k in filas_plantilla:
 			jugadores_liga.append(k.jugador)		#jugadores ya asignados a otros usuarios de la misma liga
 			
-	while len(Plantilla.objects.filter(usuario=my_user.first()))+1 < 6 : 
+	while len(Plantilla.objects.filter(usuario=my_user.first()))+1 < 16 : 
 		jugador_random = lista_jugadores[randint(0,len(lista_jugadores)-1)]	#Obtiene un jugador al azar
 		jug_repetido = Plantilla.objects.filter(usuario=my_user.first() ,jugador=jugador_random)
 		jug_asignado = []
@@ -211,10 +211,10 @@ def clasificacion(request):
 
 def miEquipo(request):
 	username = request.session.get("user_logeado")
-	my_user = Usuario.objects.filter(username=username)
+	my_user = Usuario.objects.get(username=username)
 	if username:
-		my_plantilla = Plantilla.objects.filter(usuario__in=my_user)
-		return render(request, "mi_equipo.html",{'username':username, 'my_plantilla':my_plantilla})
+		my_plantilla = Plantilla.objects.filter(usuario=my_user)
+		return render(request, "mi_equipo.html",{'my_user':my_user,'username':username, 'my_plantilla':my_plantilla})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 

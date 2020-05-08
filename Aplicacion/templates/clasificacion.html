@@ -14,7 +14,7 @@
         </tr>
         {% for elem in lista_usuarios %}
             <tr id="contenido_tabla">
-                <td> {{elem.username}}</td>
+                <td><a href="/usuario/{{elem.username}}">{{elem.mi_equipo}}</a></td>
                 <td> {{elem.puntuacion}}</td>
             </tr>
         {% endfor %}
