@@ -52,3 +52,17 @@ body{
     font-size: large;
     margin-top: 5%;
 }
+#submenu_liga li{
+    list-style: none;
+}
+
+#dropdown ul{
+    background-color: #343a40;
+    position: absolute;
+    padding-left: 0;
+    display: none;                  /*hace que el submenú desaparezca*/
+}
+
+#dropdown:hover ul{
+    display: block;
+}

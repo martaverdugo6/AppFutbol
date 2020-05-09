@@ -10,8 +10,12 @@
 			<li class="nav-item active">
 				<a class="nav-link" href="{% url 'inicio' %}">Inicio <span class="sr-only">(current)</span></a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="{% url 'liga' %}">Liga</a>
+			<li class="nav-item" id="dropdown">
+				<a class="nav-link">Liga</a>
+				<ul id="submenu_liga">
+					<li><a class="nav-link" href="/clasificacion">Clasificación</a></li>
+					<li><a class="nav-link" href="/mercado">Mercado</a></li>
+				</ul>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link"href="{% url 'miEquipo' %}">Mi equipo</a>
