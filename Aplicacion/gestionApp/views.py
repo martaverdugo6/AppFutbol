@@ -7,6 +7,7 @@ from django.template import loader
 from django.core.mail import send_mail
 from django.conf import settings
 from datetime import datetime						#para añadir la hora actual
+import datetime
 
 # Create your views here.
 
@@ -231,12 +232,18 @@ def puntuacionUsuario(request):
 	user_update.puntuacion = puntuacion
 	user_update.save()	
 
+def fuera_del_mercado():
+	obj_mercado = Mercado.objects.all()
+	for i in obj_mercado:
+		fecha = datetime.datetime.utcnow() - i.fecha_increso
+		#print(fecha)
+
 	
 def mercado(request):
 	username = request.session.get("user_logeado")
-	nombre_liga = Liga.objects.filter(usuario=username).first().nombre			#objeto liga del usuario logueado
-									
+	nombre_liga = Liga.objects.filter(usuario=username).first().nombre			#objeto liga del usuario logueado								
 	if username:
+		#fuera_del_mercado()
 		my_user = Usuario.objects.get(username=username)						#usuario con nombre username
 		users = Liga.objects.filter(nombre=nombre_liga)							#lista de ligas con nombre de la liga de my_user
 		jugadores_en_el_mercado = []
@@ -263,9 +270,6 @@ def mercado(request):
 				pujas_aux = Puja.objects.filter(jugador=jug.jugador_mercado).order_by("-cantidad")[0]
 				pujas.append(pujas_aux)
 		
-		
-		#print(pujas)
-		
 		return render(request, "mercado.html", {'username':username,'jugadores_en_el_mercado':jugadores_en_el_mercado,'nombre_liga':nombre_liga,'pujas':pujas})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
@@ -285,7 +289,7 @@ def jugadorAlMercado(request,id):
 		if request.method=="POST":
 			mensaje_de_error="El jugador ya está añadido, no puede añadirlo de nuevo."
 			if (len(jugadorRepetido) == 0):
-				obj = Mercado(liga_mercado=my_liga.first(),jugador_mercado=mi_jugador,fecha_increso=datetime.now())
+				obj = Mercado(liga_mercado=my_liga.first(),jugador_mercado=mi_jugador,fecha_increso=datetime.datetime.utcnow())
 				obj.save()
 				jugadorAñadido=True
 			return render(request, "jugador_al_mercado.html",{'username':username,'mi_jugador':mi_jugador,'jugadorAñadido':jugadorAñadido,'mensaje_de_error':mensaje_de_error})
@@ -322,5 +326,6 @@ def ranking(request):
 	username = request.session.get("user_logeado")
 	asignarJugadores(username)
 	lista_usuarios=Usuario.objects.all().order_by("-puntuacion")[0:5]
+
 	return render(request, "ranking.html", locals())
 	
