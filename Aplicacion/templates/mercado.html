@@ -13,6 +13,7 @@
             <td><b>Apellidos</b></td>
             <td><b>Equipo</b></td>
             <td><b>Puja más alta</b></td>
+            <td><b>Tiempo restante</b></td>
         </tr>
         {% for i in jugadores_en_el_mercado %}
             <tr id="contenido_tabla">
@@ -23,8 +24,11 @@
                     {% ifequal j.jugador.id i.jugador_mercado.id %}
                         <td>{{j.cantidad}} por {{j.pujador}}</td>
                     {% endifequal %}
+                    {% ifnotequal j.jugador.id i.jugador_mercado.id %}
+                        <td><i>No hay puja</i></td>
+                    {% endifnotequal %}
                 {% endfor %}
-                
+                <td>holi</td>
                 <form method="post" action="."> {% csrf_token %}
                     <td><input type="number" id="puja" name="puja"></td>
                     <td>
