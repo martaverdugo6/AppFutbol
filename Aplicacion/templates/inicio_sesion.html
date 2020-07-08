@@ -12,15 +12,19 @@
 
 
 {% block content %}
-<h1 class="center-align">Iniciar sesión</h1>
-<div class="row">
-	<div class="col-md-4 offset-md-4">
-		<p id="msgError">{{aviso}}</p>
-		<form method="post">{% csrf_token %}
-			{{ form|crispy }}
-			<input class="btn btn-outline-primary" type="submit" value="Entrar"/>
-		</form>
-		<br><br><br><br><br>
-	</div>
-</div>
+	<div style="background-color: #8CCF75; width: 40%; margin-left: 30%;">	
+		<h1 class="center-align">Iniciar sesión</h1>
+		<div class="row">
+			<div class="col-md-8 offset-md-2">
+				<p id="msgError">{{aviso}}</p>
+				<form method="post">{% csrf_token %}
+					{{ form|crispy }}
+					<input class="btn btn-outline-primary" type="submit" value="Entrar"/>
+				</form>
+			</div>
+		</div><br>
+		<!--<a href="{% url 'registro' %}" style="float: left; background-color: yellow; width: 50%; font-size: 18px; text-align: center; padding: 2%;">Registrarse</a>-->
+		<!--<p style="float: right; background-color: #5DADE2; width: 50%;font-size: 18px; text-align: center; padding: 2%;">Entrar</p>-->
+	</div> 
+	<br><br>
 {% endblock %}

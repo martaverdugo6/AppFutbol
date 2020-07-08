@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block head_title %}Mercado de tu liga{% endblock %}
+{% block head_title %}Mercado de liga {{nombre_liga}}{% endblock %}
 
 {% block content %}
 
@@ -28,7 +28,7 @@
                         <td><i>No hay puja</i></td>
                     {% endifnotequal %}
                 {% endfor %}
-                <td>holi</td>
+                <td>tiempo restante</td>
                 <form method="post" action="."> {% csrf_token %}
                     <td><input type="number" id="puja" name="puja"></td>
                     <td>

@@ -8,6 +8,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from datetime import datetime						#para añadir la hora actual
 import datetime
+from django.utils import timezone
 
 # Create your views here.
 
@@ -234,16 +235,19 @@ def puntuacionUsuario(request):
 
 def fuera_del_mercado():
 	obj_mercado = Mercado.objects.all()
+	ahora = timezone.now()
 	for i in obj_mercado:
-		fecha = datetime.datetime.utcnow() - i.fecha_increso
-		#print(fecha)
+		caducidadDelJug = i.fecha_increso + datetime.timedelta(days=2)		#El jugador sale del marcado 2 días después de ingresar
+		if ahora > caducidadDelJug:
+			jugadorOut = Mercado.objects.get(liga_mercado=i.liga_mercado,jugador_mercado=i.jugador_mercado)
+			jugadorOut.delete()
 
 	
 def mercado(request):
 	username = request.session.get("user_logeado")
 	nombre_liga = Liga.objects.filter(usuario=username).first().nombre			#objeto liga del usuario logueado								
 	if username:
-		#fuera_del_mercado()
+		fuera_del_mercado()
 		my_user = Usuario.objects.get(username=username)						#usuario con nombre username
 		users = Liga.objects.filter(nombre=nombre_liga)							#lista de ligas con nombre de la liga de my_user
 		jugadores_en_el_mercado = []
@@ -260,9 +264,12 @@ def mercado(request):
 				puja = request.POST.get('puja')
 				id_jugador = request.POST.get('idJugador')
 				jugador = Jugador.objects.get(id=id_jugador)
-				obj = Puja(pujador=my_user, jugador=jugador,cantidad=puja,liga=la_liga.first())
-				obj.save()
-				del puja
+
+				puja_repe = Puja.objects.filter(pujador=my_user,jugador=jugador,cantidad=puja)		#compruebo que el jugador no repite la puja
+				if len(puja_repe) == 0:
+					obj = Puja(pujador=my_user, jugador=jugador,cantidad=puja,liga=la_liga.first())
+					obj.save()
+					del puja
 
 		pujas = []
 		for jug in jugadores_en_el_mercado:
@@ -324,8 +331,16 @@ def otrosUsuarios(request, nombre):
 
 def ranking(request):
 	username = request.session.get("user_logeado")
-	asignarJugadores(username)
-	lista_usuarios=Usuario.objects.all().order_by("-puntuacion")[0:5]
+	#asignarJugadores(username)
+	#lista_usuarios=Usuario.objects.all().order_by("-puntuacion")[0:5]
+	
+	pasadoManana = timezone.now() + datetime.timedelta(days=2)
+	print(pasadoManana)
 
+	obj_mercado = Mercado.objects.all()
+	ahora = timezone.now()
+	for i in obj_mercado:
+		fecha = ahora - i.fecha_increso
+		print(fecha)
 	return render(request, "ranking.html", locals())
 	

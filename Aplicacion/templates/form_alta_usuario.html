@@ -6,15 +6,16 @@
 
 
 {% block content %}
-<br>
-<h1 class="center-align">Registrarse</h1><br>
-	<div class="col-lg-6 offset-lg-3">
-		<form method="post" action="."> {% csrf_token %}
-				{{ form|crispy }}
-				<input class="btn btn-outline-success" type="submit" value="Registrarme"/>
+	<div style="background-color: #8CCF75; width: 50%; margin-left: 25%; margin-top: 2%;">
+		<h1 class="center-align" style="padding-top: 2%;">Registrarse</h1><br>
+			<div class="col-lg-8 offset-lg-2">
+				<form method="post" action="."> {% csrf_token %}
+						{{ form|crispy }}
+						<input class="btn btn-outline-success" type="submit" value="Registrarme"/>
 
-		</form>
-		<br>
-		<a class="btn btn-outline-danger mt-1" href="{% url 'inicioSesion' %}" role="button">&laquo; Volver atrás</a>
+				</form>
+				<br>
+				<a class="btn btn-outline-danger mt-1" href="{% url 'inicioSesion' %}" role="button">&laquo; Volver atrás</a>
+			</div><br><br>
 	</div><br><br>
 {% endblock %}
