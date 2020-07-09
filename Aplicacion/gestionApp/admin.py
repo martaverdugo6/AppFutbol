@@ -23,11 +23,11 @@ class PlantillaAdmin(admin.ModelAdmin):
 	search_fields=("usuario",)
 
 class MercadoAdmin(admin.ModelAdmin):
-	list_display=("liga_mercado","jugador_mercado")
-	search_fields=("liga_mercado","jugador_mercado")
+	list_display=("liga_mercado","jugador_mercado","fecha_increso")
+	search_fields=("liga_mercado","jugador_mercado","fecha_increso")
 
 class PujaAdmin(admin.ModelAdmin):
-	list_display=("pujador","jugador","cantidad")
+	list_display=("pujador","jugador","cantidad","liga_puja")
 	search_fields=("pujador","jugador")
 
 admin.site.register(Usuario, UsuarioAdmin)

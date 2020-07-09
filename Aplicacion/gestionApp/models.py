@@ -74,7 +74,7 @@ class Puja(models.Model):
 	pujador = models.ForeignKey(Usuario, on_delete=models.CASCADE)
 	jugador = models.ForeignKey(Jugador, on_delete=models.CASCADE)
 	cantidad = models.IntegerField()
-	liga = models.ForeignKey(Liga, on_delete=models.CASCADE)
+	liga_puja = models.ForeignKey(Liga, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return '%s ha pujado %s por %s' % (self.pujador, self.cantidad, self.jugador)
