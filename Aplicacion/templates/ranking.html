@@ -8,7 +8,13 @@
 </head>
 
 <body>
-
+	{% block jumbotron %}
+		<div class="jumbotron">
+			<h1>BIENVENID@</h1>
+			<p class="lead">Somos la mejor aplicación de futbol. ¿Aun no tienes cuenta? Puedes registrarte aquí</p>
+			<a class="btn btn-lg btn-primary" href="{% url 'registro' %}" role="button">Regístrate &raquo;</a>
+		</div>
+	{% endblock %}
 	<h1>RANKING GLOBAL DE JUGADORES</h1>
 	
 	<table id="tabla_ranking">

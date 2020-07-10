@@ -3,8 +3,10 @@
 
 {% block head_title %}Sesión cerrada{% endblock %}
 {% block content %}
-    <div >
-        <h3>Sesión finalizada.</h3>
-        <p><a href="{% url 'inicioSesion' %}">Volver a iniciar de sesión</a></p>
+    <div class="center-align" style="margin-top: 2%;">
+        <h1>Sesión finalizada.</h1>
+        <div style="font-size: 20px;">
+            <p><a href="{% url 'inicioSesion' %}">Volver a iniciar de sesión</a></p>
+        </div>
     </div>
 {% endblock %}

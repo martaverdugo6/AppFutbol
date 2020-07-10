@@ -246,23 +246,24 @@ def fuera_del_mercado(username):
 			#eliminar_pujas = Puja.objects.filter(jugador = my_jugador, liga_puja = i.liga_mercado)			#pujas relacionadas con el jugador que va a salir del mercado
 			#print(eliminar_pujas)
 
-			puja_superior = Puja.objects.filter(jugador=my_jugador).order_by("-cantidad")[0]		#mayor puja de cada jugador
+			existe_puja = Puja.objects.filter(jugador=my_jugador)		#Comprobamos que al menos haya una puja realizada por el jugador 
+			if existe_puja:			#si nadie ha pujado por el jug solo lo eliminamos del mercado, sin hacer el cambio de propietario y sin cambiar los presupuestos de los usuarios
+				puja_superior = Puja.objects.filter(jugador=my_jugador).order_by("-cantidad")[0]	#ya sabemos que al menos una puja hay, cogemos la mayor en caso de haber varias
+				lineas_clase_liga = Liga.objects.filter(nombre=i.liga_mercado.nombre)		#busco los usuarios de la misma liga que el jugador que queremos eliminar del mercado
+				
+				for j in lineas_clase_liga:				#recorremos todos los usuarios para ver cual tiene como jugador el que acabamos de vender
+					quitar_de_plantilla = Plantilla.objects.filter(usuario = j.usuario, jugador = my_jugador)
+					if quitar_de_plantilla:
+						quitar_de_plantilla.delete()
+						j.usuario.presupuesto = j.usuario.presupuesto + puja_superior.cantidad			#sumar el dinero de la venta del jugador
+						j.usuario.save()
 
-			lineas_clase_liga = Liga.objects.filter(nombre=i.liga_mercado.nombre)		#busco los usuarios de la misma liga que el jugador que queremos eliminar del mercado
-			
-			for j in lineas_clase_liga:				#recorremos todos los usuarios para ver cual tiene como jugador el que acabamos de vender
-				quitar_de_plantilla = Plantilla.objects.filter(usuario = j.usuario, jugador = my_jugador)
-				if quitar_de_plantilla:
-					quitar_de_plantilla.delete()
-					j.usuario.presupuesto = j.usuario.presupuesto + puja_superior.cantidad			#sumar el dinero de la venta del jugador
-					j.usuario.save()
 
-
-			pujador_win = puja_superior.pujador
-			pujador_win.presupuesto = pujador_win.presupuesto - puja_superior.cantidad		#Quitarle el dinero que le ha costado el jugador de su presupuesto
-			pujador_win.save()
-			añadir_a_plantilla= Plantilla(seleccion='NO SELECCIONADO', usuario=pujador_win ,jugador=my_jugador)	#asignamos el jugador a su nuevo usuario
-			añadir_a_plantilla.save()	
+				pujador_win = puja_superior.pujador
+				pujador_win.presupuesto = pujador_win.presupuesto - puja_superior.cantidad		#Quitarle el dinero que le ha costado el jugador de su presupuesto
+				pujador_win.save()
+				añadir_a_plantilla= Plantilla(seleccion='NO SELECCIONADO', usuario=pujador_win ,jugador=my_jugador)	#asignamos el jugador a su nuevo usuario
+				añadir_a_plantilla.save()	
 
 			#eliminar_pujas.delete()
 			jugadorOutMercado.delete()

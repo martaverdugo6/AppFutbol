@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-	<a class="navbar-brand mr-auto mr-lg-0" href="#"><img src="../Aplicacion/static/img/icon.png"></a>
+	<a class="navbar-brand mr-auto mr-lg-0" href="#"><!--<img src="../Aplicacion/static/img/icon.png">--> FUTBOLMANIA</a>
 	<button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
 	  <span class="navbar-toggler-icon"></span>
 	</button>
@@ -8,13 +8,13 @@
 		{% if username %}
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item {% if request.path == '/inicio/' %} active {% endif %}">
-				<a class="nav-link" href="{% url 'inicio' %}">Inicio <span class="sr-only">(current)</span></a>
+				<a class="nav-link" href="{% url 'inicio' %}"><i class="fa fa-fw fa-home"></i> Inicio <span class="sr-only">(current)</span></a>
 			</li>
 			<li class="nav-item {% if request.path == '/clasificacion/' or request.path == '/mercado/'  %} active {% endif %}" id="dropdown">
 				<a class="nav-link">Liga</a>
 				<ul id="submenu_liga">
-					<li><a class="nav-link" href="/clasificacion">Clasificación</a></li>
-					<li><a class="nav-link" href="/mercado">Mercado</a></li>
+					<li><a class="nav-link" href="/clasificacion"><i class="fas fa-users"></i> Clasificación</a></li>
+					<li><a class="nav-link" href="/mercado"><i class="far fa-money-bill-alt"></i> Mercado</a></li>
 				</ul>
 			</li>
 			<li class="nav-item {% if request.path == '/miEquipo/' %} active {% endif %}">
@@ -26,10 +26,10 @@
 		</ul>
 		<ul class = " navbar-nav mr-right ">
 			<li class = "nav-item {% if request.path == '/perfil/' %} active {% endif %}">
-				<a class="nav-link" href="{% url 'perfil' %}">{{username}}</a>
+				<a class="nav-link" href="{% url 'perfil' %}"><i class="fas fa-user"></i> {{username}}</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="{% url 'finSesion' %}">Cerrar sesión</a>
+				<a class="nav-link" href="{% url 'finSesion' %}"><i class="fas fa-power-off"></i> Cerrar sesión</a>
 			</li>
 		</ul>
 		{% endif %}
