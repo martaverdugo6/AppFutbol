@@ -3,7 +3,6 @@ from django import forms
 from gestionApp.models import Usuario,Liga
 
 class form_alta_usuario(forms.ModelForm):
-	#password = forms.CharField(widget=forms.PasswordInput)
 	class Meta:
 		model = Usuario
 
@@ -20,11 +19,13 @@ class form_alta_usuario(forms.ModelForm):
 			'mi_equipo': 'Nombre de equipo',
 			'password': 'Contraseña',
 		}
+		widgets = {
+     		'password': forms.PasswordInput()
+        }
 
 
 
 class form_login_usuario(forms.ModelForm):
-	password = forms.CharField(widget=forms.PasswordInput)
 	class Meta:
 		model = Usuario
 
@@ -37,11 +38,22 @@ class form_login_usuario(forms.ModelForm):
 			'username': 'Nombre de usuario',
 			'password': 'Contraseña',
 		}
+		widgets = {
+     		'password': forms.PasswordInput()
+        }
 
 
 class form_cambio_password(forms.Form):
 	Contraseña_actual=forms.CharField(widget=forms.PasswordInput)
 	Nueva_contraseña=forms.CharField(widget=forms.PasswordInput)
+
+class form_cambio_email(forms.Form):
+	Email_actual=forms.EmailField()
+	Nuevo_email=forms.EmailField()
+
+class form_cambio_equipo(forms.Form):
+	Nombre_actual_del_equipo=forms.CharField(max_length=30)
+	Nuevo_nombre_para_el_equipo=forms.CharField(max_length=30)
 
 class form_liga(forms.ModelForm):
 

@@ -2,13 +2,13 @@ from random import randint
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from gestionApp.models import Usuario, Jugador, Plantilla, Liga, Mercado, Puja
-from gestionApp.forms import form_alta_usuario, form_login_usuario, form_liga, form_cambio_password
+from gestionApp.forms import form_alta_usuario, form_login_usuario, form_liga, form_cambio_password, form_cambio_email, form_cambio_equipo
 from django.template import loader
 from django.core.mail import send_mail
 from django.conf import settings
 from datetime import datetime						#para añadir la hora actual
 import datetime
-from django.utils import timezone
+from django.utils import timezone					#para añadir la hora actual
 
 # Create your views here.
 
@@ -110,6 +110,54 @@ def cambiarContrasenya(request):
 				else:
 					return render(request, "cambio_password.html",{'username':username,'form':form,'msgFracaso':msgFracaso})
 		return render(request, "cambio_password.html",{'username':username,'form':form})
+	else:
+		return HttpResponseRedirect('/inicioSesion')
+
+def cambiarEmail(request):
+	username = request.session.get("user_logeado")
+	form=form_cambio_email()
+	if username:
+		if request.method =='POST':	
+			form = form_cambio_email(request.POST)
+			if form.is_valid():
+				email = request.POST.get('Email_actual')
+				new_email = request.POST.get('Nuevo_email')
+				my_user = Usuario.objects.filter(username=username,email=email)
+				msgFracaso="El email actual no es correcto"
+				if my_user:
+					usuario = my_user.first()
+					usuario.email=new_email
+					usuario.save()
+					form=form_cambio_email()
+					msgExito="Email cambiado con exito"
+					return render(request, "cambio_email.html",{'username':username,'form':form,'msgExito':msgExito})
+				else:
+					return render(request, "cambio_email.html",{'username':username,'form':form,'msgFracaso':msgFracaso})
+		return render(request, "cambio_email.html",{'username':username,'form':form})
+	else:
+		return HttpResponseRedirect('/inicioSesion')
+
+def cambiarEquipo(request):
+	username = request.session.get("user_logeado")
+	form=form_cambio_equipo()
+	if username:
+		if request.method =='POST':	
+			form = form_cambio_equipo(request.POST)
+			if form.is_valid():
+				equipo = request.POST.get('Nombre_actual_del_equipo')
+				new_equipo = request.POST.get('Nuevo_nombre_para_el_equipo')
+				my_user = Usuario.objects.filter(username=username,mi_equipo=equipo)
+				msgFracaso="El nombre del equipo no es correcto"
+				if my_user:
+					usuario = my_user.first()
+					usuario.mi_equipo=new_equipo
+					usuario.save()
+					form=form_cambio_equipo()
+					msgExito="Nombre del equipo cambiado con exito"
+					return render(request, "cambio_equipo.html",{'username':username,'form':form,'msgExito':msgExito})
+				else:
+					return render(request, "cambio_equipo.html",{'username':username,'form':form,'msgFracaso':msgFracaso})
+		return render(request, "cambio_equipo.html",{'username':username,'form':form})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 
@@ -331,7 +379,7 @@ def jugadorAlMercado(request,id):
 		return HttpResponseRedirect('/inicioSesion')
 
 	
-def infoJugador(request,id):
+def infoJugador(request,id):				#Vista cuando pulsamos en el nombre de un jugador
 	username = request.session.get("user_logeado")
 	my_user = Usuario.objects.filter(username=username)
 	if username:
@@ -343,7 +391,7 @@ def infoJugador(request,id):
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 	
-def otrosUsuarios(request, nombre):
+def otrosUsuarios(request, nombre):			#Vista del perfil de otro usuario que no es el que está logueado actualmente
 	username = request.session.get("user_logeado")
 	if username:
 		my_user = Usuario.objects.filter(username=nombre).first()
