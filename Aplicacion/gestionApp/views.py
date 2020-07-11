@@ -291,9 +291,6 @@ def fuera_del_mercado(username):
 			jugadorOutMercado = Mercado.objects.get(liga_mercado=i.liga_mercado,jugador_mercado=i.jugador_mercado)
 			my_jugador = jugadorOutMercado.jugador_mercado
 
-			#eliminar_pujas = Puja.objects.filter(jugador = my_jugador, liga_puja = i.liga_mercado)			#pujas relacionadas con el jugador que va a salir del mercado
-			#print(eliminar_pujas)
-
 			existe_puja = Puja.objects.filter(jugador=my_jugador)		#Comprobamos que al menos haya una puja realizada por el jugador 
 			if existe_puja:			#si nadie ha pujado por el jug solo lo eliminamos del mercado, sin hacer el cambio de propietario y sin cambiar los presupuestos de los usuarios
 				puja_superior = Puja.objects.filter(jugador=my_jugador).order_by("-cantidad")[0]	#ya sabemos que al menos una puja hay, cogemos la mayor en caso de haber varias
@@ -313,7 +310,11 @@ def fuera_del_mercado(username):
 				añadir_a_plantilla= Plantilla(seleccion='NO SELECCIONADO', usuario=pujador_win ,jugador=my_jugador)	#asignamos el jugador a su nuevo usuario
 				añadir_a_plantilla.save()	
 
-			#eliminar_pujas.delete()
+			usuarios_pujantes = Liga.objects.filter(nombre = i.liga_mercado.nombre)
+			for x in usuarios_pujantes:					#cada x una fila de la liga del jug que se va a eliminar
+				puja_por_jug = Puja.objects.filter(pujador = x.usuario, jugador = my_jugador)
+				puja_por_jug.delete()
+			
 			jugadorOutMercado.delete()
 
 	
