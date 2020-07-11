@@ -4,22 +4,26 @@
 
 {% block content %}
 
-    <h1 style="text-align: center">LIGA {{nombre_liga}}</h1>
-    <h2 style="text-align: center">MERCADO</h2>
+    <h1 class="center-align">LIGA {{nombre_liga}}</h1>
+    <h2 class="center-align">MERCADO</h2>
+    <br>
+        <p class="center-align" style="background-color: #FCCA46; width: 60%; margin-left: 20%; padding: 1%;">Los jugadores estarán en el mercado 2 DÍAS</p>
     <br>
     <table id="tabla_mercado">
         <tr id="contenido_titulo">
             <td><b>Nombre</b></td>
             <td><b>Apellidos</b></td>
             <td><b>Equipo</b></td>
+            <td><b>Ingreso en el mercado</b></td>
             <td><b>Puja más alta</b></td>
-            <td><b>Tiempo restante</b></td>
+            
         </tr>
         {% for i in jugadores_en_el_mercado %}
             <tr id="contenido_tabla">
                 <td><a href="/jugador/{{i.jugador_mercado.id}}">{{i.jugador_mercado.nombre}}</a></td>
                 <td>{{i.jugador_mercado.apellidos}}</td>
                 <td>{{i.jugador_mercado.equipo}}</td>
+                <td>{{i.fecha_ingreso}}</td>
                 {% for j in pujas %}
                     {% ifequal j.jugador.id i.jugador_mercado.id %}
                         <td>{{j.cantidad}} por {{j.pujador}}</td>
@@ -28,7 +32,7 @@
                         <!--<td><i>No hay puja</i></td>-->
                     {% endifnotequal %}
                 {% endfor %}
-                <td>tiempo restante</td>
+                
                 <form method="post" action="."> {% csrf_token %}
                     <td><input type="number" id="puja" name="puja"></td>
                     <td>

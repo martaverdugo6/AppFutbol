@@ -286,7 +286,7 @@ def fuera_del_mercado(username):
 	obj_mercado = Mercado.objects.all()
 	ahora = timezone.now()
 	for i in obj_mercado:
-		caducidadDelJug = i.fecha_increso + datetime.timedelta(days=2)		#El jugador sale del marcado 2 días después de ingresar
+		caducidadDelJug = i.fecha_ingreso + datetime.timedelta(days=2)		#El jugador sale del marcado 2 días después de ingresar
 		if ahora > caducidadDelJug:											#Si la fecha actual es posterior a la de "caducidad" del jugador en el mercado
 			jugadorOutMercado = Mercado.objects.get(liga_mercado=i.liga_mercado,jugador_mercado=i.jugador_mercado)
 			my_jugador = jugadorOutMercado.jugador_mercado
@@ -325,14 +325,31 @@ def mercado(request):
 		my_user = Usuario.objects.get(username=username)						#usuario con nombre username
 		users = Liga.objects.filter(nombre=nombre_liga)							#lista de ligas con nombre de la liga de my_user
 		jugadores_en_el_mercado = []
+		j = 0
 		for usuarios in users:
 			nombre_usuario = usuarios.usuario
 			la_liga = Liga.objects.filter(usuario=nombre_usuario)
 			aux = Mercado.objects.filter(liga_mercado__in=la_liga)
 			for i in aux:
-				jugadores_en_el_mercado.append(i)			#filas del model mercado
+				jugadores_en_el_mercado.append(i)			#cada i es una filasa de la clase mercado filtrada por la liga del user logueado
 				#print(jugadores_en_el_mercado)
-			
+				#ahora = timezone.now() #caducidadDelJug = i.fecha_ingreso + datetime.timedelta(days=2)
+				#caducidad_jug = (i.fecha_ingreso + datetime.timedelta(days=2)) - ahora		#caducidad_jug guarda el tiempo que queda para que el jugador salga del mercado
+				#dic_jug_caducidad = {}
+				#dias = caducidad_jug.days
+				#minutos =  caducidad_jug.seconds // 60
+				#horas = caducidad_jug.seconds // 3600
+				#fecha_cad = []								#creo lista para añadir día, hora y minuto
+				#fecha_cad.append(dias)
+				#fecha_cad.append(horas)
+				#fecha_cad.append(minutos)
+				#print(j)
+				#dic_jug_caducidad[j] = fecha_cad
+				#j=j+1
+				#print(j)
+				#print(dic_jug_caducidad)
+				
+				
 		if request.method=="POST":
 			if request.POST.get('puja'):
 				puja = request.POST.get('puja')
@@ -350,6 +367,7 @@ def mercado(request):
 			if Puja.objects.filter(jugador=jug.jugador_mercado):
 				pujas_aux = Puja.objects.filter(jugador=jug.jugador_mercado).order_by("-cantidad")[0]
 				pujas.append(pujas_aux)
+		
 		
 		return render(request, "mercado.html", {'username':username,'jugadores_en_el_mercado':jugadores_en_el_mercado,'nombre_liga':nombre_liga,'pujas':pujas})
 	else:
@@ -370,7 +388,7 @@ def jugadorAlMercado(request,id):
 		if request.method=="POST":
 			mensaje_de_error="El jugador ya está añadido, no puede añadirlo de nuevo."
 			if (len(jugadorRepetido) == 0):
-				obj = Mercado(liga_mercado=my_liga.first(),jugador_mercado=mi_jugador,fecha_increso=datetime.datetime.utcnow())
+				obj = Mercado(liga_mercado=my_liga.first(),jugador_mercado=mi_jugador,fecha_ingreso=datetime.datetime.utcnow())
 				obj.save()
 				jugadorAñadido=True
 			return render(request, "jugador_al_mercado.html",{'username':username,'mi_jugador':mi_jugador,'jugadorAñadido':jugadorAñadido,'mensaje_de_error':mensaje_de_error})

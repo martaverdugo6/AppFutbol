@@ -23,8 +23,8 @@ class PlantillaAdmin(admin.ModelAdmin):
 	search_fields=("usuario",)
 
 class MercadoAdmin(admin.ModelAdmin):
-	list_display=("liga_mercado","jugador_mercado","fecha_increso")
-	search_fields=("liga_mercado","jugador_mercado","fecha_increso")
+	list_display=("liga_mercado","jugador_mercado","fecha_ingreso")
+	search_fields=("liga_mercado","jugador_mercado","fecha_ingreso")
 
 class PujaAdmin(admin.ModelAdmin):
 	list_display=("pujador","jugador","cantidad","liga_puja")

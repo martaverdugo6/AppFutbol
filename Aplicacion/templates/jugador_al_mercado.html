@@ -16,7 +16,7 @@
         <h1 class="center-align">Añadir al mercado</h1><br>
 
         <h3 class="center-align">¿Estás segur@ que quieres poner a {{mi_jugador.nombre}} {{mi_jugador.apellidos}} en el mercado?</h3><br>
-        <p class="center-align" style="width: 70%; margin-left: 15%; background-color: #FCCA46;">El jugador estará dos días en el mercado. Después de ese periodo pasará a ser parte de la plantilla del usuario que más puje por él. En caso de no haber ninguna puja el jugador seguirá perteneciendo a su plantilla </p>
+        <p class="center-align" style="width: 70%; margin-left: 15%; background-color: #FCCA46;">El jugador estará dos días en el mercado. Después de ese periodo pasará a ser parte de la plantilla del usuario que más puje por él. En caso de no haber ninguna puja el jugador seguirá perteneciendo a su plantilla </p><br>
         <div style="text-align: center;">
             <form action="/mercado/{{mi_jugador.id}}" method="POST">{% csrf_token %}
                 <input class="btn btn-outline-success" type="submit" value="Añadir"/>

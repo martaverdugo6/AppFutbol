@@ -14,7 +14,7 @@
 					{{ form|crispy }}
 					<input class="btn btn-primary" type="submit" value="Entrar"/>
 				</form><br>
-				<p style="font-size: 18px;">¿Aún no tienes cuenta? <a href="{% url 'registro' %}">Registrate</a></p>
+				<p style="font-size: 18px;">¿Aún no tienes cuenta? <a href="{% url 'registro' %}">Regístrate</a></p>
 			</div>
 		</div><br>
 	</div> 
@@ -22,6 +22,9 @@
 	<div style="background-color: #FCCA46 ; height: 150px; padding: 2%;"> <!--#FE7F2D-->
 		<div style="width: 50%; float: right;">
 			<h5><u>Redes sociales</u></h5>
+			<p><i class="fab fa-facebook-square"></i><img src="../Aplicacion/static/img/facebook.png"></p>
+			<p><i class="fab fa-twitter"></i></p>   
+			<p><i class="fab fa-instagram"></i></p>
 		</div>
 		<div style="width: 50%;">	
 			<h5><u>Contacto</u></h5>
@@ -29,4 +32,5 @@
 			<p><i class="far fa-envelope"></i> Correo electronico:</p>
 		</div>
 	</div>
+	<p class="center-align">&copy; MARTA VERDUGO</p>
 {% endblock %}
