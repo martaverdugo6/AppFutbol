@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% load crispy_forms_tags %}
 
 {% block head_title %}Inicio de sesión{% endblock %}
@@ -19,17 +20,18 @@
 		</div><br>
 	</div> 
 	<br><br>
-	<div style="background-color: #FCCA46 ; height: 150px; padding: 2%;"> <!--#FE7F2D-->
-		<div style="width: 50%; float: right;">
+	<div style="background-color: #FCCA46 ; height: auto; padding: 2%;"> <!--#FE7F2D-->
+		<div class="redesSociales" >
 			<h5><u>Redes sociales</u></h5>
-			<p><i class="fab fa-facebook-square"></i><img src="../Aplicacion/static/img/facebook.png"></p>
-			<p><i class="fab fa-twitter"></i></p>   
-			<p><i class="fab fa-instagram"></i></p>
+			<a title="Facebook" target="_blank" href="https://www.facebook.com"><img src="{% static 'img/facebook.png' %}"/></a>
+			<a title="Twitter" target="_blank" href="https://twitter.com/"><img src="{% static 'img/twitter.png' %}" /></a>
+			<a title="Instagram" target="_blank" href="https://www.instagram.com"><img src="{% static 'img/instagram.png' %}" /></a>
 		</div>
 		<div style="width: 50%;">	
 			<h5><u>Contacto</u></h5>
 			<p><i class="fas fa-phone"></i> Telefono:</p>
 			<p><i class="far fa-envelope"></i> Correo electronico:</p>
+			<p><i class="fas fa-map-marker-alt"></i> Ubicación:</p>
 		</div>
 	</div>
 	<p class="center-align">&copy; MARTA VERDUGO</p>

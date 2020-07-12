@@ -70,7 +70,13 @@ def sobre_nosotros(request):
 		return render(request, "sobre_nosotros.html", {'username':username})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
-	
+
+def ayuda(request):
+	username = request.session.get("user_logeado")
+	if username:
+		return render(request, "ayuda.html", {'username':username})
+	else:
+		return HttpResponseRedirect('/inicioSesion')
 
 def liga(request):
 	username = request.session.get("user_logeado")
@@ -263,8 +269,12 @@ def miEquipo(request):
 	username = request.session.get("user_logeado")
 	my_user = Usuario.objects.get(username=username)
 	if username:
-		my_plantilla = Plantilla.objects.filter(usuario=my_user)
-		return render(request, "mi_equipo.html",{'my_user':my_user,'username':username, 'my_plantilla':my_plantilla})
+		my_plantilla_no_seleccionada = Plantilla.objects.filter(usuario=my_user, seleccion='NO SELECCIONADO')
+		print(my_plantilla_no_seleccionada)
+		my_plantilla_seleccionada = Plantilla.objects.filter(usuario=my_user, seleccion='SELECCIONADO')
+		print(my_plantilla_seleccionada)
+
+		return render(request, "mi_equipo.html",{'my_user':my_user,'username':username, 'my_plantilla_no_seleccionada':my_plantilla_no_seleccionada, 'my_plantilla_seleccionada':my_plantilla_seleccionada})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 

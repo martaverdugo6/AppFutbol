@@ -3,34 +3,49 @@
 {% block head_title %}{{my_user.mi_equipo}}{% endblock %}
 
 {% block content %}
-    <h1 style="text-align: center;">{{my_user.mi_equipo}}</h1>
+    <h1 class="center-align">{{my_user.mi_equipo}}</h1>
     <br>
-    <table id="tabla_jugadores">
+    <table id="tabla_jugadores_NS">
+        <caption>JUGADORES NO SELECCIONADOS</caption>
         <tr id="contenido_titulo">
-            <td><b>Nombre</b></td>
-            <td><b>Apellidos</b></td>
-            <td><b>Equipo</b></td>
+            <td><b>Jugador</b></td>
             <td><b>Posición</b></td>
-            <td><b>Puntuación</b></td>
-            <td><b>Selección</b></td>
+            <td><b>Puntos</b></td>
         </tr>
-        {% for jug in my_plantilla %}
+        {% for jugNS in my_plantilla_no_seleccionada %}
             <tr id="contenido_tabla">
-                <td><a href="/jugador/{{jug.jugador.id}}">{{jug.jugador.nombre}}</a></td>
-                <td>{{jug.jugador.apellidos}}</td>
-                <td>{{jug.jugador.equipo}}</td>
-                <td>{{jug.jugador.posicion}}</td>
-                <td>{{jug.jugador.puntuacion}} puntos</td>
+                <td><a href="/jugador/{{jugNS.jugador.id}}">{{jugNS.jugador.nombre}} {{jugNS.jugador.apellidos}} </a>({{jugNS.jugador.equipo}})</td>
+                {% if jugNS.jugador.posicion == 'CENTROCAMPISTA' %}
+                    <td>CENTRO</td>
+                {% else %}
+                    <td>{{jugNS.jugador.posicion}}</td>
+                {% endif %}
+                <td>{{jugNS.jugador.puntuacion}} ptos</td>
                 <td>
-                    <!--<form method="post" action="." onchange> {% csrf_token %}-->
-                        <select>
-                            <option value="NO SELECCIONADO">NO SELECCIONADO</option>
-                            <option value="SELECCIONADO">SELECCIONADO</option>
-                        </select>    
-                    <!--</form>-->
+                    <a class="btn btn-outline-danger mt-1" href="/mercado/{{jugNS.jugador.id}}" role="button">Añadir al mercado</a>
                 </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <table id="tabla_jugadores_S">
+        <caption>JUGADORES SELECCIONADOS</caption>
+        <tr id="contenido_titulo">
+            <td><b>Jugador</b></td>
+            <td><b>Posición</b></td>
+            <td><b>Puntos</b></td>
+        </tr>
+        {% for jugS in my_plantilla_seleccionada %}
+            <tr id="contenido_tabla">
+                <td><a href="/jugador/{{jugS.jugador.id}}">{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}} </a>({{jugS.jugador.equipo}})</td>
+                
+                {% if jugS.jugador.posicion == 'CENTROCAMPISTA' %}
+                    <td>CENTRO</td>
+                {% else %}
+                    <td>{{jugS.jugador.posicion}}</td>
+                {% endif %}
+                <td>{{jugS.jugador.puntuacion}} ptos</td>
                 <td>
-                    <a class="btn btn-outline-danger mt-1" href="/mercado/{{jug.jugador.id}}" role="button">Añadir al mercado</a>
+                    <a class="btn btn-outline-danger mt-1" href="/mercado/{{jugS.jugador.id}}" role="button">Añadir al mercado</a>
                 </td>
             </tr>
         {% endfor %}
