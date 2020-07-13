@@ -269,10 +269,25 @@ def miEquipo(request):
 	username = request.session.get("user_logeado")
 	my_user = Usuario.objects.get(username=username)
 	if username:
+		if request.method=="POST":
+			id_jug = request.POST.get('jug')
+			this_jugador = Jugador.objects.filter(id = id_jug).first()
+			jug_plantilla = Plantilla.objects.filter(usuario = my_user, jugador = this_jugador).first()
+			if jug_plantilla.seleccion == 'SELECCIONADO':
+				print(jug_plantilla)
+				jug_plantilla.seleccion = 'NO SELECCIONADO'
+				jug_plantilla.save()
+				print(jug_plantilla)
+			else:
+				print(jug_plantilla)
+				jug_plantilla.seleccion = 'SELECCIONADO'
+				jug_plantilla.save()
+				print(jug_plantilla)
+
 		my_plantilla_no_seleccionada = Plantilla.objects.filter(usuario=my_user, seleccion='NO SELECCIONADO')
-		print(my_plantilla_no_seleccionada)
+		#print(my_plantilla_no_seleccionada)
 		my_plantilla_seleccionada = Plantilla.objects.filter(usuario=my_user, seleccion='SELECCIONADO')
-		print(my_plantilla_seleccionada)
+		#print(my_plantilla_seleccionada)
 
 		return render(request, "mi_equipo.html",{'my_user':my_user,'username':username, 'my_plantilla_no_seleccionada':my_plantilla_no_seleccionada, 'my_plantilla_seleccionada':my_plantilla_seleccionada})
 	else:
@@ -429,7 +444,15 @@ def otrosUsuarios(request, nombre):			#Vista del perfil de otro usuario que no e
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 
-
+def jugadores(request):
+	username = request.session.get("user_logeado")
+	my_user = Usuario.objects.get(username=username)
+	if username:
+		my_plantilla = Plantilla.objects.filter(usuario=my_user)
+		#print(my_plantilla)
+		return render(request, "jugadores.html", {'username':username, 'my_plantilla':my_plantilla})
+	else:
+		return HttpResponseRedirect('/inicioSesion')
 
 
 def ranking(request):

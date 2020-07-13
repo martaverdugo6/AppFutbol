@@ -5,8 +5,15 @@
 {% block content %}
     <h1 class="center-align">{{my_user.mi_equipo}}</h1>
     <br>
+    <div style="margin-bottom: 2%;">
+        <div style="float: right; width: 50%;">
+            <h4 class="center-align">JUGADORES NO SELECCIONADOS</h4>
+        </div>
+        <div style="width: 50%;">
+            <h4 class="center-align">JUGADORES SELECCIONADOS</h4>
+        </div>
+    </div>
     <table id="tabla_jugadores_NS">
-        <caption>JUGADORES NO SELECCIONADOS</caption>
         <tr id="contenido_titulo">
             <td><b>Jugador</b></td>
             <td><b>Posición</b></td>
@@ -22,13 +29,15 @@
                 {% endif %}
                 <td>{{jugNS.jugador.puntuacion}} ptos</td>
                 <td>
-                    <a class="btn btn-outline-danger mt-1" href="/mercado/{{jugNS.jugador.id}}" role="button">Añadir al mercado</a>
+                    <form action="/miEquipo/" method="post">{% csrf_token %}
+                        <input type="hidden" name="jug" value="{{jugNS.jugador.id}}"/>  
+                        <input style="padding:2%; font-size: 14px;" class="btn btn-outline-danger mt-1" type="submit" value="Seleccionar"/>
+                    </form>
                 </td>
             </tr>
         {% endfor %}
     </table>
     <table id="tabla_jugadores_S">
-        <caption>JUGADORES SELECCIONADOS</caption>
         <tr id="contenido_titulo">
             <td><b>Jugador</b></td>
             <td><b>Posición</b></td>
@@ -36,17 +45,20 @@
         </tr>
         {% for jugS in my_plantilla_seleccionada %}
             <tr id="contenido_tabla">
-                <td><a href="/jugador/{{jugS.jugador.id}}">{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}} </a>({{jugS.jugador.equipo}})</td>
-                
-                {% if jugS.jugador.posicion == 'CENTROCAMPISTA' %}
-                    <td>CENTRO</td>
-                {% else %}
-                    <td>{{jugS.jugador.posicion}}</td>
-                {% endif %}
-                <td>{{jugS.jugador.puntuacion}} ptos</td>
-                <td>
-                    <a class="btn btn-outline-danger mt-1" href="/mercado/{{jugS.jugador.id}}" role="button">Añadir al mercado</a>
-                </td>
+                    <td><a href="/jugador/{{jugS.jugador.id}}">{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}} </a>({{jugS.jugador.equipo}})</td>
+                    
+                    {% if jugS.jugador.posicion == 'CENTROCAMPISTA' %}
+                        <td>CENTRO</td>
+                    {% else %}
+                        <td>{{jugS.jugador.posicion}}</td>
+                    {% endif %}
+                    <td>{{jugS.jugador.puntuacion}} ptos</td>
+                    <td> 
+                        <form action="/miEquipo/" method="post">{% csrf_token %}
+                            <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
+                            <input style="padding:2%; font-size: 14px;" class="btn btn-outline-danger mt-1" type="submit" value="No seleccionar"/>
+                        </form>
+                    </td>
             </tr>
         {% endfor %}
     </table>

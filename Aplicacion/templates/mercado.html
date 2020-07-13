@@ -7,12 +7,14 @@
     <h1 class="center-align">LIGA {{nombre_liga}}</h1>
     <h2 class="center-align">MERCADO</h2>
     <br>
-        <p class="center-align" style="background-color: #FCCA46; width: 60%; margin-left: 20%; padding: 1%;">Los jugadores estarán en el mercado 2 DÍAS</p>
+    <div class="center-align">
+        <a class="btn btn-danger mt-1" href="/jugadores/" role="button">Añadir jugadores al mercado</a>
+    </div><br><br>
+    <p class="center-align" style="background-color: #FCCA46; width: 60%; margin-left: 20%; padding: 1%;"><i class="fas fa-info-circle"></i> Los jugadores estarán en el mercado 2 DÍAS</p>
     <br>
     <table id="tabla_mercado">
         <tr id="contenido_titulo">
-            <td><b>Nombre</b></td>
-            <td><b>Apellidos</b></td>
+            <td><b>Jugador</b></td>
             <td><b>Equipo</b></td>
             <td><b>Ingreso en el mercado</b></td>
             <td><b>Puja más alta</b></td>
@@ -20,8 +22,7 @@
         </tr>
         {% for i in jugadores_en_el_mercado %}
             <tr id="contenido_tabla">
-                <td><a href="/jugador/{{i.jugador_mercado.id}}">{{i.jugador_mercado.nombre}}</a></td>
-                <td>{{i.jugador_mercado.apellidos}}</td>
+                <td><a href="/jugador/{{i.jugador_mercado.id}}">{{i.jugador_mercado.nombre}} {{i.jugador_mercado.apellidos}}</a></td>
                 <td>{{i.jugador_mercado.equipo}}</td>
                 <td>{{i.fecha_ingreso}}</td>
                 {% for j in pujas %}

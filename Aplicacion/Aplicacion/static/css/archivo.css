@@ -35,15 +35,21 @@ body{
     width: 80%;
     margin-left: 10%;
 }
+#tabla_jugadores{
+    width: 80%;
+    margin-left: 10%;
+}
 #tabla_jugadores_S{
-    margin-left: 3%;
-    width: 45%;
+    margin-left: 1%;
+    width: 47%;
+    font-size: 15px;
 }
 
 #tabla_jugadores_NS{
-    margin-left: 3%;
+    margin-right: 1%;
     float: right;
-    width: 45%;
+    width: 47%;
+    font-size: 15px;
 }
 
 #infoJugador td{

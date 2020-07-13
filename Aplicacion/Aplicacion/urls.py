@@ -43,6 +43,7 @@ urlpatterns = [
     path('mercado/<id>', views.jugadorAlMercado, name='JugadorAlMercado'),
     path('usuario/<nombre>', views.otrosUsuarios, name='otrosUsuarios'),
     path('ayuda/', views.ayuda, name='ayuda'),
+    path('jugadores/', views.jugadores, name='jugadores'),
 
     url(r'^accounts/', include('registration.backends.default.urls')),
     #path('accounts/',views.include('registration.backends.default.urls')),
