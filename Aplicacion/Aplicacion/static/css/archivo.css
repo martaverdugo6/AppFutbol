@@ -139,3 +139,14 @@ div.opciones_perfil{
 div.opciones_perfil a{
     color: #BCD3F2;
 }
+
+.mensaje_de_error{
+    background-color: #EC0707;
+    color: white;
+    font-size: 18px;
+    width: 50%;
+    margin-left: 25%;
+    padding-top: 1%;
+    padding-bottom: 0.5%;
+    margin-bottom: 2%;
+}

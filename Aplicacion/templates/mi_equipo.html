@@ -5,6 +5,12 @@
 {% block content %}
     <h1 class="center-align">{{my_user.mi_equipo}}</h1>
     <br>
+    {% if mensaje_de_error %}
+        <div class="mensaje_de_error">
+            <p class="center-align"><i class="fas fa-exclamation-circle"></i> No se pueden añadir más de 11 jugadores a la lista de Seleccionados.</p>
+        </div>
+    {% endif%}
+    <br>
     <div style="margin-bottom: 2%;">
         <div style="float: right; width: 50%;">
             <h4 class="center-align">JUGADORES NO SELECCIONADOS</h4>
@@ -14,6 +20,7 @@
         </div>
     </div>
     <table id="tabla_jugadores_NS">
+        <caption>Total jugadores no seleccionados: {{total_no_selec}}</caption>
         <tr id="contenido_titulo">
             <td><b>Jugador</b></td>
             <td><b>Posición</b></td>
@@ -38,6 +45,7 @@
         {% endfor %}
     </table>
     <table id="tabla_jugadores_S">
+        <caption>Total jugadores seleccionados: {{total_selec}}</caption>
         <tr id="contenido_titulo">
             <td><b>Jugador</b></td>
             <td><b>Posición</b></td>

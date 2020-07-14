@@ -276,27 +276,27 @@ def clasificacion(request):
 def miEquipo(request):
 	username = request.session.get("user_logeado")
 	my_user = Usuario.objects.get(username=username)
+	mensaje_de_error = False
 	if username:
 		if request.method=="POST":
 			id_jug = request.POST.get('jug')
 			this_jugador = Jugador.objects.filter(id = id_jug).first()
 			jug_plantilla = Plantilla.objects.filter(usuario = my_user, jugador = this_jugador).first()
-			if jug_plantilla.seleccion == 'SELECCIONADO':
-				print(jug_plantilla)
+			if jug_plantilla.seleccion == 'SELECCIONADO':			#Si jugador está seleccionado, se pone a No seleccionado
 				jug_plantilla.seleccion = 'NO SELECCIONADO'
 				jug_plantilla.save()
-				print(jug_plantilla)
 			else:
-				print(jug_plantilla)
-				jug_plantilla.seleccion = 'SELECCIONADO'
-				jug_plantilla.save()
-				print(jug_plantilla)
+				if len(Plantilla.objects.filter(usuario=my_user, seleccion='SELECCIONADO')) >= 11:
+					mensaje_de_error = True
+				else:
+					jug_plantilla.seleccion = 'SELECCIONADO'
+					jug_plantilla.save()
 
 		my_plantilla_no_seleccionada = Plantilla.objects.filter(usuario=my_user, seleccion='NO SELECCIONADO')
-		#print(my_plantilla_no_seleccionada)
+		total_no_selec = len(Plantilla.objects.filter(usuario=my_user, seleccion='NO SELECCIONADO'))
 		my_plantilla_seleccionada = Plantilla.objects.filter(usuario=my_user, seleccion='SELECCIONADO')
-		#print(my_plantilla_seleccionada)
-		return render(request, "mi_equipo.html",{'my_user':my_user,'username':username, 'my_plantilla_no_seleccionada':my_plantilla_no_seleccionada, 'my_plantilla_seleccionada':my_plantilla_seleccionada})
+		total_selec = len(Plantilla.objects.filter(usuario=my_user, seleccion='SELECCIONADO'))
+		return render(request, "mi_equipo.html",{'my_user':my_user,'username':username, 'my_plantilla_no_seleccionada':my_plantilla_no_seleccionada, 'my_plantilla_seleccionada':my_plantilla_seleccionada,'mensaje_de_error':mensaje_de_error,'total_no_selec':total_no_selec,'total_selec':total_selec})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 

@@ -78,3 +78,8 @@ class Puja(models.Model):
 
 	def __str__(self):
 		return '%s ha pujado %s por %s' % (self.pujador, self.cantidad, self.jugador)
+
+class Jornada(models.Model):
+	numero_jornada = models.IntegerField()
+	jugador = models.ForeignKey(Jugador, on_delete=models.CASCADE)
+	puntos = models.IntegerField()
