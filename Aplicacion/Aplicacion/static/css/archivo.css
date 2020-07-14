@@ -109,6 +109,15 @@ div.redesSociales img{				/*Modifica las imágenes del pie de página*/
     margin-left: 15%;
     padding: 2%;
 }
+.table_ult_jor td{
+    padding-bottom: 5%;
+    text-align: center;
+    padding-left: 2%;
+    width: 33%;
+}
+.table_ult_jor{
+    width: 100%;
+}
 
 div.jornadas_inicio{
     margin-top: 2%;
@@ -118,4 +127,15 @@ div.jornadas_inicio p{
 }
 div.jornadas_inicio h4{
     margin-bottom: 10%;
+}
+
+div.opciones_perfil{
+    float: right; 
+    background-color: #395c6b;
+    width: 17%;
+    height: auto;
+    padding: 1%;
+}
+div.opciones_perfil a{
+    color: #BCD3F2;
 }

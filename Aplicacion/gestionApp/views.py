@@ -89,9 +89,17 @@ def liga(request):
 
 def perfil(request):
 	username = request.session.get("user_logeado")
+	opcionesPulsado = False
 	if username:
+		if request.method =='POST':
+			opciones = request.POST.get('opciones')
+			if opciones == "salir_opciones":
+				opcionesPulsado = False
+			else:
+				opcionesPulsado = True
+
 		my_user = Usuario.objects.filter(username=username)
-		return render(request, "perfil_user.html", {'username':username,'my_user':my_user.first()})
+		return render(request, "perfil_user.html", {'username':username,'my_user':my_user.first(), 'opcionesPulsado':opcionesPulsado})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 
@@ -288,7 +296,6 @@ def miEquipo(request):
 		#print(my_plantilla_no_seleccionada)
 		my_plantilla_seleccionada = Plantilla.objects.filter(usuario=my_user, seleccion='SELECCIONADO')
 		#print(my_plantilla_seleccionada)
-
 		return render(request, "mi_equipo.html",{'my_user':my_user,'username':username, 'my_plantilla_no_seleccionada':my_plantilla_no_seleccionada, 'my_plantilla_seleccionada':my_plantilla_seleccionada})
 	else:
 		return HttpResponseRedirect('/inicioSesion')

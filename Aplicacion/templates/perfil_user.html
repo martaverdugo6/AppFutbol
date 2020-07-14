@@ -1,14 +1,29 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block head_title %}Perfil {{my_user.username}}{% endblock %}
 
 {% block content %}
 	<div>
-		<div style="float: right; margin-right: 2%;">
-			<p><a class="btn btn-outline-secondary mt-1" href="{% url 'cambioContrasenya' %}" role="button">Cambiar contraseña</a></p>
-			<p><a class="btn btn-outline-secondary mt-1" href="{% url 'cambioEmail' %}" role="button">Cambiar email</a></p>
-			<p><a class="btn btn-outline-secondary mt-1" href="{% url 'cambioEquipo' %}" role="button">Cambiar nombre equipo</a></p>
-		</div>	
+		{% if opcionesPulsado %}
+		<div class="opciones_perfil" >
+			<p><a href="{% url 'cambioContrasenya' %}" >Cambiar contraseña</a></p>
+			<p><a href="{% url 'cambioEmail' %}" >Cambiar email</a></p>
+			<p><a href="{% url 'cambioEquipo' %}" >Cambiar nombre equipo</a></p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+			
+			<form action="/perfil/" method="post">{% csrf_token %}
+				<input type="hidden" name="opciones" value="salir_opciones"/>
+				<input class="btn btn-secondary mt-1" type="submit" value="Salir de opciones"/>
+			</form>
+		</div>
+		{% else %}
+		<div style="float: right; margin-right: 5%;">
+			<form action="/perfil/" method="post">{% csrf_token %}
+				<input type="hidden" name="opciones" value="opciones"/>
+				<input class="btn btn-outline-secondary mt-1" type="submit" value="Opciones"/>
+			</form>
+		</div>
+		{% endif %}
 		<div id="datos_user" style="background-color: #8CCF75; width: 40%; padding: 2%; margin-left: 30%; margin-top: 2%;">
 			<h3>Usuario: {{my_user.username}}</h3>
 			<h3>Email: {{my_user.email}}</h3>
