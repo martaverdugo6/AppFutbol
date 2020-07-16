@@ -4,6 +4,9 @@ from django.db import models
 from django.db import models
 
 # Create your models here.
+from django.db import models
+
+# Create your models here.
 class Usuario(models.Model):
 	username=models.CharField(max_length=50, primary_key=True) 
 	email=models.EmailField()
@@ -33,17 +36,9 @@ class Jugador(models.Model):
 	apellidos=models.CharField(max_length=80)
 	equipo=models.CharField(max_length=80)
 	posicion=models.CharField(max_length=30, choices=ELECCION_POSICION)
-	puntuacion=models.IntegerField()
 
 	def __str__(self):
 		return '%s %s, %s' % (self.nombre, self.apellidos, self.equipo) 	
-
-class Liga(models.Model):
-	nombre=models.CharField(max_length=40)
-	usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-
-	def __str__(self):
-		return 'Liga %s' % (self.nombre)
 
 class Plantilla(models.Model):
 	SELECCIONADO='SELECCIONADO'
@@ -62,9 +57,16 @@ class Plantilla(models.Model):
 	def __str__(self):
 		return '%s tiene a %s, %s' % (self.usuario, self.jugador, self.seleccion)
 
+class Liga(models.Model):
+	nombre=models.CharField(max_length=40, primary_key=True)
+	usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return 'Liga %s' % (self.nombre)
+
 class Mercado(models.Model):
-	liga_mercado = models.ForeignKey(Liga, on_delete=models.CASCADE)
-	jugador_mercado = models.ForeignKey(Jugador, on_delete=models.CASCADE)
+	liga = models.ForeignKey(Liga, on_delete=models.CASCADE)
+	jugador = models.ForeignKey(Jugador, on_delete=models.CASCADE)
 	fecha_ingreso = models.DateTimeField()
 
 	def __str__(self):
@@ -74,12 +76,25 @@ class Puja(models.Model):
 	pujador = models.ForeignKey(Usuario, on_delete=models.CASCADE)
 	jugador = models.ForeignKey(Jugador, on_delete=models.CASCADE)
 	cantidad = models.IntegerField()
-	liga_puja = models.ForeignKey(Liga, on_delete=models.CASCADE)
+	liga = models.ForeignKey(Liga, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return '%s ha pujado %s por %s' % (self.pujador, self.cantidad, self.jugador)
 
 class Jornada(models.Model):
+	SI ='SI'
+	NO='NO'
+	JORNADA_SUMADA=(
+		
+		(SI, u'SI'),
+		(NO, u'No'),
+
+	)
+
+	jornada_sumada = models.CharField(max_length=30, choices=JORNADA_SUMADA)
 	numero_jornada = models.IntegerField()
 	jugador = models.ForeignKey(Jugador, on_delete=models.CASCADE)
 	puntos = models.IntegerField()
+
+	def __str__(self):
+		return '%s ha conseguido %s puntos en la jornada %s' % (self.jugador, self.puntos, self.numero_jornada)

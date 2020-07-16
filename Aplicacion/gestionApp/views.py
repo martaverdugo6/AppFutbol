@@ -1,3 +1,6 @@
+from django.shortcuts import render
+
+# Create your views here.
 from random import randint
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
@@ -45,7 +48,6 @@ def inicioSesion(request):
 			#print(my_user)
 			if my_user:
 				request.session["user_logeado"] = username			#guarda el nombre en variable global
-				puntuacionUsuario(username)							#calcular la puntuación del user a partir de la de sus jug.
 				return HttpResponseRedirect('/inicio')
 					
 			else:
@@ -59,7 +61,6 @@ def inicioSesion(request):
 def inicio(request):
 	username = request.session.get("user_logeado")
 	if username:
-		puntuacionUsuario(username)
 		return render(request, "inicio.html", {'username':username})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
@@ -214,7 +215,7 @@ def creacionLiga(request):
 			my_form = form.save(commit=False)
 			my_form.usuario = my_user.first()
 			my_form.save()
-
+			
 			asignarJugadores(username)
 
 			return HttpResponseRedirect('/inicio',{'username':username})
@@ -320,13 +321,13 @@ def fuera_del_mercado(username):
 	for i in obj_mercado:
 		caducidadDelJug = i.fecha_ingreso + datetime.timedelta(days=2)		#El jugador sale del marcado 2 días después de ingresar
 		if ahora > caducidadDelJug:											#Si la fecha actual es posterior a la de "caducidad" del jugador en el mercado
-			jugadorOutMercado = Mercado.objects.get(liga_mercado=i.liga_mercado,jugador_mercado=i.jugador_mercado)
-			my_jugador = jugadorOutMercado.jugador_mercado
+			jugadorOutMercado = Mercado.objects.get(liga=i.liga,jugador=i.jugador)
+			my_jugador = jugadorOutMercado.jugador
 
 			existe_puja = Puja.objects.filter(jugador=my_jugador)		#Comprobamos que al menos haya una puja realizada por el jugador 
 			if existe_puja:			#si nadie ha pujado por el jug solo lo eliminamos del mercado, sin hacer el cambio de propietario y sin cambiar los presupuestos de los usuarios
 				puja_superior = Puja.objects.filter(jugador=my_jugador).order_by("-cantidad")[0]	#ya sabemos que al menos una puja hay, cogemos la mayor en caso de haber varias
-				lineas_clase_liga = Liga.objects.filter(nombre=i.liga_mercado.nombre)		#busco los usuarios de la misma liga que el jugador que queremos eliminar del mercado
+				lineas_clase_liga = Liga.objects.filter(nombre=i.nombre)		#busco los usuarios de la misma liga que el jugador que queremos eliminar del mercado
 				
 				for j in lineas_clase_liga:				#recorremos todos los usuarios para ver cual tiene como jugador el que acabamos de vender
 					quitar_de_plantilla = Plantilla.objects.filter(usuario = j.usuario, jugador = my_jugador)
@@ -342,7 +343,7 @@ def fuera_del_mercado(username):
 				añadir_a_plantilla= Plantilla(seleccion='NO SELECCIONADO', usuario=pujador_win ,jugador=my_jugador)	#asignamos el jugador a su nuevo usuario
 				añadir_a_plantilla.save()	
 
-			usuarios_pujantes = Liga.objects.filter(nombre = i.liga_mercado.nombre)
+			usuarios_pujantes = Liga.objects.filter(nombre = i.liga.nombre)
 			for x in usuarios_pujantes:					#cada x una fila de la liga del jug que se va a eliminar
 				puja_por_jug = Puja.objects.filter(pujador = x.usuario, jugador = my_jugador)
 				puja_por_jug.delete()
@@ -362,7 +363,7 @@ def mercado(request):
 		for usuarios in users:
 			nombre_usuario = usuarios.usuario
 			la_liga = Liga.objects.filter(usuario=nombre_usuario)
-			aux = Mercado.objects.filter(liga_mercado__in=la_liga)
+			aux = Mercado.objects.filter(liga__in=la_liga)
 			for i in aux:
 				jugadores_en_el_mercado.append(i)			#cada i es una filasa de la clase mercado filtrada por la liga del user logueado
 				#print(jugadores_en_el_mercado)
@@ -391,14 +392,14 @@ def mercado(request):
 
 				puja_repe = Puja.objects.filter(pujador=my_user,jugador=jugador,cantidad=puja)		#compruebo que el jugador no repite la puja
 				if len(puja_repe) == 0:
-					obj = Puja(pujador=my_user, jugador=jugador,cantidad=puja,liga_puja=la_liga.first())
+					obj = Puja(pujador=my_user, jugador=jugador,cantidad=puja,liga=la_liga.first())
 					obj.save()
 					del puja
 
 		pujas = []
 		for jug in jugadores_en_el_mercado:
-			if Puja.objects.filter(jugador=jug.jugador_mercado):
-				pujas_aux = Puja.objects.filter(jugador=jug.jugador_mercado).order_by("-cantidad")[0]
+			if Puja.objects.filter(jugador=jug.jugador):
+				pujas_aux = Puja.objects.filter(jugador=jug.jugador).order_by("-cantidad")[0]
 				pujas.append(pujas_aux)
 		
 		
@@ -415,13 +416,13 @@ def jugadorAlMercado(request,id):
 		jugadorAñadido=False
 		mi_jugador = Jugador.objects.get(id=id)
 		#print(mi_jugador)
-		jugadorRepetido = Mercado.objects.filter(liga_mercado__in=my_liga,jugador_mercado=mi_jugador)
+		jugadorRepetido = Mercado.objects.filter(liga__in=my_liga,jugador=mi_jugador)
 		print(jugadorRepetido)
 	
 		if request.method=="POST":
 			mensaje_de_error="El jugador ya está añadido, no puede añadirlo de nuevo."
 			if (len(jugadorRepetido) == 0):
-				obj = Mercado(liga_mercado=my_liga.first(),jugador_mercado=mi_jugador,fecha_ingreso=datetime.datetime.utcnow())
+				obj = Mercado(liga=my_liga.first(),jugador=mi_jugador,fecha_ingreso=datetime.datetime.utcnow())
 				obj.save()
 				jugadorAñadido=True
 			return render(request, "jugador_al_mercado.html",{'username':username,'mi_jugador':mi_jugador,'jugadorAñadido':jugadorAñadido,'mensaje_de_error':mensaje_de_error})
@@ -470,3 +471,6 @@ def ranking(request):
 	
 	return render(request, "ranking.html", locals())
 	
+
+
+
