@@ -5,7 +5,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib import admin
-from gestionApp.models import Usuario, Jugador, Plantilla, Liga, Mercado, Puja, Jornada
+from gestionApp.models import Usuario, Jugador, Plantilla, Liga, Mercado, Puja, Jornada, Opciones
 
 # Register your models here.
 
@@ -37,6 +37,10 @@ class JornadaAdmin(admin.ModelAdmin):
 	list_display=("numero_jornada","jugador","puntos","jornada_sumada")
 	search_fields=("numero_jornada",)
 
+class OpcionesAdmin(admin.ModelAdmin):
+	list_display=("presupuesto_de_inicio","max_num_usuarios_liga","num_jug_plant_inicio","ultima_jornada","sumar_puntos_jorn")
+	search_fields=("presupuesto_de_inicio","max_num_usuarios_liga","num_jug_plant_inicio","ultima_jornada","sumar_puntos_jorn")
+
 admin.site.register(Usuario, UsuarioAdmin)
 admin.site.register(Jugador, JugadorAdmin)
 admin.site.register(Plantilla, PlantillaAdmin)
@@ -44,3 +48,4 @@ admin.site.register(Liga, LigaAdmin)
 admin.site.register(Mercado, MercadoAdmin)
 admin.site.register(Puja, PujaAdmin)
 admin.site.register(Jornada, JornadaAdmin)
+admin.site.register(Opciones, OpcionesAdmin)

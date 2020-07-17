@@ -4,7 +4,7 @@ from django.shortcuts import render
 from random import randint
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from gestionApp.models import Usuario, Jugador, Plantilla, Liga, Mercado, Puja, Jornada
+from gestionApp.models import Usuario, Jugador, Plantilla, Liga, Mercado, Puja, Jornada, Opciones
 from gestionApp.forms import form_alta_usuario, form_login_usuario, form_liga, form_cambio_password, form_cambio_email, form_cambio_equipo
 from django.template import loader
 from django.core.mail import send_mail
@@ -22,10 +22,11 @@ def registroUser(request):
 		if form.is_valid():
 			username = request.POST.get('username')
 			request.session["user_logeado"] = username
+			presupuesto_inicial = Opciones.objects.get(id=1).presupuesto_de_inicio
 
 			my_form = form.save(commit=False)
 			my_form.puntuacion = 0
-			my_form.presupuesto = 200000
+			my_form.presupuesto = presupuesto_inicial
 			my_form.save()
 
 			return HttpResponseRedirect('/eleccionLiga')	#si se ha rellenado el formulario con exito vamos a form_liga
@@ -37,8 +38,12 @@ def registroUser(request):
 
 def inicioSesion(request):
 	username = request.session.get("user_logeado")
-	request.session["numero_jornada"] = 1
-	puntuacionUsuarioJornada(request)
+	
+	activar_sumar_puntuacion = Opciones.objects.filter(id=1, sumar_puntos_jorn = 'SI')
+	if activar_sumar_puntuacion:
+		puntuacionUsuarioJornada(request)
+	
+	
 	if username:
 		return HttpResponseRedirect('/inicio')
 	else:
@@ -188,7 +193,7 @@ def eleccionLiga(request):
 			nombreLiga = request.POST.get('nombre')
 			#print(nombreLiga)
 			liga_bd = Liga.objects.filter(nombre=nombreLiga)
-			if len(liga_bd) >= 10:
+			if len(liga_bd) >= Opciones.objects.get(id=1).max_num_usuarios_liga:
 				msg = "Lo sentimos. Esta liga ya está completa."
 			elif len(liga_bd) ==0:
 				msg = "Lo sentimos. No existe ninguna liga con ese nombre."
@@ -249,8 +254,9 @@ def asignarJugadores(request):
 		filas_plantilla = Plantilla.objects.filter(usuario=j)
 		for k in filas_plantilla:
 			jugadores_liga.append(k.jugador)		#jugadores ya asignados a otros usuarios de la misma liga
-			
-	while len(Plantilla.objects.filter(usuario=my_user.first()))+1 < 16 : 
+
+	numero_jug_inicio = Opciones.objects.get(id=1).num_jug_plant_inicio
+	while len(Plantilla.objects.filter(usuario=my_user.first())) < numero_jug_inicio: 
 		jugador_random = lista_jugadores[randint(0,len(lista_jugadores)-1)]	#Obtiene un jugador al azar
 		jug_repetido = Plantilla.objects.filter(usuario=my_user.first() ,jugador=jugador_random)
 		jug_asignado = []
@@ -316,7 +322,7 @@ def miEquipo(request):
 
 
 def puntuacionUsuarioJornada(request):
-	numero_jorn = request.session.get("numero_jornada")
+	numero_jorn = Opciones.objects.get(id=1).ultima_jornada
 	jornada_a_sumar = Jornada.objects.filter(numero_jornada = numero_jorn, jornada_sumada = 'NO')
 	if jornada_a_sumar:			#si todas las filas de la clase jornada han sido sumadas ya, esta función no hace nada
 		usuarios_app = Usuario.objects.all()
@@ -494,6 +500,8 @@ def ranking(request):
 	#asignarJugadores(username)
 	#lista_usuarios=Usuario.objects.all().order_by("-puntuacion")[0:5]
 	
+	opciones = Opciones.objects.get(id=1).max_num_usuarios_liga
+	print(opciones)
 	
 	return render(request, "ranking.html", locals())
 	

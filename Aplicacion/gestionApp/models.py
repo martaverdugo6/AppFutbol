@@ -98,3 +98,18 @@ class Jornada(models.Model):
 
 	def __str__(self):
 		return '%s ha conseguido %s puntos en la jornada %s' % (self.jugador, self.puntos, self.numero_jornada)
+
+class Opciones(models.Model):
+	SI ='SI'
+	NO='NO'
+	ACTIVO_SUMAR_PUNTOS=(
+		
+		(SI, u'SI'),
+		(NO, u'No'),
+
+	)
+	presupuesto_de_inicio = models.IntegerField()
+	max_num_usuarios_liga = models.IntegerField()
+	num_jug_plant_inicio = models.IntegerField()
+	ultima_jornada = models.IntegerField()
+	sumar_puntos_jorn = models.CharField(max_length=30, choices=ACTIVO_SUMAR_PUNTOS)
