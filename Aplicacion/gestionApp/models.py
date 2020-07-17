@@ -58,7 +58,7 @@ class Plantilla(models.Model):
 		return '%s tiene a %s, %s' % (self.usuario, self.jugador, self.seleccion)
 
 class Liga(models.Model):
-	nombre=models.CharField(max_length=40, primary_key=True)
+	nombre=models.CharField(max_length=40)
 	usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
 
 	def __str__(self):

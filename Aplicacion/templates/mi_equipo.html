@@ -24,7 +24,7 @@
         <tr id="contenido_titulo">
             <td><b>Jugador</b></td>
             <td><b>Posición</b></td>
-            <td><b>Puntos</b></td>
+            <td><b>Ult. jornada</b></td>
         </tr>
         {% for jugNS in my_plantilla_no_seleccionada %}
             <tr id="contenido_tabla">
@@ -34,7 +34,13 @@
                 {% else %}
                     <td>{{jugNS.jugador.posicion}}</td>
                 {% endif %}
-                <td>{{jugNS.jugador.puntuacion}} ptos</td>
+                
+                {% for jorn in jugadores_de_la_jorn %}
+                    {% if jugNS.jugador.id == jorn.jugador.id %}
+                        <td>{{jorn.puntos}} puntos</td>
+                    {% endif %}
+                {% endfor %}
+                
                 <td>
                     <form action="/miEquipo/" method="post">{% csrf_token %}
                         <input type="hidden" name="jug" value="{{jugNS.jugador.id}}"/>  
@@ -49,7 +55,7 @@
         <tr id="contenido_titulo">
             <td><b>Jugador</b></td>
             <td><b>Posición</b></td>
-            <td><b>Puntos</b></td>
+            <td><b>Ult. jornada</b></td>
         </tr>
         {% for jugS in my_plantilla_seleccionada %}
             <tr id="contenido_tabla">
@@ -60,7 +66,13 @@
                     {% else %}
                         <td>{{jugS.jugador.posicion}}</td>
                     {% endif %}
-                    <td>{{jugS.jugador.puntuacion}} ptos</td>
+                    
+                    {% for jorn in jugadores_de_la_jorn %}
+                        {% if jugS.jugador.id == jorn.jugador.id %}
+                            <td>{{jorn.puntos}} puntos</td>
+                        {% endif %}
+                    {% endfor %}
+                    
                     <td> 
                         <form action="/miEquipo/" method="post">{% csrf_token %}
                             <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  

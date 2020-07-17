@@ -4,7 +4,7 @@ from django.shortcuts import render
 from random import randint
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from gestionApp.models import Usuario, Jugador, Plantilla, Liga, Mercado, Puja
+from gestionApp.models import Usuario, Jugador, Plantilla, Liga, Mercado, Puja, Jornada
 from gestionApp.forms import form_alta_usuario, form_login_usuario, form_liga, form_cambio_password, form_cambio_email, form_cambio_equipo
 from django.template import loader
 from django.core.mail import send_mail
@@ -37,6 +37,8 @@ def registroUser(request):
 
 def inicioSesion(request):
 	username = request.session.get("user_logeado")
+	request.session["numero_jornada"] = 1
+	puntuacionUsuarioJornada(request)
 	if username:
 		return HttpResponseRedirect('/inicio')
 	else:
@@ -187,7 +189,9 @@ def eleccionLiga(request):
 			#print(nombreLiga)
 			liga_bd = Liga.objects.filter(nombre=nombreLiga)
 			if len(liga_bd) >= 10:
-				msgLigaCompleta = "Lo sentimos. Esta liga ya está completa."
+				msg = "Lo sentimos. Esta liga ya está completa."
+			elif len(liga_bd) ==0:
+				msg = "Lo sentimos. No existe ninguna liga con ese nombre."
 			elif liga_bd:
 				
 				my_form = form.save(commit=False)
@@ -197,7 +201,7 @@ def eleccionLiga(request):
 				asignarJugadores(username)
 
 				return HttpResponseRedirect('/inicio')
-			return render(request, "eleccion_liga.html", {'form':form,'my_username':username, 'msg':msgLigaCompleta})
+			return render(request, "eleccion_liga.html", {'form':form,'my_username':username, 'msg':msg})
 		else:
 			form=form_liga()
 			return render(request, "eleccion_liga.html", {'form':form,'my_username':username})
@@ -212,13 +216,18 @@ def creacionLiga(request):
 		if form.is_valid():
 			nombreLiga = request.POST.get('nombre')
 			#print(nombreLiga)
-			my_form = form.save(commit=False)
-			my_form.usuario = my_user.first()
-			my_form.save()
-			
-			asignarJugadores(username)
+			if len(Liga.objects.filter(nombre=nombreLiga))==0:		#solo creamos la liga si no existe ninguna con ese nombre ya creada
+				my_form = form.save(commit=False)
+				my_form.usuario = my_user.first()
+				my_form.save()
 
-			return HttpResponseRedirect('/inicio',{'username':username})
+				asignarJugadores(username)
+
+				return HttpResponseRedirect('/inicio',{'username':username})
+			else:
+				msg = "El nombre de la liga ya existe. Pruebe con otro"	
+				return render(request, "creacion_liga.html", {'form':form, 'msg':msg})	
+			
 		return render(request, "creacion_liga.html", {'form':form})	
 	else:
 		form=form_liga()
@@ -297,22 +306,39 @@ def miEquipo(request):
 		total_no_selec = len(Plantilla.objects.filter(usuario=my_user, seleccion='NO SELECCIONADO'))
 		my_plantilla_seleccionada = Plantilla.objects.filter(usuario=my_user, seleccion='SELECCIONADO')
 		total_selec = len(Plantilla.objects.filter(usuario=my_user, seleccion='SELECCIONADO'))
-		return render(request, "mi_equipo.html",{'my_user':my_user,'username':username, 'my_plantilla_no_seleccionada':my_plantilla_no_seleccionada, 'my_plantilla_seleccionada':my_plantilla_seleccionada,'mensaje_de_error':mensaje_de_error,'total_no_selec':total_no_selec,'total_selec':total_selec})
+
+		ultima_jornada = request.session.get("numero_jornada")		#variable global inicializada en inicioSesion
+		jugadores_de_la_jorn = Jornada.objects.filter(numero_jornada=ultima_jornada)		#filas de la jorn que este en la variable global
+
+		return render(request, "mi_equipo.html",{'my_user':my_user,'username':username, 'my_plantilla_no_seleccionada':my_plantilla_no_seleccionada, 'my_plantilla_seleccionada':my_plantilla_seleccionada,'mensaje_de_error':mensaje_de_error,'total_no_selec':total_no_selec,'total_selec':total_selec, 'jugadores_de_la_jorn':jugadores_de_la_jorn})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 
 
-def puntuacionUsuario(request):
-	my_user = Usuario.objects.filter(username=request)
-	plantilla_user = Plantilla.objects.filter(usuario__in=my_user)
-	puntuacion = 0
-	for jug_user_selec in plantilla_user:
-		jugador = jug_user_selec.jugador
-		puntuacion += jugador.puntuacion
+def puntuacionUsuarioJornada(request):
+	numero_jorn = request.session.get("numero_jornada")
+	jornada_a_sumar = Jornada.objects.filter(numero_jornada = numero_jorn, jornada_sumada = 'NO')
+	if jornada_a_sumar:			#si todas las filas de la clase jornada han sido sumadas ya, esta función no hace nada
+		usuarios_app = Usuario.objects.all()
+		#print(usuarios_app)
+		for i in usuarios_app:
+			print(i)
+			jugadores_selec = Plantilla.objects.filter(usuario=i, seleccion='SELECCIONADO')		#cada jugador_selec es una fila de plantillas
+			for j in jugadores_selec:
+				jug_en_jorn = Jornada.objects.filter(jugador=j.jugador, jornada_sumada = 'NO')
+				if jug_en_jorn:
+					for x in jug_en_jorn:
+						i.puntuacion = i.puntuacion + x.puntos
+						i.save()
+						x.jornada_sumada = 'SI'
+						x.save()
 
-	user_update = my_user.first()
-	user_update.puntuacion = puntuacion
-	user_update.save()	
+		jug_no_selc_x_nadie = Jornada.objects.filter(jornada_sumada = 'NO')	
+		if jug_no_selc_x_nadie:
+			for n in jug_no_selc_x_nadie:
+				n.jornada_sumada = 'SI'
+				n.save()				
+	
 
 def fuera_del_mercado(username):
 	liga_user = Liga.objects.filter(usuario=username).first()				#liga del usuario logueado
