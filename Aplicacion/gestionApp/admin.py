@@ -38,8 +38,8 @@ class JornadaAdmin(admin.ModelAdmin):
 	search_fields=("numero_jornada",)
 
 class OpcionesAdmin(admin.ModelAdmin):
-	list_display=("presupuesto_de_inicio","max_num_usuarios_liga","num_jug_plant_inicio","ultima_jornada","sumar_puntos_jorn")
-	search_fields=("presupuesto_de_inicio","max_num_usuarios_liga","num_jug_plant_inicio","ultima_jornada","sumar_puntos_jorn")
+	list_display=("presupuesto_de_inicio","max_num_usuarios_liga","num_jug_plant_inicio","ultima_jornada","sumar_puntos_jorn", "botones_activos")
+	search_fields=("presupuesto_de_inicio","max_num_usuarios_liga","num_jug_plant_inicio","ultima_jornada","sumar_puntos_jorn", "botones_activos")
 
 admin.site.register(Usuario, UsuarioAdmin)
 admin.site.register(Jugador, JugadorAdmin)

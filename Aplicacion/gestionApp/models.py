@@ -102,14 +102,15 @@ class Jornada(models.Model):
 class Opciones(models.Model):
 	SI ='SI'
 	NO='NO'
-	ACTIVO_SUMAR_PUNTOS=(
+	ACTIVO=(
 		
 		(SI, u'SI'),
-		(NO, u'No'),
+		(NO, u'NO'),
 
 	)
 	presupuesto_de_inicio = models.IntegerField()
 	max_num_usuarios_liga = models.IntegerField()
 	num_jug_plant_inicio = models.IntegerField()
 	ultima_jornada = models.IntegerField()
-	sumar_puntos_jorn = models.CharField(max_length=30, choices=ACTIVO_SUMAR_PUNTOS)
+	sumar_puntos_jorn = models.CharField(max_length=10, choices=ACTIVO)
+	botones_activos = models.CharField(max_length=10, choices=ACTIVO)
