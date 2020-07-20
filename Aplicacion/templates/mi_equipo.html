@@ -9,6 +9,10 @@
         <div class="mensaje_de_error">
             <p class="center-align"><i class="fas fa-exclamation-circle"></i> No se pueden añadir más de 11 jugadores a la lista de Seleccionados.</p>
         </div>
+    {% elif desactivacion %}
+        <div class="mensaje_de_error">
+            <p class="center-align"><i class="fas fa-exclamation-circle"></i> Actualmente la jornada está en curso, cuando finalice podrá volver a cambiar su once inicial.</p>
+        </div>
     {% endif%}
     <br>
     <div style="margin-bottom: 2%;">
@@ -40,13 +44,18 @@
                         <td>{{jorn.puntos}} puntos</td>
                     {% endif %}
                 {% endfor %}
-                
-                <td>
-                    <form action="/miEquipo/" method="post">{% csrf_token %}
-                        <input type="hidden" name="jug" value="{{jugNS.jugador.id}}"/>  
-                        <input style="padding:2%; font-size: 14px;" class="btn btn-outline-danger mt-1" type="submit" value="Seleccionar"/>
-                    </form>
-                </td>
+                {% if desactivacion %}
+                    <td>
+                        <input style="padding:2%; font-size: 14px;" class="btn btn-secondary mt-1" type="button" value="Seleccionar"/>
+                    </td>
+                {% else %}
+                    <td>
+                        <form action="/miEquipo/" method="post">{% csrf_token %}
+                            <input type="hidden" name="jug" value="{{jugNS.jugador.id}}"/>  
+                            <input style="padding:2%; font-size: 14px;" class="btn btn-outline-danger mt-1" type="submit" value="Seleccionar"/>
+                        </form>
+                    </td>
+                {% endif %}
             </tr>
         {% endfor %}
     </table>
@@ -72,13 +81,18 @@
                             <td>{{jorn.puntos}} puntos</td>
                         {% endif %}
                     {% endfor %}
-                    
-                    <td> 
-                        <form action="/miEquipo/" method="post">{% csrf_token %}
-                            <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
-                            <input style="padding:2%; font-size: 14px;" class="btn btn-outline-danger mt-1" type="submit" value="No seleccionar"/>
-                        </form>
-                    </td>
+                    {% if desactivacion %}
+                        <td>
+                            <input style="padding:2%; font-size: 14px;" class="btn btn-secondary mt-1" type="button" value="No seleccionar"/>
+                        </td>
+                    {% else %}
+                        <td> 
+                            <form action="/miEquipo/" method="post">{% csrf_token %}
+                                <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
+                                <input style="padding:2%; font-size: 14px;" class="btn btn-outline-danger mt-1" type="submit" value="No seleccionar"/>
+                            </form>
+                        </td>
+                    {% endif %}
             </tr>
         {% endfor %}
     </table>

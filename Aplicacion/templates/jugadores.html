@@ -12,14 +12,12 @@
         <td><b>Jugador</b></td>
         <td><b>Equipo</b></td>
         <td><b>Posición</b></td>
-        <td><b>Puntos</b></td>
     </tr>
     {% for jug in my_plantilla %}
         <tr id="contenido_tabla">
             <td><a href="/jugador/{{jug.jugador.id}}">{{jug.jugador.nombre}} {{jug.jugador.apellidos}} </a></td>
             <td>{{jug.jugador.equipo}}</td>
             <td>{{jug.jugador.posicion}}</td>
-            <td>{{jug.jugador.puntuacion}} ptos</td>
             <td>
                 <a class="btn btn-outline-danger mt-1" href="/mercado/{{jug.jugador.id}}" role="button">Añadir al mercado</a>
             </td>

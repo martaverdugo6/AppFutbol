@@ -308,6 +308,11 @@ def miEquipo(request):
 					jug_plantilla.seleccion = 'SELECCIONADO'
 					jug_plantilla.save()
 
+		desactivar_botones = Opciones.objects.filter(botones_activos = 'NO')
+		desactivacion = False
+		if desactivar_botones:
+			desactivacion = True
+
 		my_plantilla_no_seleccionada = Plantilla.objects.filter(usuario=my_user, seleccion='NO SELECCIONADO')
 		total_no_selec = len(Plantilla.objects.filter(usuario=my_user, seleccion='NO SELECCIONADO'))
 		my_plantilla_seleccionada = Plantilla.objects.filter(usuario=my_user, seleccion='SELECCIONADO')
@@ -316,7 +321,7 @@ def miEquipo(request):
 		ultima_jornada = Opciones.objects.get(id=1).ultima_jornada
 		jugadores_de_la_jorn = Jornada.objects.filter(numero_jornada=ultima_jornada)		#filas de la jorn que este en la variable global
 
-		return render(request, "mi_equipo.html",{'my_user':my_user,'username':username, 'my_plantilla_no_seleccionada':my_plantilla_no_seleccionada, 'my_plantilla_seleccionada':my_plantilla_seleccionada,'mensaje_de_error':mensaje_de_error,'total_no_selec':total_no_selec,'total_selec':total_selec, 'jugadores_de_la_jorn':jugadores_de_la_jorn})
+		return render(request, "mi_equipo.html",{'my_user':my_user,'username':username, 'my_plantilla_no_seleccionada':my_plantilla_no_seleccionada, 'my_plantilla_seleccionada':my_plantilla_seleccionada,'mensaje_de_error':mensaje_de_error,'total_no_selec':total_no_selec,'total_selec':total_selec, 'jugadores_de_la_jorn':jugadores_de_la_jorn,'desactivacion':desactivacion})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 

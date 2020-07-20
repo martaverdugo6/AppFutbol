@@ -150,3 +150,9 @@ div.opciones_perfil a{
     padding-bottom: 0.5%;
     margin-bottom: 2%;
 }
+
+.text_about_us p{
+    width: 60%;
+    margin-left: 20%;
+    margin-top: 3%;
+}

@@ -9,7 +9,7 @@
 		<div class="opciones_perfil" >
 			<p><a href="{% url 'cambioContrasenya' %}" >Cambiar contraseña</a></p>
 			<p><a href="{% url 'cambioEmail' %}" >Cambiar email</a></p>
-			<p><a href="{% url 'cambioEquipo' %}" >Cambiar nombre equipo</a></p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+			<p><a href="{% url 'cambioEquipo' %}" >Cambiar nombre equipo</a></p><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 			
 			<form action="/perfil/" method="post">{% csrf_token %}
 				<input type="hidden" name="opciones" value="salir_opciones"/>
