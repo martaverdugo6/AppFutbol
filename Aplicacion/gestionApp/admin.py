@@ -26,8 +26,8 @@ class PlantillaAdmin(admin.ModelAdmin):
 	search_fields=("usuario",)
 
 class MercadoAdmin(admin.ModelAdmin):
-	list_display=("liga","jugador","fecha_ingreso")  
-	search_fields=("liga","jugador","fecha_ingreso")  
+	list_display=("nombre_liga","jugador","fecha_ingreso")  
+	search_fields=("nombre_liga","jugador","fecha_ingreso")  
 
 class PujaAdmin(admin.ModelAdmin):
 	list_display=("pujador","jugador","cantidad","liga") 
@@ -38,8 +38,8 @@ class JornadaAdmin(admin.ModelAdmin):
 	search_fields=("numero_jornada",)
 
 class OpcionesAdmin(admin.ModelAdmin):
-	list_display=("presupuesto_de_inicio","max_num_usuarios_liga","num_jug_plant_inicio","ultima_jornada","sumar_puntos_jorn", "botones_activos")
-	search_fields=("presupuesto_de_inicio","max_num_usuarios_liga","num_jug_plant_inicio","ultima_jornada","sumar_puntos_jorn", "botones_activos")
+	list_display=("presupuesto_de_inicio","max_num_usuarios_liga","num_jug_plant_inicio","ultima_jornada","sumar_puntos_jorn", "botones_activos","min_jugadores_mercado")
+	search_fields=("presupuesto_de_inicio","max_num_usuarios_liga","num_jug_plant_inicio","ultima_jornada","sumar_puntos_jorn", "botones_activos", "min_jugadores_mercado")
 
 admin.site.register(Usuario, UsuarioAdmin)
 admin.site.register(Jugador, JugadorAdmin)

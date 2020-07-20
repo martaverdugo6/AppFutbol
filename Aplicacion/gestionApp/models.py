@@ -65,12 +65,12 @@ class Liga(models.Model):
 		return 'Liga %s' % (self.nombre)
 
 class Mercado(models.Model):
-	liga = models.ForeignKey(Liga, on_delete=models.CASCADE)
+	nombre_liga = models.CharField(max_length=40)
 	jugador = models.ForeignKey(Jugador, on_delete=models.CASCADE)
 	fecha_ingreso = models.DateTimeField()
 
 	def __str__(self):
-		return 'Jugador %s de la liga %s' % (self.jugador_mercado, self.liga_mercado)
+		return 'Jugador %s de la liga %s' % (self.jugador, self.nombre_liga)
 		
 class Puja(models.Model):
 	pujador = models.ForeignKey(Usuario, on_delete=models.CASCADE)
@@ -87,7 +87,7 @@ class Jornada(models.Model):
 	JORNADA_SUMADA=(
 		
 		(SI, u'SI'),
-		(NO, u'No'),
+		(NO, u'NO'),
 
 	)
 
@@ -114,3 +114,4 @@ class Opciones(models.Model):
 	ultima_jornada = models.IntegerField()
 	sumar_puntos_jorn = models.CharField(max_length=10, choices=ACTIVO)
 	botones_activos = models.CharField(max_length=10, choices=ACTIVO)
+	min_jugadores_mercado = models.IntegerField()

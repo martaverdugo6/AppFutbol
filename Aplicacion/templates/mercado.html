@@ -12,6 +12,12 @@
     </div><br><br>
     <p class="center-align" style="background-color: #FCCA46; width: 60%; margin-left: 20%; padding: 1%;"><i class="fas fa-info-circle"></i> Los jugadores estarán en el mercado 2 DÍAS</p>
     <br>
+    {% if mensaje_de_error %}
+        <div class="mensaje_de_error">
+            <p class="center-align"><i class="fas fa-exclamation-circle"></i> Este jugador ya forma parte de tu equipo. No puedes pujar por él.</p>
+        </div>
+    {% endif %}
+    <br>
     <table id="tabla_mercado">
         <tr id="contenido_titulo">
             <td><b>Jugador</b></td>
@@ -22,14 +28,14 @@
         </tr>
         {% for i in jugadores_en_el_mercado %}
             <tr id="contenido_tabla">
-                <td><a href="/jugador/{{i.jugador_mercado.id}}">{{i.jugador_mercado.nombre}} {{i.jugador_mercado.apellidos}}</a></td>
-                <td>{{i.jugador_mercado.equipo}}</td>
+                <td><a href="/jugador/{{i.jugador.id}}">{{i.jugador.nombre}} {{i.jugador.apellidos}}</a></td>
+                <td>{{i.jugador.equipo}}</td>
                 <td>{{i.fecha_ingreso}}</td>
                 {% for j in pujas %}
-                    {% ifequal j.jugador.id i.jugador_mercado.id %}
+                    {% ifequal j.jugador.id i.jugador.id %}
                         <td>{{j.cantidad}} por {{j.pujador}}</td>
                     {% endifequal %}
-                    {% ifnotequal j.jugador.id i.jugador_mercado.id %}
+                    {% ifnotequal j.jugador.id i.jugador.id %}
                         <!--<td><i>No hay puja</i></td>-->
                     {% endifnotequal %}
                 {% endfor %}
@@ -37,7 +43,7 @@
                 <form method="post" action="."> {% csrf_token %}
                     <td><input type="number" id="puja" name="puja"></td>
                     <td>
-                        <input type="hidden" name="idJugador" value="{{i.jugador_mercado.id}}"/>        <!--enviamos el id del jugador-->
+                        <input type="hidden" name="idJugador" value="{{i.jugador.id}}"/>        <!--enviamos el id del jugador-->
                         <input class="btn btn-outline-danger mt-1" type="submit" value="Pujar"/>
                     </td>
                 </form>

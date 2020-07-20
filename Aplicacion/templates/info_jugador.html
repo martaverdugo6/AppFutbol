@@ -11,8 +11,12 @@
         <tr id="infoJugador"><td><b>Apellidos:</b> {{mi_jugador.apellidos}}</td></tr>
         <tr id="infoJugador"><td><b>Equipo:</b> {{mi_jugador.equipo}}</td></tr>
         <tr id="infoJugador"><td><b>Posición:</b> {{mi_jugador.posicion}}</td></tr>
-        <tr id="infoJugador"><td><b>Actual propietario:</b> <a href="/usuario/{{propietario.username}}">{{propietario}}</a></td></tr>
-       
+        <tr id="infoJugador"><td><b>Puntos en la última jornada:</b> {{ptos_jorn}} puntos</td></tr>
+        {% if propietario.username %}
+            <tr id="infoJugador"><td><b>Actual propietario:</b> <a href="/usuario/{{propietario.username}}">{{propietario}}</a></td></tr>
+        {% else %}
+            <tr id="infoJugador"><td><b>Actual propietario:</b> Sistema</td></tr>
+        {% endif %}
 
     </table>
     <br>

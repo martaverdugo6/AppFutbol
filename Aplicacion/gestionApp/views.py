@@ -280,7 +280,7 @@ def clasificacion(request):
 	username = request.session.get("user_logeado")			#usuario logueado
 	my_liga = Liga.objects.filter(usuario=username)			#objeto liga del usuario logueado
 	nombre_liga = my_liga.first().nombre					#nombre de la liga del usuario logueado 
-	lista = Liga.objects.filter(nombre=nombre_liga)			#todos los objetos con el nombre de liga
+	lista = Liga.objects.filter(nombre=nombre_liga)				#todos los objetos con el nombre de liga
 	
 	lista_usuarios = []
 	for elementos in lista:
@@ -358,13 +358,13 @@ def fuera_del_mercado(username):
 	for i in obj_mercado:
 		caducidadDelJug = i.fecha_ingreso + datetime.timedelta(days=2)		#El jugador sale del marcado 2 días después de ingresar
 		if ahora > caducidadDelJug:											#Si la fecha actual es posterior a la de "caducidad" del jugador en el mercado
-			jugadorOutMercado = Mercado.objects.get(liga=i.liga,jugador=i.jugador)
+			jugadorOutMercado = Mercado.objects.get(nombre_liga=i.nombre_liga,jugador=i.jugador)
 			my_jugador = jugadorOutMercado.jugador
 
 			existe_puja = Puja.objects.filter(jugador=my_jugador)		#Comprobamos que al menos haya una puja realizada por el jugador 
 			if existe_puja:			#si nadie ha pujado por el jug solo lo eliminamos del mercado, sin hacer el cambio de propietario y sin cambiar los presupuestos de los usuarios
 				puja_superior = Puja.objects.filter(jugador=my_jugador).order_by("-cantidad")[0]	#ya sabemos que al menos una puja hay, cogemos la mayor en caso de haber varias
-				lineas_clase_liga = Liga.objects.filter(nombre=i.nombre)		#busco los usuarios de la misma liga que el jugador que queremos eliminar del mercado
+				lineas_clase_liga = Liga.objects.filter(nombre=i.nombre_liga)		#busco los usuarios de la misma liga que el jugador que queremos eliminar del mercado
 				
 				for j in lineas_clase_liga:				#recorremos todos los usuarios para ver cual tiene como jugador el que acabamos de vender
 					quitar_de_plantilla = Plantilla.objects.filter(usuario = j.usuario, jugador = my_jugador)
@@ -380,7 +380,7 @@ def fuera_del_mercado(username):
 				añadir_a_plantilla= Plantilla(seleccion='NO SELECCIONADO', usuario=pujador_win ,jugador=my_jugador)	#asignamos el jugador a su nuevo usuario
 				añadir_a_plantilla.save()	
 
-			usuarios_pujantes = Liga.objects.filter(nombre = i.liga.nombre)
+			usuarios_pujantes = Liga.objects.filter(nombre = i.nombre_liga)
 			for x in usuarios_pujantes:					#cada x una fila de la liga del jug que se va a eliminar
 				puja_por_jug = Puja.objects.filter(pujador = x.usuario, jugador = my_jugador)
 				puja_por_jug.delete()
@@ -393,45 +393,27 @@ def mercado(request):
 	nombre_liga = Liga.objects.filter(usuario=username).first().nombre			#objeto liga del usuario logueado								
 	if username:
 		fuera_del_mercado(username)
+		JugadorAñadidoPorSistema(username)
 		my_user = Usuario.objects.get(username=username)						#usuario con nombre username
 		users = Liga.objects.filter(nombre=nombre_liga)							#lista de ligas con nombre de la liga de my_user
-		jugadores_en_el_mercado = []
-		j = 0
-		for usuarios in users:
-			nombre_usuario = usuarios.usuario
-			la_liga = Liga.objects.filter(usuario=nombre_usuario)
-			aux = Mercado.objects.filter(liga__in=la_liga)
-			for i in aux:
-				jugadores_en_el_mercado.append(i)			#cada i es una filasa de la clase mercado filtrada por la liga del user logueado
-				#print(jugadores_en_el_mercado)
-				#ahora = timezone.now() #caducidadDelJug = i.fecha_ingreso + datetime.timedelta(days=2)
-				#caducidad_jug = (i.fecha_ingreso + datetime.timedelta(days=2)) - ahora		#caducidad_jug guarda el tiempo que queda para que el jugador salga del mercado
-				#dic_jug_caducidad = {}
-				#dias = caducidad_jug.days
-				#minutos =  caducidad_jug.seconds // 60
-				#horas = caducidad_jug.seconds // 3600
-				#fecha_cad = []								#creo lista para añadir día, hora y minuto
-				#fecha_cad.append(dias)
-				#fecha_cad.append(horas)
-				#fecha_cad.append(minutos)
-				#print(j)
-				#dic_jug_caducidad[j] = fecha_cad
-				#j=j+1
-				#print(j)
-				#print(dic_jug_caducidad)
-				
-				
+
+		jugadores_en_el_mercado = Mercado.objects.filter(nombre_liga=nombre_liga)			
+		mensaje_de_error = False
 		if request.method=="POST":
 			if request.POST.get('puja'):
 				puja = request.POST.get('puja')
 				id_jugador = request.POST.get('idJugador')
 				jugador = Jugador.objects.get(id=id_jugador)
 
-				puja_repe = Puja.objects.filter(pujador=my_user,jugador=jugador,cantidad=puja)		#compruebo que el jugador no repite la puja
-				if len(puja_repe) == 0:
-					obj = Puja(pujador=my_user, jugador=jugador,cantidad=puja,liga=la_liga.first())
-					obj.save()
-					del puja
+				if len(Plantilla.objects.filter(usuario=username, jugador=jugador))==0:
+					puja_repe = Puja.objects.filter(pujador=my_user,jugador=jugador,cantidad=puja)		#compruebo que el jugador no repite la puja
+					if len(puja_repe) == 0:
+						la_liga = Liga.objects.filter(usuario=username)
+						obj = Puja(pujador=my_user, jugador=jugador,cantidad=puja,liga=la_liga.first())
+						obj.save()
+						del puja
+				else:
+					mensaje_de_error = True
 
 		pujas = []
 		for jug in jugadores_en_el_mercado:
@@ -440,9 +422,40 @@ def mercado(request):
 				pujas.append(pujas_aux)
 		
 		
-		return render(request, "mercado.html", {'username':username,'jugadores_en_el_mercado':jugadores_en_el_mercado,'nombre_liga':nombre_liga,'pujas':pujas})
+		return render(request, "mercado.html", {'username':username,'jugadores_en_el_mercado':jugadores_en_el_mercado,'nombre_liga':nombre_liga,'pujas':pujas,'mensaje_de_error':mensaje_de_error})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
+
+def JugadorAñadidoPorSistema(username):
+	liga = Liga.objects.filter(usuario=username).first().nombre
+	minimo_jugadores = Opciones.objects.get(id=1).min_jugadores_mercado
+	lista_jugadores = Jugador.objects.all()
+	
+	compis_liga = []							#lista de usuarios de la misma liga
+	aux = Liga.objects.filter(nombre=liga)
+	for i in aux:
+		compis_liga.append(i.usuario)
+
+	
+	while len(Mercado.objects.filter(nombre_liga = liga)) < minimo_jugadores:
+		jugador_random = lista_jugadores[randint(0,len(lista_jugadores)-1)]		#Obtiene un jugador al azar
+		jugadores_de_compis = []
+		jugador_no_existe = True
+		for j in compis_liga:
+			filas_de_plantilla = Plantilla.objects.filter(usuario=j)	
+			for m in filas_de_plantilla:
+				jugadores_de_compis.append(m.jugador)		#todos los jugadores ya en la liga
+
+		for n in jugadores_de_compis:
+			if n == jugador_random:
+				jugador_no_existe = False
+
+		if jugador_no_existe:	
+			obj = Mercado(nombre_liga=liga,jugador=jugador_random,fecha_ingreso=datetime.datetime.utcnow())
+			obj.save()
+
+
+
 
 def jugadorAlMercado(request,id):
 	username = request.session.get("user_logeado")
@@ -453,13 +466,13 @@ def jugadorAlMercado(request,id):
 		jugadorAñadido=False
 		mi_jugador = Jugador.objects.get(id=id)
 		#print(mi_jugador)
-		jugadorRepetido = Mercado.objects.filter(liga__in=my_liga,jugador=mi_jugador)
+		jugadorRepetido = Mercado.objects.filter(nombre_liga=my_liga.first().nombre,jugador=mi_jugador)
 		print(jugadorRepetido)
 	
 		if request.method=="POST":
 			mensaje_de_error="El jugador ya está añadido, no puede añadirlo de nuevo."
 			if (len(jugadorRepetido) == 0):
-				obj = Mercado(liga=my_liga.first(),jugador=mi_jugador,fecha_ingreso=datetime.datetime.utcnow())
+				obj = Mercado(nombre_liga=my_liga.first().nombre,jugador=mi_jugador,fecha_ingreso=datetime.datetime.utcnow())
 				obj.save()
 				jugadorAñadido=True
 			return render(request, "jugador_al_mercado.html",{'username':username,'mi_jugador':mi_jugador,'jugadorAñadido':jugadorAñadido,'mensaje_de_error':mensaje_de_error})
@@ -473,10 +486,15 @@ def infoJugador(request,id):				#Vista cuando pulsamos en el nombre de un jugado
 	my_user = Usuario.objects.filter(username=username)
 	if username:
 		mi_jugador = Jugador.objects.get(id=id)
-		#print(mi_jugador)
-		propietario = Plantilla.objects.filter(jugador=mi_jugador).first().usuario
-		#print(propietario)
-		return render(request, "info_jugador.html", {'username':username,'mi_jugador':mi_jugador,'propietario':propietario})
+		
+		propietario = Plantilla.objects.filter(jugador=mi_jugador).first()
+		if propietario:
+			propietario = propietario.usuario
+		
+		ult_jornada = Opciones.objects.get(id=1).ultima_jornada
+		ptos_jorn = Jornada.objects.filter(jugador=mi_jugador, numero_jornada=ult_jornada).first().puntos
+
+		return render(request, "info_jugador.html", {'username':username,'mi_jugador':mi_jugador,'propietario':propietario,"ptos_jorn":ptos_jorn})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 	
@@ -504,10 +522,9 @@ def ranking(request):
 	username = request.session.get("user_logeado")
 	#asignarJugadores(username)
 	#lista_usuarios=Usuario.objects.all().order_by("-puntuacion")[0:5]
-	
-	opciones = Opciones.objects.get(id=1).max_num_usuarios_liga
-	print(opciones)
-	
+
+	usuario = Usuario.objects.filter(username=username)
+	print(usuario.first().presupuesto)
 	return render(request, "ranking.html", locals())
 	
 
