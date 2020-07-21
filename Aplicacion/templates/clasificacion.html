@@ -12,7 +12,7 @@
             <td><b>Equipo</b></td>
             <td><b>Puntuación</b></td>
         </tr>
-        {% for elem in lista_usuarios %}
+        {% for elem in mejores_mi_liga %}
             <tr id="contenido_tabla">
                 <td><a href="/usuario/{{elem.username}}">{{elem.mi_equipo}}</a></td>
                 <td> {{elem.puntuacion}}</td>

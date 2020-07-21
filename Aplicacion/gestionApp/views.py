@@ -240,7 +240,6 @@ def creacionLiga(request):
 	
 def asignarJugadores(request):
 	my_user = Usuario.objects.filter(username=request)			#Obtenemos el objeto con nombre pasado por param
-	lista_jugadores = Jugador.objects.all()
 	liga_user = Liga.objects.filter(usuario__in=my_user)
 	nombre_liga = liga_user.first().nombre
 	lista_users = Liga.objects.filter(nombre=nombre_liga)
@@ -255,6 +254,63 @@ def asignarJugadores(request):
 		for k in filas_plantilla:
 			jugadores_liga.append(k.jugador)		#jugadores ya asignados a otros usuarios de la misma liga
 
+	#OBLIGO A QUE AL MENOS HAYA UN PORTERO
+	lista_porteros = Jugador.objects.filter(posicion='PORTERO')
+	while len(Plantilla.objects.filter(usuario=my_user.first())) < 1: 
+		portero_random = lista_porteros[randint(0,len(lista_porteros)-1)]			#Obtiene un portero al azar
+		jug_repetido = Plantilla.objects.filter(usuario=my_user.first() ,jugador=portero_random)
+		jug_asignado = []
+		for i in jugadores_liga:				#compruebo que el portero random no esta entre los jugadores de otros usuarios
+			if i==portero_random:
+				jug_asignado.append(i)				
+				
+		if (len(jug_repetido)==0 and len(jug_asignado)==0):		#solo inserto la asignacion si el jugador no ha sido asignado anteriormente
+			my_plantilla=Plantilla(seleccion='SELECCIONADO', usuario=my_user.first() ,jugador=portero_random)
+			my_plantilla.save()
+
+	#OBLIGO A QUE AL MENOS HAYA 4 DEFENSAS	
+	lista_defensas = Jugador.objects.filter(posicion='DEFENSA')
+	while len(Plantilla.objects.filter(usuario=my_user.first())) < 5: 
+		defensa_random = lista_defensas[randint(0,len(lista_defensas)-1)]			#Obtiene un defensa al azar
+		jug_repetido = Plantilla.objects.filter(usuario=my_user.first() ,jugador=defensa_random)
+		jug_asignado = []
+		for i in jugadores_liga:				#compruebo que el defensa random no esta entre los jugadores de otros usuarios
+			if i==defensa_random:
+				jug_asignado.append(i)				
+				
+		if (len(jug_repetido)==0 and len(jug_asignado)==0):		#solo inserto la asignacion si el jugador no ha sido asignado anteriormente
+			my_plantilla=Plantilla(seleccion='SELECCIONADO', usuario=my_user.first() ,jugador=defensa_random)
+			my_plantilla.save()
+
+	#OBLIGO A QUE AL MENOS HAYA 4 CENTROCAMPISTAS	
+	lista_centrocampistas = Jugador.objects.filter(posicion='CENTROCAMPISTA')
+	while len(Plantilla.objects.filter(usuario=my_user.first())) < 9: 
+		centrocampista_random = lista_centrocampistas[randint(0,len(lista_centrocampistas)-1)]			#Obtiene un defensa al azar
+		jug_repetido = Plantilla.objects.filter(usuario=my_user.first() ,jugador=centrocampista_random)
+		jug_asignado = []
+		for i in jugadores_liga:				#compruebo que el centrocampista random no esta entre los jugadores de otros usuarios
+			if i==centrocampista_random:
+				jug_asignado.append(i)				
+				
+		if (len(jug_repetido)==0 and len(jug_asignado)==0):		#solo inserto la asignacion si el jugador no ha sido asignado anteriormente
+			my_plantilla=Plantilla(seleccion='SELECCIONADO', usuario=my_user.first() ,jugador=centrocampista_random)
+			my_plantilla.save()
+
+	#OBLIGO A QUE AL MENOS HAYA 2 DELANTEROS	
+	lista_delanteros = Jugador.objects.filter(posicion='DELANTERO')
+	while len(Plantilla.objects.filter(usuario=my_user.first())) < 11: 
+		delantero_random = lista_delanteros[randint(0,len(lista_delanteros)-1)]			#Obtiene un delantero al azar
+		jug_repetido = Plantilla.objects.filter(usuario=my_user.first() ,jugador=delantero_random)
+		jug_asignado = []
+		for i in jugadores_liga:				#compruebo que el delantero random no esta entre los jugadores de otros usuarios
+			if i==delantero_random:
+				jug_asignado.append(i)				
+				
+		if (len(jug_repetido)==0 and len(jug_asignado)==0):		#solo inserto la asignacion si el jugador no ha sido asignado anteriormente
+			my_plantilla=Plantilla(seleccion='SELECCIONADO', usuario=my_user.first() ,jugador=delantero_random)
+			my_plantilla.save()
+
+	lista_jugadores = Jugador.objects.all()
 	numero_jug_inicio = Opciones.objects.get(id=1).num_jug_plant_inicio
 	while len(Plantilla.objects.filter(usuario=my_user.first())) < numero_jug_inicio: 
 		jugador_random = lista_jugadores[randint(0,len(lista_jugadores)-1)]	#Obtiene un jugador al azar
@@ -278,16 +334,20 @@ def finSesion(request):
 	
 def clasificacion(request):
 	username = request.session.get("user_logeado")			#usuario logueado
-	my_liga = Liga.objects.filter(usuario=username)			#objeto liga del usuario logueado
-	nombre_liga = my_liga.first().nombre					#nombre de la liga del usuario logueado 
-	lista = Liga.objects.filter(nombre=nombre_liga)				#todos los objetos con el nombre de liga
 	
-	lista_usuarios = []
-	for elementos in lista:
-		lista_usuarios.append(elementos.usuario)			#añado a una lista los usuarios que están en la liga del user logueado
-	print(lista_usuarios)
+	usuario = Usuario.objects.filter(username=username)
+	nombre_liga = Liga.objects.filter(usuario__in = usuario).first().nombre
+
+	clasif_usuarios = Usuario.objects.all().order_by("-puntuacion")		#todos los usuarios del sistema
+	mis_compis = Liga.objects.filter(nombre = nombre_liga)
 	
-	return render(request, "clasificacion.html",{'username':username,'nombre_liga':nombre_liga,'lista_usuarios':lista_usuarios})
+	mejores_mi_liga = []
+	for i in clasif_usuarios:
+		for j in mis_compis:
+			if i == j.usuario:
+				mejores_mi_liga.append(i)
+	
+	return render(request, "clasificacion.html",{'username':username,'nombre_liga':nombre_liga,'mejores_mi_liga':mejores_mi_liga})
 
 def miEquipo(request):
 	username = request.session.get("user_logeado")
@@ -399,19 +459,24 @@ def mercado(request):
 
 		jugadores_en_el_mercado = Mercado.objects.filter(nombre_liga=nombre_liga)			
 		mensaje_de_error = False
+		mensaje_de_error_2 = False
 		if request.method=="POST":
 			if request.POST.get('puja'):
 				puja = request.POST.get('puja')
 				id_jugador = request.POST.get('idJugador')
 				jugador = Jugador.objects.get(id=id_jugador)
 
-				if len(Plantilla.objects.filter(usuario=username, jugador=jugador))==0:
-					puja_repe = Puja.objects.filter(pujador=my_user,jugador=jugador,cantidad=puja)		#compruebo que el jugador no repite la puja
-					if len(puja_repe) == 0:
-						la_liga = Liga.objects.filter(usuario=username)
-						obj = Puja(pujador=my_user, jugador=jugador,cantidad=puja,liga=la_liga.first())
-						obj.save()
-						del puja
+				if len(Plantilla.objects.filter(usuario=username, jugador=jugador))==0:			#compruebo que el usuario no puja por jugador que ya es suyo
+					if my_user.presupuesto >= int(puja):
+						puja_repe = Puja.objects.filter(pujador=my_user,jugador=jugador,cantidad=puja)		#compruebo que el usuario no repite la puja
+						if len(puja_repe) == 0:
+							la_liga = Liga.objects.filter(usuario=username)
+							obj = Puja(pujador=my_user, jugador=jugador,cantidad=puja,liga=la_liga.first())
+							obj.save()
+							del puja
+					else:
+						mensaje_de_error_2 = True
+
 				else:
 					mensaje_de_error = True
 
@@ -422,7 +487,7 @@ def mercado(request):
 				pujas.append(pujas_aux)
 		
 		
-		return render(request, "mercado.html", {'username':username,'jugadores_en_el_mercado':jugadores_en_el_mercado,'nombre_liga':nombre_liga,'pujas':pujas,'mensaje_de_error':mensaje_de_error})
+		return render(request, "mercado.html", {'username':username,'jugadores_en_el_mercado':jugadores_en_el_mercado,'nombre_liga':nombre_liga,'pujas':pujas,'mensaje_de_error':mensaje_de_error,"mensaje_de_error_2":mensaje_de_error_2})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 
@@ -523,8 +588,10 @@ def ranking(request):
 	#asignarJugadores(username)
 	#lista_usuarios=Usuario.objects.all().order_by("-puntuacion")[0:5]
 
-	usuario = Usuario.objects.filter(username=username)
-	print(usuario.first().presupuesto)
+	lista_porteros = Jugador.objects.filter(posicion='PORTERO')
+	
+
+
 	return render(request, "ranking.html", locals())
 	
 

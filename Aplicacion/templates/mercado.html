@@ -17,6 +17,11 @@
             <p class="center-align"><i class="fas fa-exclamation-circle"></i> Este jugador ya forma parte de tu equipo. No puedes pujar por él.</p>
         </div>
     {% endif %}
+    {% if mensaje_de_error_2 %}
+        <div class="mensaje_de_error">
+            <p class="center-align"><i class="fas fa-exclamation-circle"></i> La cantidad que quiere pujar es mayor a su presupuesto.</p>
+        </div>
+    {% endif %}
     <br>
     <table id="tabla_mercado">
         <tr id="contenido_titulo">
