@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block head_title %}{{my_user.mi_equipo}}{% endblock %}
 
 {% block content %}
@@ -72,7 +72,7 @@
                     <td>
                         <form action="/miEquipo/" method="post">{% csrf_token %}
                             <input type="hidden" name="jug" value="{{jugNS.jugador.id}}"/>  
-                            <input style="padding:2%; font-size: 14px;" class="btn btn-outline-danger mt-1" type="submit" value="Seleccionar"/>
+                            <input style="padding:2%; font-size: 14px;" class="btn btn-outline-success mt-1" type="submit" value="Seleccionar"/>
                         </form>
                     </td>
                 {% endif %}
@@ -100,7 +100,7 @@
                     <td>
                         <form action="/miEquipo/" method="post">{% csrf_token %}
                             <input type="hidden" name="jug" value="{{jugNS.jugador.id}}"/>  
-                            <input style="padding:2%; font-size: 14px;" class="btn btn-outline-danger mt-1" type="submit" value="Seleccionar"/>
+                            <input style="padding:2%; font-size: 14px;" class="btn btn-outline-success mt-1" type="submit" value="Seleccionar"/>
                         </form>
                     </td>
                 {% endif %}
@@ -128,7 +128,7 @@
                     <td>
                         <form action="/miEquipo/" method="post">{% csrf_token %}
                             <input type="hidden" name="jug" value="{{jugNS.jugador.id}}"/>  
-                            <input style="padding:2%; font-size: 14px;" class="btn btn-outline-danger mt-1" type="submit" value="Seleccionar"/>
+                            <input style="padding:2%; font-size: 14px;" class="btn btn-outline-success mt-1" type="submit" value="Seleccionar"/>
                         </form>
                     </td>
                 {% endif %}
@@ -156,7 +156,7 @@
                     <td>
                         <form action="/miEquipo/" method="post">{% csrf_token %}
                             <input type="hidden" name="jug" value="{{jugNS.jugador.id}}"/>  
-                            <input style="padding:2%; font-size: 14px;" class="btn btn-outline-danger mt-1" type="submit" value="Seleccionar"/>
+                            <input style="padding:2%; font-size: 14px;" class="btn btn-outline-success mt-1" type="submit" value="Seleccionar"/>
                         </form>
                     </td>
                 {% endif %}
@@ -164,124 +164,80 @@
             {% endifequal %}
         {% endfor %}
     </table>
-    <table id="tabla_jugadores_S">
-        <caption>Total jugadores seleccionados: {{total_selec}}</caption>
-        <tr id="contenido_titulo">
-            <td><b>Jugador</b></td>
-            <td><b>Posición</b></td>
-            <td><b>Ultima jornada</b></td>
+    <table id="tabla_jugadores_S" style="background-image: url('../static/img/campo_futbol.jpg');">
+        <tr id="contenido_tabla">
+            {% for jugS in my_plantilla_seleccionada %}	
+                {% ifequal jugS.jugador.posicion 'PORTERO' %}
+                    <td colspan="4">
+                        <b>{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}}</b><br>
+                        {% for jorn in jugadores_de_la_jorn %}
+                            {% if jugS.jugador.id == jorn.jugador.id %}
+                                {{jorn.puntos}} pts
+                            {% endif %}
+                        {% endfor %}
+                        <form action="/miEquipo/" method="post">{% csrf_token %}
+                            <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
+                            <input style="font-size: 14px;" class="btn btn-danger mt-1" type="submit" value="Quitar"/>
+                        </form>
+                    </td>
+                {% endifequal %}
+            {% endfor %}
         </tr>
-        {% for jugS in my_plantilla_seleccionada %}
-            {% ifequal jugS.jugador.posicion 'PORTERO'%}
-            <tr id="contenido_tabla">
-                    <td><a href="/jugador/{{jugS.jugador.id}}">{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}} </a>({{jugS.jugador.equipo}})</td>
-                    
-                    <td>{{jugS.jugador.posicion}}</td>
-                    
-                    
-                    {% for jorn in jugadores_de_la_jorn %}
-                        {% if jugS.jugador.id == jorn.jugador.id %}
-                            <td>{{jorn.puntos}} puntos</td>
-                        {% endif %}
-                    {% endfor %}
-                    {% if desactivacion %}
-                        <td>
-                            <input style="padding:2%; font-size: 14px;" class="btn btn-secondary mt-1" type="button" value="No seleccionar"/>
-                        </td>
-                    {% else %}
-                        <td> 
-                            <form action="/miEquipo/" method="post">{% csrf_token %}
-                                <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
-                                <input style="padding:2%; font-size: 14px;" class="btn btn-outline-danger mt-1" type="submit" value="No seleccionar"/>
-                            </form>
-                        </td>
-                    {% endif %}
-            </tr>
-            {% endifequal %}
-        {% endfor %}
-        {% for jugS in my_plantilla_seleccionada %}
-            {% ifequal jugS.jugador.posicion 'DEFENSA'%}
-            <tr id="contenido_tabla">
-                    <td><a href="/jugador/{{jugS.jugador.id}}">{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}} </a>({{jugS.jugador.equipo}})</td>
-                    
-                    <td>{{jugS.jugador.posicion}}</td>
-                    
-                    
-                    {% for jorn in jugadores_de_la_jorn %}
-                        {% if jugS.jugador.id == jorn.jugador.id %}
-                            <td>{{jorn.puntos}} puntos</td>
-                        {% endif %}
-                    {% endfor %}
-                    {% if desactivacion %}
-                        <td>
-                            <input style="padding:2%; font-size: 14px;" class="btn btn-secondary mt-1" type="button" value="No seleccionar"/>
-                        </td>
-                    {% else %}
-                        <td> 
-                            <form action="/miEquipo/" method="post">{% csrf_token %}
-                                <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
-                                <input style="padding:2%; font-size: 14px;" class="btn btn-outline-danger mt-1" type="submit" value="No seleccionar"/>
-                            </form>
-                        </td>
-                    {% endif %}
-            </tr>
-            {% endifequal %}
-        {% endfor %}
-        {% for jugS in my_plantilla_seleccionada %}
-            {% ifequal jugS.jugador.posicion 'CENTROCAMPISTA'%}
-            <tr id="contenido_tabla">
-                    <td><a href="/jugador/{{jugS.jugador.id}}">{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}} </a>({{jugS.jugador.equipo}})</td>
-                    
-                    <td>CENTRO</td>
-                                     
-                    {% for jorn in jugadores_de_la_jorn %}
-                        {% if jugS.jugador.id == jorn.jugador.id %}
-                            <td>{{jorn.puntos}} puntos</td>
-                        {% endif %}
-                    {% endfor %}
-                    {% if desactivacion %}
-                        <td>
-                            <input style="padding:2%; font-size: 14px;" class="btn btn-secondary mt-1" type="button" value="No seleccionar"/>
-                        </td>
-                    {% else %}
-                        <td> 
-                            <form action="/miEquipo/" method="post">{% csrf_token %}
-                                <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
-                                <input style="padding:2%; font-size: 14px;" class="btn btn-outline-danger mt-1" type="submit" value="No seleccionar"/>
-                            </form>
-                        </td>
-                    {% endif %}
-            </tr>
-            {% endifequal %}
-        {% endfor %}
-        {% for jugS in my_plantilla_seleccionada %}
-            {% ifequal jugS.jugador.posicion 'DELANTERO'%}
-            <tr id="contenido_tabla">
-                    <td><a href="/jugador/{{jugS.jugador.id}}">{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}} </a>({{jugS.jugador.equipo}})</td>
-                    
-                    <td>{{jugS.jugador.posicion}}</td>
-                    
-                    
-                    {% for jorn in jugadores_de_la_jorn %}
-                        {% if jugS.jugador.id == jorn.jugador.id %}
-                            <td>{{jorn.puntos}} puntos</td>
-                        {% endif %}
-                    {% endfor %}
-                    {% if desactivacion %}
-                        <td>
-                            <input style="padding:2%; font-size: 14px;" class="btn btn-secondary mt-1" type="button" value="No seleccionar"/>
-                        </td>
-                    {% else %}
-                        <td> 
-                            <form action="/miEquipo/" method="post">{% csrf_token %}
-                                <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
-                                <input style="padding:2%; font-size: 14px;" class="btn btn-outline-danger mt-1" type="submit" value="No seleccionar"/>
-                            </form>
-                        </td>
-                    {% endif %}
-            </tr>
-            {% endifequal %}
-        {% endfor %}
-    </table>
+    
+        <tr id="contenido_tabla">
+            {% for jugS in my_plantilla_seleccionada %}
+                {% ifequal jugS.jugador.posicion 'DEFENSA' %}
+                    <td>
+                        <b>{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}}</b><br>
+                        {% for jorn in jugadores_de_la_jorn %}
+                            {% if jugS.jugador.id == jorn.jugador.id %}
+                                {{jorn.puntos}} pts
+                            {% endif %}
+                        {% endfor %}
+                        <form action="/miEquipo/" method="post">{% csrf_token %}
+                            <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
+                            <input style="padding:2%; font-size: 14px;" class="btn btn-danger mt-1" type="submit" value="Quitar"/>
+                        </form>
+                    </td>
+                {% endifequal %}
+            {% endfor %}
+        </tr>
+        <tr id="contenido_tabla">
+            {% for jugS in my_plantilla_seleccionada %}	
+                {% ifequal jugS.jugador.posicion 'CENTROCAMPISTA' %}
+                    <td>
+                        <b>{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}}</b><br>
+                        {% for jorn in jugadores_de_la_jorn %}
+                            {% if jugS.jugador.id == jorn.jugador.id %}
+                                {{jorn.puntos}} pts
+                            {% endif %}
+                        {% endfor %}
+                        <form action="/miEquipo/" method="post">{% csrf_token %}
+                            <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
+                            <input style="padding:2%; font-size: 14px;"class="btn btn-danger mt-1" type="submit" value="Quitar"/>
+                        </form>
+                    </td>
+                {% endifequal %}
+            {% endfor %}
+        </tr>
+        <tr id="contenido_tabla">
+            {% for jugS in my_plantilla_seleccionada %}
+                {% ifequal jugS.jugador.posicion 'DELANTERO' %}
+                    <td colspan="2">
+                        <b>{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}}</b><br>
+                        {% for jorn in jugadores_de_la_jorn %}
+                            {% if jugS.jugador.id == jorn.jugador.id %}
+                                {{jorn.puntos}} pts
+                            {% endif %}
+                        {% endfor %}
+                        <form action="/miEquipo/" method="post">{% csrf_token %}
+                            <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
+                            <input style="padding:2%; font-size: 14px;" class="btn btn-danger mt-1" type="submit" value="Quitar"/>
+                        </form>
+                    </td>
+                {% endifequal %}
+            {% endfor %}
+        </tr>
+    </table><br><br>
 
 {% endblock %}

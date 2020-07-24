@@ -97,7 +97,9 @@ def liga(request):
 
 def perfil(request):
 	username = request.session.get("user_logeado")
+	my_user = Usuario.objects.filter(username=username).first()
 	opcionesPulsado = False
+	mensaje_de_error = False
 	if username:
 		if request.method =='POST':
 			opciones = request.POST.get('opciones')
@@ -106,8 +108,11 @@ def perfil(request):
 			else:
 				opcionesPulsado = True
 
+		if my_user.presupuesto < 0:
+			mensaje_de_error = True
+
 		my_user = Usuario.objects.filter(username=username)
-		return render(request, "perfil_user.html", {'username':username,'my_user':my_user.first(), 'opcionesPulsado':opcionesPulsado})
+		return render(request, "perfil_user.html", {'username':username,'my_user':my_user.first(), 'opcionesPulsado':opcionesPulsado, 'mensaje_de_error':mensaje_de_error})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 
@@ -231,12 +236,12 @@ def creacionLiga(request):
 				return HttpResponseRedirect('/inicio',{'username':username})
 			else:
 				msg = "El nombre de la liga ya existe. Pruebe con otro"	
-				return render(request, "creacion_liga.html", {'form':form, 'msg':msg})	
+				return render(request, "creacion_liga.html", {'form':form, 'msg':msg, 'username':username})	
 			
-		return render(request, "creacion_liga.html", {'form':form})	
+		return render(request, "creacion_liga.html", {'form':form, 'username':username})	
 	else:
 		form=form_liga()
-		return render(request, "creacion_liga.html", {'form':form})	
+		return render(request, "creacion_liga.html", {'form':form, 'username':username})	
 	
 def asignarJugadores(request):
 	my_user = Usuario.objects.filter(username=request)			#Obtenemos el objeto con nombre pasado por param
@@ -447,8 +452,6 @@ def puntuacionUsuarioJornada(request):
 
 
 
-
-
 def fuera_del_mercado(username):
 	obj_mercado = Mercado.objects.all()		#guardamos en una variable todos los objetos que hay en el mercado
 	ahora = timezone.now()					#nos devuelve la hora actual
@@ -640,10 +643,11 @@ def jugadores(request):
 
 def ranking(request):
 	username = request.session.get("user_logeado")
-	#asignarJugadores(username)
-	#lista_usuarios=Usuario.objects.all().order_by("-puntuacion")[0:5]
+	my_user = Usuario.objects.filter(username=username).first()
+	my_plantilla_seleccionada = Plantilla.objects.filter(usuario=my_user, seleccion='SELECCIONADO')
 
-	lista_porteros = Jugador.objects.filter(posicion='PORTERO')
+	ultima_jornada = Opciones.objects.get(id=1).ultima_jornada
+	jugadores_de_la_jorn = Jornada.objects.filter(numero_jornada=ultima_jornada)
 	
 
 

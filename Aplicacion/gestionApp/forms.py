@@ -67,3 +67,4 @@ class form_liga(forms.ModelForm):
 		labels={
 			'nombre':'Nombre de la liga',
 		}
+

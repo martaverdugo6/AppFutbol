@@ -31,5 +31,13 @@
 			<h3>Puntuación: {{my_user.puntuacion}} puntos</h3>
 			<h3>Presupuesto: {{my_user.presupuesto}} euros</h3>	
 		</div>
-	</div>
+	</div><br><br><br>
+
+	{% if mensaje_de_error %}
+		<div class="mensaje_warning">
+			<p class="center-align"><i class="fas fa-info-circle"></i> 
+				¡CUIDADO! Tu presupuesto es negativo. De seguir siendo así cuando acabe la jornada no sumará puntos.
+			</p>
+		</div>
+	{% endif %}
 {% endblock %}

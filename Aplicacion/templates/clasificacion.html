@@ -8,17 +8,28 @@
     <h2 style="text-align: center">CLASIFICACIÓN</h2>
     <br>
     <table id="tabla_clasificacion">
-        <tr id="contenido_titulo">
-            <td><b>Equipo</b></td>
-            <td><b>Puntuación</b></td>
-        </tr>
-        {% for elem in mejores_mi_liga %}
-            <tr id="contenido_tabla">
-                <td><a href="/usuario/{{elem.username}}">{{elem.mi_equipo}}</a></td>
-                <td> {{elem.puntuacion}}</td>
+        <thead>
+            <tr id="contenido_titulo">
+                <td><b>Equipo</b></td>
+                <td><b>Puntuación</b></td>
             </tr>
-        {% endfor %}
+        </thead>
+        <tbody>
+            {% for elem in mejores_mi_liga %}
+                <tr id="contenido_tabla">
+                    <td><a href="/usuario/{{elem.username}}">{{elem.mi_equipo}}</a></td>
+                    <td> {{elem.puntuacion}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
     <br>
-    <!--<input class="btn btn-outline-danger mt-1" type="button" onclick="history.back()" name="Volver atrás" value="&laquo; Volver atrás">--->
+   <style>
+        table tbody tr:nth-child(odd) {
+            background: #E2E3E3;
+        }
+        table tbody tr:nth-child(even) {
+            background: #F4F4F4;
+        }
+   </style>
 {% endblock %}

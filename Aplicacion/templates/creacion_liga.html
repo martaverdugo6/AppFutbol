@@ -5,8 +5,9 @@
 
 <html>
     {% block content %}
-        <div class="row">
-            <div class="col-md-4 offset-md-4">
+        <h1 style="text-align: center;">¡ENHORABUENA {{username}}! Ya has sido registrado.</h1>
+        <div class="row_creacion">
+            <div class="col-md-6 offset-md-3">
                 <h2>Crea tu liga</h2>
                 <p id="msgError">{{msg}}</p>
                 <form method="post" action="."> {% csrf_token %}

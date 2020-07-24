@@ -8,32 +8,96 @@
 </head>
 
 <body>
-	{% block jumbotron %}
-		<div class="jumbotron">
-			<h1>BIENVENID@</h1>
-			<p class="lead">Somos la mejor aplicación de futbol. ¿Aun no tienes cuenta? Puedes registrarte aquí</p>
-			<a class="btn btn-lg btn-primary" href="{% url 'registro' %}" role="button">Regístrate &raquo;</a>
-		</div>
-	{% endblock %}
-	<h1>RANKING GLOBAL DE JUGADORES</h1>
-	
-	<table id="tabla_ranking">
-			<tr id="titulos_tabla">
-				<td><b>Jugador</b></td>
-				<td><b>Puntuación</b></td>
+	<table id="tabla_prueba" style="background-image: url('../static/img/campo_futbol.jpg');">
+            <tr id="contenido_tabla">
+				{% for jugS in my_plantilla_seleccionada %}	
+					{% ifequal jugS.jugador.posicion 'PORTERO' %}
+						<td colspan="4">{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}}<br>
+							{% for jorn in jugadores_de_la_jorn %}
+								{% if jugS.jugador.id == jorn.jugador.id %}
+									{{jorn.puntos}} pts
+								{% endif %}
+							{% endfor %}
+							<form action="/miEquipo/" method="post">{% csrf_token %}
+								<input type="hidden" name="jug" value="{{jugNS.jugador.id}}"/>  
+								<input style="padding:2%; font-size: 14px;" class="btn btn-outline-success mt-1" type="submit" value="Quitar"/>
+							</form>
+						</td>
+					{% endifequal %}
+				{% endfor %}
 			</tr>
-		{% for user in mejores_mi_liga %}
+		
 			<tr id="contenido_tabla">
-				<td>{{user.username}}</td>
-				<td>{{user.puntuacion}} ptos</td>
+				{% for jugS in my_plantilla_seleccionada %}
+					{% ifequal jugS.jugador.posicion 'DEFENSA' %}
+						<td>{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}}<br>
+							{% for jorn in jugadores_de_la_jorn %}
+								{% if jugS.jugador.id == jorn.jugador.id %}
+									{{jorn.puntos}} pts
+								{% endif %}
+							{% endfor %}
+							<form action="/miEquipo/" method="post">{% csrf_token %}
+								<input type="hidden" name="jug" value="{{jugNS.jugador.id}}"/>  
+								<input style="padding:2%; font-size: 14px;" class="btn btn-outline-success mt-1" type="submit" value="Quitar"/>
+							</form>
+						</td>
+					{% endifequal %}
+				{% endfor %}
 			</tr>
-
-		{% endfor %}
-	</table>
-	
-	{{fecha}}
-
-	{% include "pie.html" %}
+			<tr id="contenido_tabla">
+				{% for jugS in my_plantilla_seleccionada %}	
+					{% ifequal jugS.jugador.posicion 'CENTROCAMPISTA' %}
+						<td>
+							<b>{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}}<b><br>
+							{% for jorn in jugadores_de_la_jorn %}
+								{% if jugS.jugador.id == jorn.jugador.id %}
+									{{jorn.puntos}} pts
+								{% endif %}
+							{% endfor %}
+							<form action="/miEquipo/" method="post">{% csrf_token %}
+								<input type="hidden" name="jug" value="{{jugNS.jugador.id}}"/>  
+								<input style="padding:2%; font-size: 14px;" class="btn btn-outline-success mt-1" type="submit" value="Quitar"/>
+							</form>
+						</td>
+					{% endifequal %}
+				{% endfor %}
+			</tr>
+			<tr id="contenido_tabla">
+				{% for jugS in my_plantilla_seleccionada %}
+					{% ifequal jugS.jugador.posicion 'DELANTERO' %}
+						<td colspan="2">
+							<b>{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}}</b><br>
+							{% for jorn in jugadores_de_la_jorn %}
+								{% if jugS.jugador.id == jorn.jugador.id %}
+									{{jorn.puntos}} pts
+								{% endif %}
+							{% endfor %}
+							<form action="/miEquipo/" method="post">{% csrf_token %}
+								<input type="hidden" name="jug" value="{{jugNS.jugador.id}}"/>  
+								<input style="padding:2%; font-size: 14px;" class="btn btn-outline-success mt-1" type="submit" value="Quitar"/>
+							</form>
+						</td>
+					{% endifequal %}
+				{% endfor %}
+            </tr>
+        
+    </table><br><br><br>
 
 </body>
+<style>
+table{
+	border: 1px solid black;
+	text-align: center;
+}
+td{
+	height: 150px;
+	
+}
+#tabla_prueba{
+	width: auto;
+	margin-left: 2%;
+}
+
+</style>
+
 </html>
