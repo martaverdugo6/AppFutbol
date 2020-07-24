@@ -170,15 +170,26 @@
                 {% ifequal jugS.jugador.posicion 'PORTERO' %}
                     <td colspan="4">
                         <b>{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}}</b><br>
+                        ({{jugS.jugador.equipo}})<br>
                         {% for jorn in jugadores_de_la_jorn %}
                             {% if jugS.jugador.id == jorn.jugador.id %}
                                 {{jorn.puntos}} pts
                             {% endif %}
-                        {% endfor %}
-                        <form action="/miEquipo/" method="post">{% csrf_token %}
-                            <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
-                            <input style="font-size: 14px;" class="btn btn-danger mt-1" type="submit" value="Quitar"/>
-                        </form>
+                        {% endfor %} 
+                        <br>
+                        {% if desactivacion %}
+                            
+                            <input style="padding:2%; font-size: 14px;" class="btn btn-secondary mt-1" type="button" value="Quitar"/>
+                            
+                        {% else %}
+                            
+                            <form action="/miEquipo/" method="post">{% csrf_token %}
+                                <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
+                                <input style="padding:2%; font-size: 14px;" class="btn btn-danger mt-1" type="submit" value="Quitar"/>
+                            </form>
+                            
+                        {% endif %}
+                        
                     </td>
                 {% endifequal %}
             {% endfor %}
@@ -189,15 +200,25 @@
                 {% ifequal jugS.jugador.posicion 'DEFENSA' %}
                     <td>
                         <b>{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}}</b><br>
+                        ({{jugS.jugador.equipo}})<br>
                         {% for jorn in jugadores_de_la_jorn %}
                             {% if jugS.jugador.id == jorn.jugador.id %}
                                 {{jorn.puntos}} pts
                             {% endif %}
                         {% endfor %}
-                        <form action="/miEquipo/" method="post">{% csrf_token %}
-                            <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
-                            <input style="padding:2%; font-size: 14px;" class="btn btn-danger mt-1" type="submit" value="Quitar"/>
-                        </form>
+                        <br>
+                        {% if desactivacion %}
+                            
+                            <input style="padding:2%; font-size: 14px;" class="btn btn-secondary mt-1" type="button" value="Quitar"/>
+                            
+                        {% else %}
+                            
+                            <form action="/miEquipo/" method="post">{% csrf_token %}
+                                <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
+                                <input style="padding:2%; font-size: 14px;" class="btn btn-danger mt-1" type="submit" value="Quitar"/>
+                            </form>
+                            
+                        {% endif %}
                     </td>
                 {% endifequal %}
             {% endfor %}
@@ -207,15 +228,25 @@
                 {% ifequal jugS.jugador.posicion 'CENTROCAMPISTA' %}
                     <td>
                         <b>{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}}</b><br>
+                        ({{jugS.jugador.equipo}})<br>
                         {% for jorn in jugadores_de_la_jorn %}
                             {% if jugS.jugador.id == jorn.jugador.id %}
                                 {{jorn.puntos}} pts
                             {% endif %}
                         {% endfor %}
-                        <form action="/miEquipo/" method="post">{% csrf_token %}
-                            <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
-                            <input style="padding:2%; font-size: 14px;"class="btn btn-danger mt-1" type="submit" value="Quitar"/>
-                        </form>
+                        <br>
+                        {% if desactivacion %}
+                            
+                            <input style="padding:2%; font-size: 14px;" class="btn btn-secondary mt-1" type="button" value="Quitar"/>
+                            
+                        {% else %}
+                            
+                            <form action="/miEquipo/" method="post">{% csrf_token %}
+                                <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
+                                <input style="padding:2%; font-size: 14px;" class="btn btn-danger mt-1" type="submit" value="Quitar"/>
+                            </form>
+                            
+                        {% endif %}
                     </td>
                 {% endifequal %}
             {% endfor %}
@@ -225,15 +256,25 @@
                 {% ifequal jugS.jugador.posicion 'DELANTERO' %}
                     <td colspan="2">
                         <b>{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}}</b><br>
+                        ({{jugS.jugador.equipo}})<br>
                         {% for jorn in jugadores_de_la_jorn %}
                             {% if jugS.jugador.id == jorn.jugador.id %}
                                 {{jorn.puntos}} pts
                             {% endif %}
-                        {% endfor %}
-                        <form action="/miEquipo/" method="post">{% csrf_token %}
-                            <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
-                            <input style="padding:2%; font-size: 14px;" class="btn btn-danger mt-1" type="submit" value="Quitar"/>
-                        </form>
+                        {% endfor %} 
+                        <br>
+                        {% if desactivacion %}
+                            <form>
+                                <input style="padding:2%; font-size: 14px;" class="btn btn-secondary mt-1" type="button" value="Quitar"/>
+                            </form>
+                        {% else %}
+                            
+                            <form action="/miEquipo/" method="post">{% csrf_token %}
+                                <input type="hidden" name="jug" value="{{jugS.jugador.id}}"/>  
+                                <input style="padding:2%; font-size: 14px;" class="btn btn-danger mt-1" type="submit" value="Quitar"/>
+                            </form>
+                            
+                        {% endif %}
                     </td>
                 {% endifequal %}
             {% endfor %}

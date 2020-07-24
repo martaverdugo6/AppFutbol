@@ -24,14 +24,24 @@
 			</form>
 		</div>
 		{% endif %}
-		<div id="datos_user" style="background-color: #8CCF75; width: 40%; padding: 2%; margin-left: 30%; margin-top: 2%;">
-			<h3>Usuario: {{my_user.username}}</h3>
-			<h3>Email: {{my_user.email}}</h3>
-			<h3>Nombre de equipo: {{my_user.mi_equipo}}</h3>
-			<h3>Puntuación: {{my_user.puntuacion}} puntos</h3>
-			<h3>Presupuesto: {{my_user.presupuesto}} euros</h3>	
+		<div class="datos_user">
+			<div style="margin-bottom: 5%;">
+				<img src="{% static 'img/usuario.jpg' %}"/><h3 style="font-size: 40px; width: 55%; float:right;">{{my_user.username}}</h3>
+			</div>
+			<div style="background-color: #9FE089; padding-left: 1%;">
+				<FONT SIZE=5>Email: </FONT><FONT SIZE=6>{{my_user.email}}</FONT>
+			</div><br>
+			<div style="background-color: #9FE089; padding-left: 1%;">
+				<FONT SIZE=5>Nombre de equipo: </FONT><FONT SIZE=6>{{my_user.mi_equipo}}</FONT>
+			</div><br>
+			<div style="background-color: #9FE089; padding-left: 1%;">
+				<FONT SIZE=5>Puntuación: </FONT><FONT SIZE=6>{{my_user.puntuacion}} puntos</FONT>
+			</div><br>
+			<div style="background-color: #9FE089; padding-left: 1%;">
+				<FONT SIZE=5>Presupuesto: </FONT><FONT SIZE=6>{{my_user.presupuesto}} euros</FONT>
+			</div>
 		</div>
-	</div><br><br><br>
+	</div>
 
 	{% if mensaje_de_error %}
 		<div class="mensaje_warning">

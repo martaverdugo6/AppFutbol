@@ -217,3 +217,17 @@ div.row_creacion{
     text-align: center;
     margin-top: 5%;
 }
+
+div.datos_user{
+    background-color: #8CCF75; 
+    width: 40%; 
+    padding: 2%; 
+    margin-left: 30%; 
+    margin-top: 2%;
+    margin-bottom: 4%;
+}
+
+div.datos_user img{
+    width: 100px;
+    height: 100px;
+}
