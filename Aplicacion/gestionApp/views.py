@@ -353,6 +353,10 @@ def miEquipo(request):
 	username = request.session.get("user_logeado")
 	my_user = Usuario.objects.get(username=username)
 	mensaje_de_error = False
+	mensaje_de_errorPortero = False
+	mensaje_de_errorDefensa = False
+	mensaje_de_errorCentro = False
+	mensaje_de_errorDelantero = False
 	if username:
 		if request.method=="POST":
 			id_jug = request.POST.get('jug')
@@ -365,8 +369,38 @@ def miEquipo(request):
 				if len(Plantilla.objects.filter(usuario=my_user, seleccion='SELECCIONADO')) >= 11:
 					mensaje_de_error = True
 				else:
-					jug_plantilla.seleccion = 'SELECCIONADO'
-					jug_plantilla.save()
+					todos_jug = Plantilla.objects.filter(usuario = my_user,seleccion='SELECCIONADO')
+					misma_posicion = 0
+					if this_jugador.posicion == 'PORTERO':
+						for j in todos_jug:
+							if j.jugador.posicion == 'PORTERO':
+								misma_posicion = misma_posicion + 1
+								if misma_posicion >= 1:
+									mensaje_de_errorPortero = True
+					if this_jugador.posicion == 'DEFENSA':
+							for j in todos_jug:
+								if j.jugador.posicion == 'DEFENSA':
+									misma_posicion = misma_posicion + 1
+									if misma_posicion >= 4:
+										mensaje_de_errorDefensa = True
+
+					if this_jugador.posicion == 'CENTROCAMPISTA':
+						for j in todos_jug:
+							if j.jugador.posicion == 'CENTROCAMPISTA':
+								misma_posicion = misma_posicion + 1
+								if misma_posicion >= 4:
+									mensaje_de_errorCentro = True
+
+					if this_jugador.posicion == 'DELANTERO':
+						for j in todos_jug:
+							if j.jugador.posicion == 'DELANTERO':
+								misma_posicion = misma_posicion + 1
+								if misma_posicion >= 2:
+									mensaje_de_errorDelantero = True
+				
+					if mensaje_de_errorPortero==False and mensaje_de_errorDefensa==False and mensaje_de_errorCentro==False and mensaje_de_errorDelantero == False:
+						jug_plantilla.seleccion = 'SELECCIONADO'
+						jug_plantilla.save()
 
 		desactivar_botones = Opciones.objects.filter(botones_activos = 'NO')
 		desactivacion = False
@@ -381,7 +415,9 @@ def miEquipo(request):
 		ultima_jornada = Opciones.objects.get(id=1).ultima_jornada
 		jugadores_de_la_jorn = Jornada.objects.filter(numero_jornada=ultima_jornada)		#filas de la jorn que este en la variable global
 
-		return render(request, "mi_equipo.html",{'my_user':my_user,'username':username, 'my_plantilla_no_seleccionada':my_plantilla_no_seleccionada, 'my_plantilla_seleccionada':my_plantilla_seleccionada,'mensaje_de_error':mensaje_de_error,'total_no_selec':total_no_selec,'total_selec':total_selec, 'jugadores_de_la_jorn':jugadores_de_la_jorn,'desactivacion':desactivacion})
+		return render(request, "mi_equipo.html",{'my_user':my_user,'username':username, 'my_plantilla_no_seleccionada':my_plantilla_no_seleccionada, 'my_plantilla_seleccionada':my_plantilla_seleccionada,
+																'mensaje_de_error':mensaje_de_error,'total_no_selec':total_no_selec,'total_selec':total_selec, 'jugadores_de_la_jorn':jugadores_de_la_jorn,
+																'desactivacion':desactivacion, 'mensaje_de_errorPortero':mensaje_de_errorPortero, 'mensaje_de_errorDefensa':mensaje_de_errorDefensa,'mensaje_de_errorCentro':mensaje_de_errorCentro,'mensaje_de_errorDelantero':mensaje_de_errorDelantero})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 
@@ -391,40 +427,46 @@ def puntuacionUsuarioJornada(request):
 	jornada_a_sumar = Jornada.objects.filter(numero_jornada = numero_jorn, jornada_sumada = 'NO')
 	if jornada_a_sumar:			#si todas las filas de la clase jornada han sido sumadas ya, esta función no hace nada
 		usuarios_app = Usuario.objects.all()
-		#print(usuarios_app)
 		for i in usuarios_app:
-			print(i)
-			jugadores_selec = Plantilla.objects.filter(usuario=i, seleccion='SELECCIONADO')		#cada jugador_selec es una fila de plantillas
-			for j in jugadores_selec:
-				jug_en_jorn = Jornada.objects.filter(jugador=j.jugador, jornada_sumada = 'NO')
-				if jug_en_jorn:
-					for x in jug_en_jorn:
-						i.puntuacion = i.puntuacion + x.puntos
-						i.save()
-						x.jornada_sumada = 'SI'
-						x.save()
+			if i.presupuesto >= 0:
+				jugadores_selec = Plantilla.objects.filter(usuario=i, seleccion='SELECCIONADO')		#cada jugador_selec es una fila de plantillas
+				for j in jugadores_selec:
+					jug_en_jorn = Jornada.objects.filter(jugador=j.jugador, jornada_sumada = 'NO')
+					if jug_en_jorn:
+						for x in jug_en_jorn:
+							i.puntuacion = i.puntuacion + x.puntos
+							i.save()
+							x.jornada_sumada = 'SI'
+							x.save()
 
 		jug_no_selc_x_nadie = Jornada.objects.filter(jornada_sumada = 'NO')	
 		if jug_no_selc_x_nadie:
 			for n in jug_no_selc_x_nadie:
 				n.jornada_sumada = 'SI'
 				n.save()				
-	
+
+
+
+
 
 def fuera_del_mercado(username):
-	liga_user = Liga.objects.filter(usuario=username).first()				#liga del usuario logueado
-	obj_mercado = Mercado.objects.all()
-	ahora = timezone.now()
+	obj_mercado = Mercado.objects.all()		#guardamos en una variable todos los objetos que hay en el mercado
+	ahora = timezone.now()					#nos devuelve la hora actual
 	for i in obj_mercado:
-		caducidadDelJug = i.fecha_ingreso + datetime.timedelta(days=2)		#El jugador sale del marcado 2 días después de ingresar
-		if ahora > caducidadDelJug:											#Si la fecha actual es posterior a la de "caducidad" del jugador en el mercado
-			jugadorOutMercado = Mercado.objects.get(nombre_liga=i.nombre_liga,jugador=i.jugador)
+		caducidadDelJug = i.fecha_ingreso + datetime.timedelta(days=2)	#Calculamos cuando debe salir sumandole dos dias a la fecha de ingreso
+		#Si la fecha actual es posterior a la de "caducidad" del jugador en el mercado entramos en el if
+		if ahora > caducidadDelJug:											
+			jugadorOutMercado = Mercado.objects.get(nombre_liga=i.nombre_liga,jugador=i.jugador)	#el jug que debe salir
+			
+			#A PARTIR DE AQUÍ SE EMPIEZA A RESOLVER LAS PUJAS
 			my_jugador = jugadorOutMercado.jugador
-
 			existe_puja = Puja.objects.filter(jugador=my_jugador)		#Comprobamos que al menos haya una puja realizada por el jugador 
-			if existe_puja:			#si nadie ha pujado por el jug solo lo eliminamos del mercado, sin hacer el cambio de propietario y sin cambiar los presupuestos de los usuarios
-				puja_superior = Puja.objects.filter(jugador=my_jugador).order_by("-cantidad")[0]	#ya sabemos que al menos una puja hay, cogemos la mayor en caso de haber varias
-				lineas_clase_liga = Liga.objects.filter(nombre=i.nombre_liga)		#busco los usuarios de la misma liga que el jugador que queremos eliminar del mercado
+			#si nadie ha pujado por el jug solo lo eliminamos del mercado, no entramos en el if
+			if existe_puja:			
+				#ya sabemos que al menos una puja hay, cogemos la mayor en caso de haber varias
+				puja_superior = Puja.objects.filter(jugador=my_jugador).order_by("-cantidad")[0]
+				#busco los usuarios de la misma liga que el jugador que queremos eliminar del mercado	
+				lineas_clase_liga = Liga.objects.filter(nombre=i.nombre_liga)		
 				
 				for j in lineas_clase_liga:				#recorremos todos los usuarios para ver cual tiene como jugador el que acabamos de vender
 					quitar_de_plantilla = Plantilla.objects.filter(usuario = j.usuario, jugador = my_jugador)
@@ -435,9 +477,11 @@ def fuera_del_mercado(username):
 
 
 				pujador_win = puja_superior.pujador
-				pujador_win.presupuesto = pujador_win.presupuesto - puja_superior.cantidad		#Quitarle el dinero que le ha costado el jugador de su presupuesto
+				#Quitarle el dinero que le ha costado el jugador de su presupuesto
+				pujador_win.presupuesto = pujador_win.presupuesto - puja_superior.cantidad
 				pujador_win.save()
-				añadir_a_plantilla= Plantilla(seleccion='NO SELECCIONADO', usuario=pujador_win ,jugador=my_jugador)	#asignamos el jugador a su nuevo usuario
+				#asignamos el jugador a su nuevo usuario
+				añadir_a_plantilla= Plantilla(seleccion='NO SELECCIONADO', usuario=pujador_win ,jugador=my_jugador)
 				añadir_a_plantilla.save()	
 
 			usuarios_pujantes = Liga.objects.filter(nombre = i.nombre_liga)
@@ -445,41 +489,47 @@ def fuera_del_mercado(username):
 				puja_por_jug = Puja.objects.filter(pujador = x.usuario, jugador = my_jugador)
 				puja_por_jug.delete()
 			
-			jugadorOutMercado.delete()
+			jugadorOutMercado.delete()		#cuando se resuelve la puja, el jugador es eliminado del mercado
 
-	
+
+
+
 def mercado(request):
 	username = request.session.get("user_logeado")
-	nombre_liga = Liga.objects.filter(usuario=username).first().nombre			#objeto liga del usuario logueado								
-	if username:
-		fuera_del_mercado(username)
+	nombre_liga = Liga.objects.filter(usuario=username).first().nombre			#nombre de la liga del usuario								
+	if username:																#solo entramos a la vista mercado si hay un usuario logueado
+		#función que comprueba si el jugador excede el tiempo que debe estar en el mercado
+		fuera_del_mercado(username)												
+		#Llamamos a una función que comprueba si hay un mínimo de jug en el mercado y añade más si hay menos del mínimo 
 		JugadorAñadidoPorSistema(username)
-		my_user = Usuario.objects.get(username=username)						#usuario con nombre username
-		users = Liga.objects.filter(nombre=nombre_liga)							#lista de ligas con nombre de la liga de my_user
+		my_user = Usuario.objects.get(username=username)						#objeto usuario con nombre username
 
 		jugadores_en_el_mercado = Mercado.objects.filter(nombre_liga=nombre_liga)			
-		mensaje_de_error = False
-		mensaje_de_error_2 = False
+		mensaje_de_error = False												#inicialización de msg1
+		mensaje_de_error_2 = False												#inicialización de msg2
 		if request.method=="POST":
-			if request.POST.get('puja'):
-				puja = request.POST.get('puja')
+			if request.POST.get('puja'):										
+				puja = request.POST.get('puja')									#puja = cantidad pujada
 				id_jugador = request.POST.get('idJugador')
-				jugador = Jugador.objects.get(id=id_jugador)
+				jugador = Jugador.objects.get(id=id_jugador)					#objeto jugador
 
-				if len(Plantilla.objects.filter(usuario=username, jugador=jugador))==0:			#compruebo que el usuario no puja por jugador que ya es suyo
+				#compruebo que el usuario no puja por jugador que ya es suyo
+				if len(Plantilla.objects.filter(usuario=username, jugador=jugador))==0:			
 					if my_user.presupuesto >= int(puja):
-						puja_repe = Puja.objects.filter(pujador=my_user,jugador=jugador,cantidad=puja)		#compruebo que el usuario no repite la puja
+						#compruebo que el usuario no repite la puja
+						puja_repe = Puja.objects.filter(pujador=my_user,jugador=jugador,cantidad=puja)		
 						if len(puja_repe) == 0:
-							la_liga = Liga.objects.filter(usuario=username)
-							obj = Puja(pujador=my_user, jugador=jugador,cantidad=puja,liga=la_liga.first())
+							la_liga = Liga.objects.filter(usuario=username)		#objeto liga del usuario
+							obj = Puja(pujador=my_user, jugador=jugador,cantidad=puja,liga=la_liga.first())		#se crea la puja
 							obj.save()
-							del puja
+							
 					else:
 						mensaje_de_error_2 = True
 
 				else:
 					mensaje_de_error = True
-
+		
+		#Vamos a obtener la puja más alta de cada jugador en el mercado
 		pujas = []
 		for jug in jugadores_en_el_mercado:
 			if Puja.objects.filter(jugador=jug.jugador):
@@ -487,63 +537,68 @@ def mercado(request):
 				pujas.append(pujas_aux)
 		
 		
-		return render(request, "mercado.html", {'username':username,'jugadores_en_el_mercado':jugadores_en_el_mercado,'nombre_liga':nombre_liga,'pujas':pujas,'mensaje_de_error':mensaje_de_error,"mensaje_de_error_2":mensaje_de_error_2})
+		return render(request, "mercado.html", {'username':username,'jugadores_en_el_mercado':jugadores_en_el_mercado,'nombre_liga':nombre_liga,
+													'pujas':pujas,'mensaje_de_error':mensaje_de_error,"mensaje_de_error_2":mensaje_de_error_2})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 
+ 
 def JugadorAñadidoPorSistema(username):
-	liga = Liga.objects.filter(usuario=username).first().nombre
-	minimo_jugadores = Opciones.objects.get(id=1).min_jugadores_mercado
-	lista_jugadores = Jugador.objects.all()
+	liga = Liga.objects.filter(usuario=username).first().nombre			#nombre de la liga del usuario
+	minimo_jugadores = Opciones.objects.get(id=1).min_jugadores_mercado #el mínimo de jug está en opciones
+	lista_jugadores = Jugador.objects.all() 	#todos los jugadores del sistema
 	
-	compis_liga = []							#lista de usuarios de la misma liga
+	compis_liga = []							#inicialización lista de usuarios de la misma liga
 	aux = Liga.objects.filter(nombre=liga)
 	for i in aux:
-		compis_liga.append(i.usuario)
+		compis_liga.append(i.usuario)			#se añaden los usuarios a la lista
 
 	
-	while len(Mercado.objects.filter(nombre_liga = liga)) < minimo_jugadores:
+	while len(Mercado.objects.filter(nombre_liga = liga)) < minimo_jugadores:	#mientras no se alcance el mínimo
 		jugador_random = lista_jugadores[randint(0,len(lista_jugadores)-1)]		#Obtiene un jugador al azar
-		jugadores_de_compis = []
+		jugadores_de_compis = []		#inicializamos una lista para guardar los jug de otros compañeros de liga
 		jugador_no_existe = True
 		for j in compis_liga:
 			filas_de_plantilla = Plantilla.objects.filter(usuario=j)	
 			for m in filas_de_plantilla:
 				jugadores_de_compis.append(m.jugador)		#todos los jugadores ya en la liga
 
-		for n in jugadores_de_compis:
-			if n == jugador_random:
-				jugador_no_existe = False
+		for n in jugadores_de_compis:		#recorro todos los jug de los compañeros de liga
+			if n == jugador_random:			#si coincide con el jug random
+				jugador_no_existe = False	#la variable se pone falso
 
-		if jugador_no_existe:	
+		if jugador_no_existe:			#si la variable es true entra dentro del if
 			obj = Mercado(nombre_liga=liga,jugador=jugador_random,fecha_ingreso=datetime.datetime.utcnow())
-			obj.save()
+			obj.save()		#se guarda el nuevo jugador en el mercado de la liga en cuestión
 
-
+ 
 
 
 def jugadorAlMercado(request,id):
-	username = request.session.get("user_logeado")
-	my_user = Usuario.objects.filter(username=username)
-	my_liga = Liga.objects.filter(usuario__in=my_user)
+	username = request.session.get("user_logeado")		#nombre del usuario logueado
+	my_user = Usuario.objects.filter(username=username)	#objeto usuario
+	my_liga = Liga.objects.filter(usuario__in=my_user)	#objeto liga a la que pertenece el usuario logueado
 	#print(my_liga)
-	if username:
-		jugadorAñadido=False
-		mi_jugador = Jugador.objects.get(id=id)
-		#print(mi_jugador)
+	if username:										#Si el usuario está logueado accede a la vista
+		jugadorAñadido=False							#variable para mostrar text en la plantilla de jugador añadido al mercado
+		mi_jugador = Jugador.objects.get(id=id)			#objeto jugador que coincide con con el id pasado por la url
+		
+		#busco en el mercado si ya existe el jugador
 		jugadorRepetido = Mercado.objects.filter(nombre_liga=my_liga.first().nombre,jugador=mi_jugador)
-		print(jugadorRepetido)
 	
-		if request.method=="POST":
-			mensaje_de_error="El jugador ya está añadido, no puede añadirlo de nuevo."
-			if (len(jugadorRepetido) == 0):
+		mensaje_de_error = False						#se inicializa el mensaje de error a falso
+		if request.method=="POST":						
+			if (len(jugadorRepetido) == 0):				#si el jugador no está ya en el mercado entramos al if
 				obj = Mercado(nombre_liga=my_liga.first().nombre,jugador=mi_jugador,fecha_ingreso=datetime.datetime.utcnow())
-				obj.save()
-				jugadorAñadido=True
-			return render(request, "jugador_al_mercado.html",{'username':username,'mi_jugador':mi_jugador,'jugadorAñadido':jugadorAñadido,'mensaje_de_error':mensaje_de_error})
+				obj.save()								#guardamos el el objeto mercado que acabamos de crear
+				jugadorAñadido=True						
+			else:										#El jugador ya está en el mercado
+				mensaje_de_error= True					#se pone a verdadero el mensaje de error
+			return render(request, "jugador_al_mercado.html",{'username':username,'mi_jugador':mi_jugador,'jugadorAñadido':jugadorAñadido,
+																	'mensaje_de_error':mensaje_de_error})
 		return render(request, "jugador_al_mercado.html",{'username':username,'mi_jugador':mi_jugador,'jugadorAñadido':jugadorAñadido})
 	else:
-		return HttpResponseRedirect('/inicioSesion')
+		return HttpResponseRedirect('/inicioSesion')	#si el usuario no está logueado se le redirige al inicio de sesión
 
 	
 def infoJugador(request,id):				#Vista cuando pulsamos en el nombre de un jugador

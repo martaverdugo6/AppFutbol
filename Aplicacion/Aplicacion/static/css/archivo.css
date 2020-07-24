@@ -41,7 +41,7 @@ body{
 }
 #tabla_jugadores_S{
     margin-left: 1%;
-    width: 47%;
+    width: 48%;
     font-size: 15px;
 }
 
@@ -155,4 +155,18 @@ div.opciones_perfil a{
     width: 60%;
     margin-left: 20%;
     margin-top: 3%;
+}
+
+.mensaje_warning{
+    background-color: #FCCA46;
+    font-size: 18px;
+    width: 70%;
+    margin-left: 15%;
+    padding-top: 1%;
+    padding-bottom: 0.5%;
+    margin-bottom: 2%;
+    /*background-color: ;
+    width: 70%; 
+    margin-left: 15%; */
+    
 }
