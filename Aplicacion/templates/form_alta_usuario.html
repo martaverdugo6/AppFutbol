@@ -9,9 +9,11 @@
 	<div style="background-color: #8CCF75; width: 50%; margin-left: 25%; margin-top: 2%;">
 		<h1 class="center-align" style="padding-top: 2%;">Registrarse</h1><br>
 			<div class="col-lg-8 offset-lg-2">
+				{% if mensaje_de_error %}
+					<p style="color: red; text-align: center;">La contraseña no coincide</p>
+				{% endif %}
 				<form method="post" action="."> {% csrf_token %}
 						{{ form|crispy }}
-						<!--<input type="password" id="confirmPass" name="confirmPass">-->
 						<input class="btn btn-success" type="submit" value="Registrarme"/>
 
 				</form>

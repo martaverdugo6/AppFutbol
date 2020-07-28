@@ -2,27 +2,12 @@ from django import forms
 
 from gestionApp.models import Usuario,Liga
 
-class form_alta_usuario(forms.ModelForm):
-	class Meta:
-		model = Usuario
-
-		#Campos que quiero que aparezcan en el formulario, mismo nombre que en models
-		fields =[
-			'username',
-			'email',
-			'mi_equipo',
-			'password',	
-		]
-		labels = {
-			'username': 'Nombre de usuario',
-			'email': 'Email',
-			'mi_equipo': 'Nombre de equipo',
-			'password': 'Contraseña',
-		}
-		widgets = {
-     		'password': forms.PasswordInput()
-        }
-
+class form_alta_usuario(forms.Form):
+	Nombre_de_usuario=forms.CharField(max_length=50) 
+	Email=forms.EmailField()
+	Nombre_de_equipo=forms.CharField(max_length=30)
+	Contraseña=forms.CharField(max_length=50,widget=forms.PasswordInput)
+	Confirmar_contraseña=forms.CharField(max_length=50,widget=forms.PasswordInput)
 
 
 class form_login_usuario(forms.ModelForm):

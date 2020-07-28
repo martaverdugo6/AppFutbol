@@ -20,17 +20,23 @@ def registroUser(request):
 	if request.method =='POST':									#si se envia el formulario
 		form = form_alta_usuario(request.POST)
 		if form.is_valid():
-			username = request.POST.get('username')
+			username = request.POST.get('Nombre_de_usuario')
 			request.session["user_logeado"] = username
+			email = request.POST.get('Email')
+			equipo = request.POST.get('Nombre_de_equipo')
+			password = request.POST.get('Contraseña')
+			confirmpass = request.POST.get('Confirmar_contraseña')
 			presupuesto_inicial = Opciones.objects.get(id=1).presupuesto_de_inicio
+			mensaje_de_error = False
 
-			my_form = form.save(commit=False)
-			my_form.puntuacion = 0
-			my_form.presupuesto = presupuesto_inicial
-			my_form.save()
-
-			return HttpResponseRedirect('/eleccionLiga')	#si se ha rellenado el formulario con exito vamos a form_liga
-		return render(request, "form_alta_usuario.html", {'form':form,})
+			if password == confirmpass:
+				new_user = Usuario(username = username, email = email, mi_equipo = equipo, password = password, puntuacion = 0, presupuesto = presupuesto_inicial)
+				new_user.save()
+				return HttpResponseRedirect('/eleccionLiga')	#si se ha rellenado el formulario con exito vamos a form_liga
+			else:
+				mensaje_de_error = True
+				return render(request, "form_alta_usuario.html", {'form':form,'mensaje_de_error':mensaje_de_error})
+				
 	else:
 		form = form_alta_usuario()
 		return render(request, "form_alta_usuario.html", {'form':form,})	#si no se ha rellenado el formulario (primera vez que entramos), cargamos la pag de formulario
@@ -233,15 +239,15 @@ def creacionLiga(request):
 
 				asignarJugadores(username)
 
-				return HttpResponseRedirect('/inicio',{'username':username})
+				return HttpResponseRedirect('/inicio',{'my_username':username})
 			else:
 				msg = "El nombre de la liga ya existe. Pruebe con otro"	
-				return render(request, "creacion_liga.html", {'form':form, 'msg':msg, 'username':username})	
+				return render(request, "creacion_liga.html", {'form':form, 'msg':msg, 'my_username':username})	
 			
-		return render(request, "creacion_liga.html", {'form':form, 'username':username})	
+		return render(request, "creacion_liga.html", {'form':form, 'my_username':username})	
 	else:
 		form=form_liga()
-		return render(request, "creacion_liga.html", {'form':form, 'username':username})	
+		return render(request, "creacion_liga.html", {'form':form, 'my_username':username})	
 	
 def asignarJugadores(request):
 	my_user = Usuario.objects.filter(username=request)			#Obtenemos el objeto con nombre pasado por param
