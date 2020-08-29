@@ -43,7 +43,9 @@ urlpatterns = [
     path('mercado/<id>', views.jugadorAlMercado, name='JugadorAlMercado'),
     path('usuario/<nombre>', views.otrosUsuarios, name='otrosUsuarios'),
     path('ayuda/', views.ayuda, name='ayuda'),
-    path('jugadores/', views.jugadores, name='jugadores'),
+    path('añadir_jugadores/', views.lista_jugadores_añadir, name='añadir_jugadores'),
+    path('eliminar_jugadores/', views.lista_jugadores_eliminar, name='eliminar_jugadores'),
+    path('eliminar/<id>', views.eliminarJugador, name='eliminarJugador'),
 
     url(r'^accounts/', include('registration.backends.default.urls')),
     #path('accounts/',views.include('registration.backends.default.urls')),

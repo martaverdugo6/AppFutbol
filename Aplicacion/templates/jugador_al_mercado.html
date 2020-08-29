@@ -18,7 +18,7 @@
         <div class="mensaje_warning">
             <p class="center-align"><i class="fas fa-info-circle"></i> 
                 El jugador estará dos días en el mercado. Después de ese periodo pasará a ser parte de la plantilla del usuario que más puje por él. 
-                En caso de no haber ninguna puja el jugador seguirá perteneciendo a su plantilla .
+                En caso de no haber ninguna puja el jugador seguirá perteneciendo a su plantilla.
             </p>
         </div>
         {% if mensaje_de_error %}
@@ -32,7 +32,7 @@
             <form action="/mercado/{{mi_jugador.id}}" method="POST">{% csrf_token %}
                 <input class="btn btn-outline-success" type="submit" value="Añadir"/>
             </form><br>
-            <a class="btn btn-outline-danger mt-1" href="{% url 'jugadores' %}" role="button"> Cancelar</a>
+            <a class="btn btn-outline-danger mt-1" href="{% url 'añadir_jugadores' %}" role="button"> Cancelar</a>
         </div>
     {% endif %}
 {% endblock %}

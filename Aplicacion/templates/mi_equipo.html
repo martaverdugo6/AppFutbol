@@ -5,6 +5,9 @@
 {% block content %}
     <h1 class="center-align">{{my_user.mi_equipo}}</h1>
     <br>
+    <div class="center-align">
+        <a class="btn btn-danger mt-1" href="/eliminar_jugadores/" role="button"><i class="fas fa-user-times"></i>  Eliminar jugador del equipo</a>
+    </div><br><br>
     {% if mensaje_de_error %}
         <div class="mensaje_de_error">
             <p class="center-align"><i class="fas fa-exclamation-circle"></i> No se pueden añadir más de 11 jugadores a la lista de Seleccionados.</p>

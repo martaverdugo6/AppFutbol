@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head_title %}Jugadores{% endblock %}
+
+
+{% block content %}
+
+<h1 class="center-align">Plantilla de {{my_user.mi_equipo}}</h1>
+<br>
+<table id="tabla_jugadores">
+    <thead>
+        <tr id="contenido_titulo">
+            <td><b>Jugador</b></td>
+            <td><b>Equipo</b></td>
+            <td><b>Posición</b></td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for jug in my_plantilla %}
+            <tr id="contenido_tabla">
+                <td>{{jug.jugador.nombre}} {{jug.jugador.apellidos}}</td>
+                <td>{{jug.jugador.equipo}}</td>
+                <td>{{jug.jugador.posicion}}</td>
+                <td>
+                    <a class="btn btn-outline-danger mt-1" href="/eliminar/{{jug.jugador.id}}" role="button">Eliminar jugador del equipo</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<style>
+    table tbody tr:nth-child(odd) {
+        background: #E2E3E3;
+    }
+    table tbody tr:nth-child(even) {
+        background: #F4F4F4;
+    }
+</style>
+
+{% endblock %}

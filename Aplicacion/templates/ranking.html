@@ -1,103 +1,34 @@
+{% extends "base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Ranking QUE NO VAMOS A USAR</title>
-	<link href="{% static 'css/archivo.css' %}" rel="stylesheet" />
-</head>
+{% block head_title %}PAGINA DE PRUEBAS{% endblock %}
 
-<body>
-	<table id="tabla_prueba" style="background-image: url('../static/img/campo_futbol.jpg');">
-            <tr id="contenido_tabla">
-				{% for jugS in my_plantilla_seleccionada %}	
-					{% ifequal jugS.jugador.posicion 'PORTERO' %}
-						<td colspan="4">{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}}<br>
-							{% for jorn in jugadores_de_la_jorn %}
-								{% if jugS.jugador.id == jorn.jugador.id %}
-									{{jorn.puntos}} pts
-								{% endif %}
-							{% endfor %}
-							<form action="/miEquipo/" method="post">{% csrf_token %}
-								<input type="hidden" name="jug" value="{{jugNS.jugador.id}}"/>  
-								<input style="padding:2%; font-size: 14px;" class="btn btn-outline-success mt-1" type="submit" value="Quitar"/>
-							</form>
-						</td>
-					{% endifequal %}
-				{% endfor %}
-			</tr>
-		
-			<tr id="contenido_tabla">
-				{% for jugS in my_plantilla_seleccionada %}
-					{% ifequal jugS.jugador.posicion 'DEFENSA' %}
-						<td>{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}}<br>
-							{% for jorn in jugadores_de_la_jorn %}
-								{% if jugS.jugador.id == jorn.jugador.id %}
-									{{jorn.puntos}} pts
-								{% endif %}
-							{% endfor %}
-							<form action="/miEquipo/" method="post">{% csrf_token %}
-								<input type="hidden" name="jug" value="{{jugNS.jugador.id}}"/>  
-								<input style="padding:2%; font-size: 14px;" class="btn btn-outline-success mt-1" type="submit" value="Quitar"/>
-							</form>
-						</td>
-					{% endifequal %}
-				{% endfor %}
-			</tr>
-			<tr id="contenido_tabla">
-				{% for jugS in my_plantilla_seleccionada %}	
-					{% ifequal jugS.jugador.posicion 'CENTROCAMPISTA' %}
-						<td>
-							<b>{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}}<b><br>
-							{% for jorn in jugadores_de_la_jorn %}
-								{% if jugS.jugador.id == jorn.jugador.id %}
-									{{jorn.puntos}} pts
-								{% endif %}
-							{% endfor %}
-							<form action="/miEquipo/" method="post">{% csrf_token %}
-								<input type="hidden" name="jug" value="{{jugNS.jugador.id}}"/>  
-								<input style="padding:2%; font-size: 14px;" class="btn btn-outline-success mt-1" type="submit" value="Quitar"/>
-							</form>
-						</td>
-					{% endifequal %}
-				{% endfor %}
-			</tr>
-			<tr id="contenido_tabla">
-				{% for jugS in my_plantilla_seleccionada %}
-					{% ifequal jugS.jugador.posicion 'DELANTERO' %}
-						<td colspan="2">
-							<b>{{jugS.jugador.nombre}} {{jugS.jugador.apellidos}}</b><br>
-							{% for jorn in jugadores_de_la_jorn %}
-								{% if jugS.jugador.id == jorn.jugador.id %}
-									{{jorn.puntos}} pts
-								{% endif %}
-							{% endfor %}
-							<form action="/miEquipo/" method="post">{% csrf_token %}
-								<input type="hidden" name="jug" value="{{jugNS.jugador.id}}"/>  
-								<input style="padding:2%; font-size: 14px;" class="btn btn-outline-success mt-1" type="submit" value="Quitar"/>
-							</form>
-						</td>
-					{% endifequal %}
-				{% endfor %}
-            </tr>
-        
-    </table><br><br><br>
+{% block content %}
 
-</body>
-<style>
-table{
-	border: 1px solid black;
-	text-align: center;
-}
-td{
-	height: 150px;
-	
-}
-#tabla_prueba{
-	width: auto;
-	margin-left: 2%;
-}
+	<body>
+		<table class="sortable">
+			<thead>
+				<tr id="contenido_titulo">
+					<td><b>Jugador</b></td>
+					<td><b>Equipo</b></td>
+					<td><b>Posición</b></td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for jug in my_plantilla_seleccionada %}
+					<tr id="contenido_tabla">
+						<td>{{jug.jugador.nombre}} {{jug.jugador.apellidos}}</td>
+						<td>{{jug.jugador.equipo}}</td>
+						<td>{{jug.jugador.posicion}}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table><br><br><br>
 
-</style>
+		<input type=checkbox bind:checked={combinada}> <strong>Hacer búsqueda con 2 parámetros</strong>
+		{% if combinada%}
+			<p>Holi</p>
+		{% endif %}
+	</body>
 
-</html>
+{% endblock %}

@@ -636,15 +636,42 @@ def otrosUsuarios(request, nombre):			#Vista del perfil de otro usuario que no e
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 
-def jugadores(request):
+def lista_jugadores_añadir(request):
 	username = request.session.get("user_logeado")
 	my_user = Usuario.objects.get(username=username)
 	if username:
 		my_plantilla = Plantilla.objects.filter(usuario=my_user)
 		#print(my_plantilla)
-		return render(request, "jugadores.html", {'username':username, 'my_plantilla':my_plantilla})
+		return render(request, "lista_jugadores_añadir.html", {'username':username,'my_user':my_user, 'my_plantilla':my_plantilla})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
+
+def lista_jugadores_eliminar(request):
+	username = request.session.get("user_logeado")
+	my_user = Usuario.objects.get(username=username)
+	if username:
+		my_plantilla = Plantilla.objects.filter(usuario=my_user)
+		#print(my_plantilla)
+		return render(request, "lista_jugadores_eliminar.html", {'username':username,'my_user':my_user, 'my_plantilla':my_plantilla})
+	else:
+		return HttpResponseRedirect('/inicioSesion')
+
+def eliminarJugador(request,id):
+	username = request.session.get("user_logeado")		#nombre del usuario logueado
+	#my_user = Usuario.objects.filter(username=username)	#objeto usuario	
+
+	if username:										#Si el usuario está logueado accede a la vista
+		jugadorEliminado=False							#variable para mostrar text en la plantilla de jugador eliminado del equipo
+		mi_jugador = Jugador.objects.get(id=id)			#objeto jugador que coincide con con el id pasado por la url
+		
+		if request.method=="POST":
+			obj = Plantilla.objects.get(jugador=mi_jugador)
+			obj.delete()
+			jugadorEliminado=True
+
+		return render(request, "jugador_eliminado.html",{'username':username,'mi_jugador':mi_jugador,'jugadorEliminado':jugadorEliminado})
+	else:
+		return HttpResponseRedirect('/inicioSesion')	#si el usuario no está logueado se le redirige al inicio de sesión
 
 
 def ranking(request):
