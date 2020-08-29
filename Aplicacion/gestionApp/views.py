@@ -516,22 +516,26 @@ def mercado(request):
 		jugadores_en_el_mercado = Mercado.objects.filter(nombre_liga=nombre_liga)			
 		mensaje_de_error = False												#inicialización de msg1
 		mensaje_de_error_2 = False												#inicialización de msg2
+		mensaje_de_error_3 = False												#inicialización de msg3
 		if request.method=="POST":
 			if request.POST.get('puja'):										
 				puja = request.POST.get('puja')									#puja = cantidad pujada
 				id_jugador = request.POST.get('idJugador')
 				jugador = Jugador.objects.get(id=id_jugador)					#objeto jugador
+				num_jug_plant = len(Plantilla.objects.filter(usuario=username))
 
 				#compruebo que el usuario no puja por jugador que ya es suyo
 				if len(Plantilla.objects.filter(usuario=username, jugador=jugador))==0:			
 					if my_user.presupuesto >= int(puja):
-						#compruebo que el usuario no repite la puja
-						puja_repe = Puja.objects.filter(pujador=my_user,jugador=jugador,cantidad=puja)		
-						if len(puja_repe) == 0:
-							la_liga = Liga.objects.filter(usuario=username)		#objeto liga del usuario
-							obj = Puja(pujador=my_user, jugador=jugador,cantidad=puja,liga=la_liga.first())		#se crea la puja
-							obj.save()
-							
+						if num_jug_plant < 20:
+							#compruebo que el usuario no repite la puja
+							puja_repe = Puja.objects.filter(pujador=my_user,jugador=jugador,cantidad=puja)		
+							if len(puja_repe) == 0:
+								la_liga = Liga.objects.filter(usuario=username)		#objeto liga del usuario
+								obj = Puja(pujador=my_user, jugador=jugador,cantidad=puja,liga=la_liga.first())		#se crea la puja
+								obj.save()
+						else:
+							mensaje_de_error_3 = True	
 					else:
 						mensaje_de_error_2 = True
 
@@ -547,7 +551,7 @@ def mercado(request):
 		
 		
 		return render(request, "mercado.html", {'username':username,'jugadores_en_el_mercado':jugadores_en_el_mercado,'nombre_liga':nombre_liga,
-													'pujas':pujas,'mensaje_de_error':mensaje_de_error,"mensaje_de_error_2":mensaje_de_error_2})
+													'pujas':pujas,'mensaje_de_error':mensaje_de_error,"mensaje_de_error_2":mensaje_de_error_2,'mensaje_de_error_3':mensaje_de_error_3})
 	else:
 		return HttpResponseRedirect('/inicioSesion')
 

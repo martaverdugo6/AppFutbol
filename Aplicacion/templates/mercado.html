@@ -22,6 +22,11 @@
             <p class="center-align"><i class="fas fa-exclamation-circle"></i> La cantidad que quiere pujar es mayor a su presupuesto.</p>
         </div>
     {% endif %}
+    {% if mensaje_de_error_3 %}
+        <div class="mensaje_de_error">
+            <p class="center-align"><i class="fas fa-exclamation-circle"></i> No puede pujar porque ya tiene 20 jugadores en su equipo. Venda o elimine jugadores de su equipo antes de volver a intentarlo.</p>
+        </div>
+    {% endif %}
     <br>
     <table id="tabla_mercado" class="sortable">
         <thead>
