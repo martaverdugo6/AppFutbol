@@ -501,7 +501,7 @@ def fuera_del_mercado(username):
 			jugadorOutMercado.delete()		#cuando se resuelve la puja, el jugador es eliminado del mercado
 
 
-
+ 
 
 def mercado(request):
 	username = request.session.get("user_logeado")
@@ -662,14 +662,14 @@ def lista_jugadores_eliminar(request):
 
 def eliminarJugador(request,id):
 	username = request.session.get("user_logeado")		#nombre del usuario logueado
-	#my_user = Usuario.objects.filter(username=username)	#objeto usuario	
+	my_user = Usuario.objects.filter(username=username)	#objeto usuario	
 
 	if username:										#Si el usuario está logueado accede a la vista
 		jugadorEliminado=False							#variable para mostrar text en la plantilla de jugador eliminado del equipo
 		mi_jugador = Jugador.objects.get(id=id)			#objeto jugador que coincide con con el id pasado por la url
 		
 		if request.method=="POST":
-			obj = Plantilla.objects.get(jugador=mi_jugador)
+			obj = Plantilla.objects.get(jugador=mi_jugador, usuario__in=my_user)
 			obj.delete()
 			jugadorEliminado=True
 
