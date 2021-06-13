@@ -24,9 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-tx4icybqpq!f1wjj6!d(xr(xa)&797tv*_d%7!k%=)!$jt_j0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -54,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'Aplicacion.urls'
@@ -61,7 +62,7 @@ ROOT_URLCONF = 'Aplicacion.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["C:/Users/marta/Desktop/TFG/Proyecto_Django/Aplicacion/templates"],
+        'DIRS': ["./templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,17 +81,26 @@ WSGI_APPLICATION = 'Aplicacion.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': os.path.join(BASE_DIR,'db.sqlite3'),
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'aplicaciontfg',
-        'USER': 'postgres',
-        'PASSWORD':'post',
-        'HOST':'127.0.0.1',
-        'DATABASE_PORT':'5432',
-    }
+#DATABASES = {
+#    'default': {
+#        #'ENGINE': 'django.db.backends.sqlite3',
+#        #'NAME': os.path.join(BASE_DIR,'db.sqlite3'),
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'aplicaciontfg',
+#        'USER': 'postgres',
+#        'PASSWORD':'post',
+#        'HOST':'127.0.0.1',
+#        'DATABASE_PORT':'5432',
+#    }
+#}
+import dj_database_url
+from decouple import config
+
+DATABASE ={
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
+
 }
 
 
@@ -131,8 +141,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 
-STATICFILES_DIRS = ["C:/Users/marta/Desktop/TFG/Proyecto_Django/Aplicacion/Aplicacion/static"]
+STATICFILES_DIRS = (os.path.join(BASE_DIR,'./Aplicacion/static'),)
+#STATICFILES_DIRS = ["./Aplicacion/static"]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 LOGIN_REDIRECT_URL = reverse_lazy('inicio') #hecho el login te manda al inicio de la app 
 
