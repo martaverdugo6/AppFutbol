@@ -48,6 +48,4 @@ urlpatterns = [
     path('eliminar_jugadores/', views.lista_jugadores_eliminar, name='eliminar_jugadores'),
     path('eliminar/<id>', views.eliminarJugador, name='eliminarJugador'),
 
-    url(r'^accounts/', include('registration.backends.default.urls')),
-    #path('accounts/',views.include('registration.backends.default.urls')),
-] +static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
