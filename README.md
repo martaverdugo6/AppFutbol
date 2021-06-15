@@ -29,6 +29,7 @@ Para arrancar el servidor usaremos el siguiente comando:
 $ python manage.py ruserver
 ```
 A continuación, abra en su navegador la siguiente URL: http://127.0.0.1:8000/inicioSesion para acceder a la aplicación.
+
 Si se desea acceder al panel de administración debemos usar la URL: http://127.0.0.1:8000/admin e introducir el nombre de usuario y la contraseña que hemos creado antes.
 
 ## Uso
